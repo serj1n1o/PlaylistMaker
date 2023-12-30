@@ -4,4 +4,6 @@
     <dimen name="standard_indent_16dp">16dp</dimen>
     <dimen name="corner_radius_button">16dp</dimen>
     <dimen name="text_in_settings">16sp</dimen>
+    <dimen name="ic_padding">8dp</dimen>
+    <dimen name="zero_dp">0dp</dimen>
 </resources>
