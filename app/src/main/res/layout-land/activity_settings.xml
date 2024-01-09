@@ -34,8 +34,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/ys_display_regular"
-        android:paddingTop="@dimen/padding_button_settings"
-        android:paddingBottom="@dimen/padding_button_settings"
+        android:paddingTop="@dimen/standard_indent_16dp"
+        android:paddingBottom="@dimen/standard_indent_16dp"
         android:text="@string/dark_theme_text"
         android:textAlignment="textStart"
         android:textFontWeight="400"
@@ -46,8 +46,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="@dimen/padding_button_settings"
-        android:paddingBottom="@dimen/padding_button_settings">
+        android:paddingTop="@dimen/standard_indent_16dp"
+        android:paddingBottom="@dimen/standard_indent_16dp">
 
         <TextView
             style="@style/settingsText"
@@ -57,7 +57,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scaleType="fitEnd"
-
             android:src="@drawable/share_icon" />
 
     </LinearLayout>
@@ -65,8 +64,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/padding_button_settings"
-        android:paddingBottom="@dimen/padding_button_settings">
+        android:paddingTop="@dimen/standard_indent_16dp"
+        android:paddingBottom="@dimen/standard_indent_16dp">
 
         <TextView
             style="@style/settingsText"
@@ -83,8 +82,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/padding_button_settings"
-        android:paddingBottom="@dimen/padding_button_settings">
+        android:paddingTop="@dimen/standard_indent_16dp"
+        android:paddingBottom="@dimen/standard_indent_16dp">
 
         <TextView
             style="@style/settingsText"
