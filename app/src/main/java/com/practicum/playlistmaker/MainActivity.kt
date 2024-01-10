@@ -16,14 +16,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val buttonSearch = findViewById<MaterialButton>(R.id.search_button)
-        val buttonSearchClick: OnClickListener = object : OnClickListener {
-            override fun onClick(v: View?) {
-                val searchIntent = Intent(this@MainActivity, SearchActivity::class.java)
-                startActivity(searchIntent)
-            }
-
+        buttonSearch.setOnClickListener {
+            val searchIntent = Intent(this@MainActivity, SearchActivity::class.java)
+            startActivity(searchIntent)
         }
-        buttonSearch.setOnClickListener(buttonSearchClick)
 
 
         val buttonLibrary = findViewById<MaterialButton>(R.id.library_button)

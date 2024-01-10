@@ -43,6 +43,8 @@
 
 
     <LinearLayout
+        android:id="@+id/buttonShareApp"
+        android:foreground="?attr/selectableItemBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -63,6 +65,8 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/buttonSendSupport"
+        android:foreground="?attr/selectableItemBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/padding_button_settings"
@@ -81,6 +85,8 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/buttonUserAgreement"
+        android:foreground="?attr/selectableItemBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/padding_button_settings"
