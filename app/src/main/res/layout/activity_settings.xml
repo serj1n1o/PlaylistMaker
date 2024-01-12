@@ -14,11 +14,7 @@
 
         <ImageView
             android:id="@+id/button_back"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:foreground="?attr/selectableItemBackground"
-            android:src="@drawable/icon_back" />
+            style="@style/HeaderImageBack" />
 
         <TextView
             style="@style/HeaderTextView"
@@ -44,9 +40,9 @@
 
     <LinearLayout
         android:id="@+id/buttonShareApp"
-        android:foreground="?attr/selectableItemBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:foreground="?attr/selectableItemBackground"
         android:orientation="horizontal"
         android:paddingTop="@dimen/padding_button_settings"
         android:paddingBottom="@dimen/padding_button_settings">
@@ -59,16 +55,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scaleType="fitEnd"
-
             android:src="@drawable/share_icon" />
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/buttonSendSupport"
-        android:foreground="?attr/selectableItemBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:foreground="?attr/selectableItemBackground"
         android:paddingTop="@dimen/padding_button_settings"
         android:paddingBottom="@dimen/padding_button_settings">
 
@@ -86,9 +81,9 @@
 
     <LinearLayout
         android:id="@+id/buttonUserAgreement"
-        android:foreground="?attr/selectableItemBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:foreground="?attr/selectableItemBackground"
         android:paddingTop="@dimen/padding_button_settings"
         android:paddingBottom="@dimen/padding_button_settings">
 

@@ -1,12 +1,10 @@
 package com.practicum.playlistmaker
 
-import android.app.Notification.Action
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class SettingsActivity : AppCompatActivity() {
@@ -33,10 +31,10 @@ class SettingsActivity : AppCompatActivity() {
         sendToSupport.setOnClickListener {
             val message = getString(R.string.subject_text_mail)
             val messageTheme = getString(R.string.message_text_mail)
-            val url = arrayOf(getString(R.string.my_mail_yandex))
+            val mail = arrayOf(getString(R.string.my_mail_yandex))
             val sendToSupportIntent = Intent(Intent.ACTION_SENDTO)
             sendToSupportIntent.data = Uri.parse("mailto:")
-            sendToSupportIntent.putExtra(Intent.EXTRA_EMAIL, url)
+            sendToSupportIntent.putExtra(Intent.EXTRA_EMAIL, mail)
             sendToSupportIntent.putExtra(Intent.EXTRA_TEXT, message)
             sendToSupportIntent.putExtra(Intent.EXTRA_SUBJECT, messageTheme)
             startActivity(sendToSupportIntent)

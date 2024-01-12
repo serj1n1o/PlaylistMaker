@@ -7,6 +7,9 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="background_main_activity_color_LiteTheme">#3772E7</color>
+    <color name="gray">#AEAFB4</color>
+    <color name="yp_blue">#3772E7</color>
+    <color name="background_main_activity_color_LiteTheme">@color/yp_blue</color>
     <color name="background_main_activity_color_DarkTheme">@color/black</color>
+    <color name="light_grey">#E6E8EB</color>
 </resources>
