@@ -1,9 +1,11 @@
 package com.practicum.playlistmaker
 
 import android.annotation.SuppressLint
+import android.app.ActivityManager
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.ImageView
@@ -33,7 +35,6 @@ class MainActivity : AppCompatActivity() {
             val settingsIntent = Intent(this@MainActivity, SettingsActivity::class.java)
             startActivity(settingsIntent)
         }
-
 
     }
 }

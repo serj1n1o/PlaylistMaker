@@ -46,5 +46,6 @@ class SettingsActivity : AppCompatActivity() {
             val userAgreementIntent = Intent(Intent.ACTION_VIEW, Uri.parse(urlOffer))
             startActivity(userAgreementIntent)
         }
+
     }
 }
