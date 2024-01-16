@@ -35,7 +35,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         clearInputButton.setOnClickListener {
-            inputSearch.setText("")
+            inputSearch.setText(INPUT_TEXT_DEFAULT)
             val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputManager.hideSoftInputFromWindow(inputSearch.windowToken, 0)
 

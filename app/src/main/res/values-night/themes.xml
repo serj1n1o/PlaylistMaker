@@ -11,12 +11,12 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:statusBarColor">?attr/colorPrimary</item>
         <item name="android:windowLightStatusBar">false</item>
+        <item name="android:background">@color/background_color_DarkTheme</item>
     </style>
 
     <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker" />
 
     <style name="Theme.Main.View" parent="Theme.PlaylistMaker">
-        <item name="android:background">@color/background_main_activity_color_DarkTheme</item>
         <item name="android:textColor">@color/white</item>
     </style>
 </resources>

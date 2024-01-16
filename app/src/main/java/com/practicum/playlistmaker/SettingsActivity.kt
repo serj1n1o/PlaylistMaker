@@ -12,12 +12,12 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        val buttonBack = findViewById<ImageView>(R.id.button_back)
+        val buttonBack = findViewById<ImageView>(R.id.button_back_settings)
         buttonBack.setOnClickListener {
             finish()
         }
 
-        val shareApp = findViewById<LinearLayout>(R.id.buttonShareApp)
+        val shareApp = findViewById<ImageView>(R.id.buttonShareApp)
         shareApp.setOnClickListener {
             val message = getString(R.string.https_course_android_developer)
             val shareIntent = Intent()
@@ -27,7 +27,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(Intent.createChooser(shareIntent, getString(R.string.select_app)))
         }
 
-        val sendToSupport = findViewById<LinearLayout>(R.id.buttonSendSupport)
+        val sendToSupport = findViewById<ImageView>(R.id.buttonSendSupport)
         sendToSupport.setOnClickListener {
             val message = getString(R.string.subject_text_mail)
             val messageTheme = getString(R.string.message_text_mail)
@@ -40,7 +40,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(sendToSupportIntent)
         }
 
-        val userAgreement = findViewById<LinearLayout>(R.id.buttonUserAgreement)
+        val userAgreement = findViewById<ImageView>(R.id.buttonUserAgreement)
         userAgreement.setOnClickListener {
             val urlOffer = getString(R.string.offer_yandex)
             val userAgreementIntent = Intent(Intent.ACTION_VIEW, Uri.parse(urlOffer))

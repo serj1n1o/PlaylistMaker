@@ -6,97 +6,78 @@
     android:paddingStart="@dimen/standard_indent_16dp"
     android:paddingEnd="@dimen/standard_indent_16dp">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:layout_marginBottom="@dimen/padding_button_settings"
-        android:orientation="horizontal">
+        android:layout_marginBottom="@dimen/padding_button_settings">
 
         <ImageView
-            android:id="@+id/button_back"
+            android:id="@+id/button_back_settings"
             style="@style/HeaderImageBack" />
 
         <TextView
             style="@style/HeaderTextView"
-            android:layout_gravity="center"
+            android:layout_gravity="center|start"
             android:layout_marginStart="@dimen/padding_button_settings"
             android:text="@string/settings_text" />
 
-    </LinearLayout>
+    </FrameLayout>
 
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switch_theme"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/height_button_settings_88dp"
         android:fontFamily="@font/ys_display_regular"
-        android:paddingTop="@dimen/padding_button_settings"
-        android:paddingBottom="@dimen/padding_button_settings"
         android:text="@string/dark_theme_text"
         android:textAlignment="textStart"
         android:textFontWeight="400"
         android:textSize="@dimen/text_in_settings" />
 
 
-    <LinearLayout
-        android:id="@+id/buttonShareApp"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:foreground="?attr/selectableItemBackground"
-        android:orientation="horizontal"
-        android:paddingTop="@dimen/padding_button_settings"
-        android:paddingBottom="@dimen/padding_button_settings">
+        android:layout_height="@dimen/height_button_settings_88dp">
 
         <TextView
             style="@style/settingsText"
             android:text="@string/share_app_text" />
 
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="fitEnd"
+            android:id="@+id/buttonShareApp"
+            style="@style/ButtonSettingsImg"
             android:src="@drawable/share_icon" />
 
-    </LinearLayout>
+    </FrameLayout>
 
-    <LinearLayout
-        android:id="@+id/buttonSendSupport"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:foreground="?attr/selectableItemBackground"
-        android:paddingTop="@dimen/padding_button_settings"
-        android:paddingBottom="@dimen/padding_button_settings">
+        android:layout_height="@dimen/height_button_settings_88dp">
 
         <TextView
             style="@style/settingsText"
             android:text="@string/send_support_text" />
 
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="fitEnd"
+            android:id="@+id/buttonSendSupport"
+            style="@style/ButtonSettingsImg"
             android:src="@drawable/support_icon" />
 
-    </LinearLayout>
+    </FrameLayout>
 
-    <LinearLayout
-        android:id="@+id/buttonUserAgreement"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:foreground="?attr/selectableItemBackground"
-        android:paddingTop="@dimen/padding_button_settings"
-        android:paddingBottom="@dimen/padding_button_settings">
+        android:layout_height="@dimen/height_button_settings_88dp">
 
         <TextView
             style="@style/settingsText"
             android:text="@string/user_agreement" />
 
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="fitEnd"
+            android:id="@+id/buttonUserAgreement"
+            style="@style/ButtonSettingsImg"
             android:src="@drawable/arrow_forward_icon" />
-    </LinearLayout>
+    </FrameLayout>
 
 
 </LinearLayout>

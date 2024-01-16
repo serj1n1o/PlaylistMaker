@@ -8,11 +8,10 @@
     android:paddingEnd="@dimen/standard_indent_16dp"
     android:paddingBottom="@dimen/standard_indent_16dp">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:layout_marginBottom="@dimen/padding_min_8dp"
-        android:orientation="horizontal">
+        android:layout_marginBottom="@dimen/padding_min_8dp">
 
         <ImageView
             android:id="@+id/button_back_search"
@@ -20,16 +19,15 @@
 
         <TextView
             style="@style/HeaderTextView"
-            android:layout_gravity="center"
+            android:layout_gravity="center|start"
             android:layout_marginStart="@dimen/padding_button_settings"
             android:text="@string/search_text" />
 
-    </LinearLayout>
+    </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
         <EditText
             android:id="@+id/inputSearch"
@@ -54,8 +52,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center"
-            android:src="@drawable/ic_clear_input"
             android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_clear_input"
             android:visibility="gone" />
 
     </FrameLayout>

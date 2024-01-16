@@ -31,7 +31,8 @@
     <style name="HeaderImageBack">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_gravity">center|start</item>
+        <item name="tint">?attr/colorSecondary</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
         <item name="android:src">@drawable/icon_back</item>
     </style>
@@ -39,9 +40,19 @@
     <style name="settingsText">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:gravity">center_vertical</item>
+        <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/text_in_settings</item>
         <item name="fontFamily">@font/ys_display_regular</item>
         <item name="android:textFontWeight">400</item>
+    </style>
+
+    <style name="ButtonSettingsImg">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="tint">?attr/colorOnSecondary</item>
+        <item name="android:layout_gravity">end</item>
+        <item name="android:paddingStart">@dimen/padding_button_settings_img</item>
+
     </style>
 </resources>
