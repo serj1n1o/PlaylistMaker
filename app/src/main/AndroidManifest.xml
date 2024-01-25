@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
+        android:theme="@style/Base.Theme.PlaylistMaker"
         tools:targetApi="31">
         <activity
             android:name=".SearchActivity"
@@ -20,7 +20,8 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.Main.View">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,7 +31,6 @@
         <activity
             android:name=".SettingsActivity"
             android:exported="false" />
-
     </application>
 
 </manifest>

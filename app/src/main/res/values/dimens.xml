@@ -4,6 +4,9 @@
     <dimen name="standard_indent_16dp">16dp</dimen>
     <dimen name="corner_radius_button">16dp</dimen>
     <dimen name="text_in_settings">16sp</dimen>
-    <dimen name="ic_padding">8dp</dimen>
-    <dimen name="padding_button_settings">24dp</dimen>
+    <dimen name="padding_min_8dp">8dp</dimen>
+    <dimen name="padding_button_settings">36dp</dimen>
+    <dimen name="height_edittext_36dp">36dp</dimen>
+    <dimen name="padding_button_settings_img">56dp</dimen>
+    <dimen name="height_button_settings_88dp">88dp</dimen>
 </resources>

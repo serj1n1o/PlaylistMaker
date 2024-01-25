@@ -1,9 +1,11 @@
 package com.practicum.playlistmaker
 
 import android.annotation.SuppressLint
+import android.app.ActivityManager
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.ImageView
@@ -16,14 +18,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val buttonSearch = findViewById<MaterialButton>(R.id.search_button)
-        val buttonSearchClick: OnClickListener = object : OnClickListener {
-            override fun onClick(v: View?) {
-                val searchIntent = Intent(this@MainActivity, SearchActivity::class.java)
-                startActivity(searchIntent)
-            }
-
+        buttonSearch.setOnClickListener {
+            val searchIntent = Intent(this@MainActivity, SearchActivity::class.java)
+            startActivity(searchIntent)
         }
-        buttonSearch.setOnClickListener(buttonSearchClick)
 
 
         val buttonLibrary = findViewById<MaterialButton>(R.id.library_button)
@@ -37,7 +35,6 @@ class MainActivity : AppCompatActivity() {
             val settingsIntent = Intent(this@MainActivity, SettingsActivity::class.java)
             startActivity(settingsIntent)
         }
-
 
     }
 }

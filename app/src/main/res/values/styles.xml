@@ -1,14 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="ButtonMainStyle">
+    <style name="ButtonMainStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:backgroundTint">@color/white</item>
         <item name="android:textSize">@dimen/standard_text</item>
         <item name="cornerRadius">@dimen/corner_radius_button</item>
         <item name="iconGravity">textStart</item>
-        <item name="iconPadding">@dimen/ic_padding</item>
+        <item name="iconPadding">@dimen/padding_min_8dp</item>
         <item name="iconTint">@color/black</item>
-        <item name="textAllCaps">false</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:layout_marginTop">@dimen/standard_indent_16dp</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="elevation">0dp</item>
+    </style>
+
+    <style name="HeaderTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/standard_text</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight">500</item>
+    </style>
+
+    <style name="HeaderImageBack">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">center|start</item>
+        <item name="tint">?attr/colorSecondary</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:src">@drawable/icon_back</item>
+    </style>
+
+    <style name="settingsText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/text_in_settings</item>
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="android:textFontWeight">400</item>
+    </style>
+
+    <style name="ButtonSettingsImg">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="tint">?attr/colorOnSecondary</item>
+        <item name="android:layout_gravity">end</item>
+        <item name="android:paddingStart">@dimen/padding_button_settings_img</item>
+
     </style>
 </resources>
