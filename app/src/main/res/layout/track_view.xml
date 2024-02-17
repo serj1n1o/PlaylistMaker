@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/height_button_settings_72dp"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/artwork"
+        android:layout_width="@dimen/artwork_size_56dp"
+        android:layout_height="@dimen/artwork_size_56dp"
+        android:layout_marginVertical="@dimen/padding_min_8dp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/trackName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_min_8dp"
+            android:layout_marginTop="@dimen/standard_indent_16dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/ys_display_regular"
+            android:maxLines="1"
+            android:textFontWeight="400"
+            android:textSize="@dimen/text_in_settings_16sp"
+            tools:text="здесь будет какое то название" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/artistName"
+                style="@style/recyclerSearchText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/padding_min_8dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                app:drawableEndCompat="@drawable/ic_dot"
+                tools:text="здесь будет какой-то исполнитель " />
+
+            <TextView
+                android:id="@+id/trackTime"
+                style="@style/recyclerSearchText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="time song" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@drawable/arrow_forward_icon" />
+
+
+</LinearLayout>
