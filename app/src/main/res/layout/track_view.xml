@@ -46,7 +46,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 app:drawableEndCompat="@drawable/ic_dot"
-                tools:text="здесь будет какой-то исполнитель " />
+                tools:text="здесь будет какой-то исполнитель" />
 
             <TextView
                 android:id="@+id/trackTime"

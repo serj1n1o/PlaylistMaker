@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="standard_text">22sp</dimen>
+    <dimen name="standard_text_22sp">22sp</dimen>
     <dimen name="standard_indent_16dp">16dp</dimen>
-    <dimen name="corner_radius_button">16dp</dimen>
+    <dimen name="corner_radius_button_16dp">16dp</dimen>
     <dimen name="text_in_settings_16sp">16sp</dimen>
     <dimen name="padding_min_8dp">8dp</dimen>
-    <dimen name="padding_button_settings">32dp</dimen>
+    <dimen name="padding_button_settings_32dp">32dp</dimen>
     <dimen name="height_edittext_36dp">36dp</dimen>
-    <dimen name="padding_button_settings_img">56dp</dimen>
+    <dimen name="padding_button_settings_img_56dp">56dp</dimen>
     <dimen name="height_button_settings_72dp">72dp</dimen>
     <dimen name="artwork_size_56dp">56dp</dimen>
     <dimen name="text_min_11sp">11sp</dimen>
+    <dimen name="margin_top_error_load_102dp">102dp</dimen>
+    <dimen name="text_error_19sp">19sp</dimen>
+    <dimen name="button_update_margin_top_24dp">24dp</dimen>
+    <dimen name="button_update_text_14sp">14sp</dimen>
+    <dimen name="margin_top_text_error_16dp">16dp</dimen>
+    <dimen name="padding_btn_update_6dp">6dp</dimen>
+    <dimen name="radius_btn_update_54dp">54dp</dimen>
+    <dimen name="search_header_height_56dp">56dp</dimen>
 </resources>

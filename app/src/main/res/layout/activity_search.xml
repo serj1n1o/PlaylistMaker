@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -10,7 +11,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="@dimen/search_header_height_56dp"
         android:layout_marginBottom="@dimen/padding_min_8dp">
 
         <ImageView
@@ -20,7 +21,7 @@
         <TextView
             style="@style/HeaderTextView"
             android:layout_gravity="center|start"
-            android:layout_marginStart="@dimen/padding_button_settings"
+            android:layout_marginStart="@dimen/padding_button_settings_32dp"
             android:text="@string/search_text" />
 
     </FrameLayout>
@@ -30,7 +31,7 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/inputSearch"
+            android:id="@+id/input_search"
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_edittext_36dp"
             android:background="@drawable/background_edittext"
@@ -38,17 +39,19 @@
             android:drawablePadding="@dimen/padding_min_8dp"
             android:fontFamily="@font/ys_display_regular"
             android:hint="@string/search_text"
+            android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLength="33"
             android:maxLines="1"
             android:paddingHorizontal="10dp"
+            android:singleLine="true"
             android:textColor="@color/black"
             android:textColorHint="?attr/colorSecondaryVariant"
             android:textCursorDrawable="@drawable/cursor_color"
             android:textFontWeight="400" />
 
         <ImageView
-            android:id="@+id/iconClearInput"
+            android:id="@+id/icon_clear_input"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center"
@@ -60,11 +63,58 @@
     </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerSearchTrack"
+        android:id="@+id/recycler_search_track"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
+    <LinearLayout
+        android:id="@+id/placeholder_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_top_error_load_102dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/img_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/error_load_light_dark" />
+
+        <TextView
+            android:id="@+id/text_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top_text_error_16dp"
+            android:fontFamily="@font/ys_display_medium"
+            android:gravity="center"
+            android:textFontWeight="400"
+            android:textSize="@dimen/text_error_19sp"
+            tools:text="Ничего не нашлось\n\n Загрузка не удалась. Проверьте подключение к интернету" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/button_update_margin_top_24dp"
+            android:backgroundTint="?attr/colorSecondary"
+            android:elevation="0dp"
+            android:fontFamily="@font/ys_display_medium"
+            android:foreground="?attr/selectableItemBackground"
+            android:letterSpacing="0"
+            android:padding="@dimen/padding_btn_update_6dp"
+            android:text="@string/update_button_text"
+            android:textAllCaps="false"
+            android:textColor="?attr/colorPrimary"
+            android:textFontWeight="500"
+            android:textSize="@dimen/button_update_text_14sp"
+            android:visibility="gone"
+            app:cornerRadius="@dimen/radius_btn_update_54dp" />
+    </LinearLayout>
 
 </LinearLayout>
