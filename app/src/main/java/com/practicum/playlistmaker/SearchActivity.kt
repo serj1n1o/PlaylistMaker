@@ -9,14 +9,9 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.button.MaterialButton
+import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,36 +28,30 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private var inputText = INPUT_TEXT_DEFAULT
-    private lateinit var inputSearch: EditText
-    private val recyclerSearchTrack by lazy { findViewById<RecyclerView>(R.id.recycler_search_track) }
     private val listTracks = mutableListOf<Track>()
     private val trackAdapter by lazy { TrackAdapter(listTracks) }
-    private val placeHolderError by lazy { findViewById<LinearLayout>(R.id.placeholder_error) }
-    private val textError by lazy { findViewById<TextView>(R.id.text_error) }
-    private val btnUpdate by lazy { findViewById<MaterialButton>(R.id.button_update) }
     private lateinit var itunesAPI: ItunesAPI
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+        val binding = ActivitySearchBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val retrofit = Retrofit.Builder().baseUrl(getString(R.string.base_url_itunes))
             .addConverterFactory(GsonConverterFactory.create()).build()
         itunesAPI = retrofit.create<ItunesAPI>()
-        val clearInputButton = findViewById<ImageView>(R.id.icon_clear_input)
-        inputSearch = findViewById(R.id.input_search)
 
-        val buttonBack = findViewById<ImageView>(R.id.button_back_search)
-        buttonBack.setOnClickListener {
+
+        binding.buttonBackSearch.setOnClickListener {
             finish()
         }
 
-        clearInputButton.setOnClickListener {
-            inputSearch.setText(INPUT_TEXT_DEFAULT)
+        binding.iconClearInput.setOnClickListener {
+            binding.inputSearch.setText(INPUT_TEXT_DEFAULT)
             listTracks.clear()
             trackAdapter.notifyDataSetChanged()
-            hideKeyboard()
+            hideKeyboard(binding)
         }
 
         val inputTextWatcher = object : TextWatcher {
@@ -70,7 +59,7 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                clearInputButton.visibility = clearInputButtonVisibility(s)
+                binding.iconClearInput.visibility = clearInputButtonVisibility(s)
                 inputText = s.toString()
             }
 
@@ -78,12 +67,12 @@ class SearchActivity : AppCompatActivity() {
             }
 
         }
-        inputSearch.addTextChangedListener(inputTextWatcher)
+        binding.inputSearch.addTextChangedListener(inputTextWatcher)
 
-        inputSearch.setOnEditorActionListener { _, actionId, _ ->
+        binding.inputSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                requestToTracks(inputText)
-                hideKeyboard()
+                requestToTracks(inputText, binding)
+                hideKeyboard(binding)
                 true
             }
 
@@ -95,7 +84,7 @@ class SearchActivity : AppCompatActivity() {
         return if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
     }
 
-    private fun requestToTracks(searchText: String) {
+    private fun requestToTracks(searchText: String, binding: ActivitySearchBinding) {
         itunesAPI.getTrack(searchText).enqueue(object : Callback<ItunesResponse> {
             @SuppressLint("NotifyDataSetChanged")
             override fun onResponse(
@@ -103,39 +92,39 @@ class SearchActivity : AppCompatActivity() {
                 response: Response<ItunesResponse>
             ) {
                 listTracks.clear()
-                recyclerSearchTrack.isVisible = true
-                placeHolderError.isVisible = false
+                binding.recyclerSearchTrack.isVisible = true
+                binding.placeholderError.isVisible = false
                 if (response.isSuccessful) {
                     if (response.body()?.tracks?.isNotEmpty() == true) {
                         listTracks.addAll(response.body()?.tracks!!)
                         trackAdapter.notifyDataSetChanged()
-                        recyclerSearchTrack.adapter = trackAdapter
+                        binding.recyclerSearchTrack.adapter = trackAdapter
                     } else {
-                        showPlaceHolder(response.code())
+                        showPlaceHolder(response.code(), binding)
                     }
                 }
             }
 
             override fun onFailure(call: Call<ItunesResponse>, t: Throwable) {
-                showPlaceHolder(0)
+                showPlaceHolder(0, binding)
             }
 
         })
     }
 
-    private fun showPlaceHolder(code: Int) {
+    private fun showPlaceHolder(code: Int, binding: ActivitySearchBinding) {
         if (code in 200..300) {
-            recyclerSearchTrack.isVisible = false
-            btnUpdate.isVisible = false
-            textError.text = getString(R.string.nothing_found_txt)
-            placeHolderError.isVisible = true
+            binding.recyclerSearchTrack.isVisible = false
+            binding.buttonUpdate.isVisible = false
+            binding.textError.text = getString(R.string.nothing_found_txt)
+            binding.placeholderError.isVisible = true
         } else {
-            recyclerSearchTrack.isVisible = false
-            textError.text = getString(R.string.error_found_txt)
-            btnUpdate.isVisible = true
-            placeHolderError.isVisible = true
-            btnUpdate.setOnClickListener {
-                requestToTracks(inputText)
+            binding.recyclerSearchTrack.isVisible = false
+            binding.textError.text = getString(R.string.error_found_txt)
+            binding.buttonUpdate.isVisible = true
+            binding.placeholderError.isVisible = true
+            binding.buttonUpdate.setOnClickListener {
+                requestToTracks(inputText, binding)
             }
         }
     }
@@ -147,14 +136,15 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
+        val binding = ActivitySearchBinding.inflate(layoutInflater)
         inputText = savedInstanceState.getString(INPUT_TEXT, INPUT_TEXT_DEFAULT)
-        inputSearch.setText(inputText)
-        inputSearch.setSelection(inputSearch.text.length)
+        binding.inputSearch.setText(inputText)
+        binding.inputSearch.setSelection(binding.inputSearch.text.length)
     }
 
-    private fun hideKeyboard() {
+    private fun hideKeyboard(binding: ActivitySearchBinding) {
         val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputManager.hideSoftInputFromWindow(inputSearch.windowToken, 0)
+        inputManager.hideSoftInputFromWindow(binding.inputSearch.windowToken, 0)
     }
 
 }
