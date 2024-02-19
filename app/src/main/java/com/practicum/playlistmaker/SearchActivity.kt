@@ -14,6 +14,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import retrofit2.Call
@@ -29,15 +30,8 @@ class SearchActivity : AppCompatActivity() {
     companion object {
         const val INPUT_TEXT = "INPUT_TEXT"
         const val INPUT_TEXT_DEFAULT = ""
-        const val BASE_URL_ITUNES = "https://itunes.apple.com"
-        const val NOTHING_FOUND_TEXT = "Ничего не нашлось"
-        const val ERROR_FOUND_TEXT =
-            "Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету"
     }
 
-    private val retrofit = Retrofit.Builder().baseUrl(BASE_URL_ITUNES)
-        .addConverterFactory(GsonConverterFactory.create()).build()
-    private val itunesAPI = retrofit.create<ItunesAPI>()
     private var inputText = INPUT_TEXT_DEFAULT
     private lateinit var inputSearch: EditText
     private val recyclerSearchTrack by lazy { findViewById<RecyclerView>(R.id.recycler_search_track) }
@@ -46,13 +40,16 @@ class SearchActivity : AppCompatActivity() {
     private val placeHolderError by lazy { findViewById<LinearLayout>(R.id.placeholder_error) }
     private val textError by lazy { findViewById<TextView>(R.id.text_error) }
     private val btnUpdate by lazy { findViewById<MaterialButton>(R.id.button_update) }
-
+    private lateinit var itunesAPI: ItunesAPI
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
+        val retrofit = Retrofit.Builder().baseUrl(getString(R.string.base_url_itunes))
+            .addConverterFactory(GsonConverterFactory.create()).build()
+        itunesAPI = retrofit.create<ItunesAPI>()
         val clearInputButton = findViewById<ImageView>(R.id.icon_clear_input)
         inputSearch = findViewById(R.id.input_search)
 
@@ -106,8 +103,8 @@ class SearchActivity : AppCompatActivity() {
                 response: Response<ItunesResponse>
             ) {
                 listTracks.clear()
-                recyclerSearchTrack.visibility = View.VISIBLE
-                placeHolderError.visibility = View.GONE
+                recyclerSearchTrack.isVisible = true
+                placeHolderError.isVisible = false
                 if (response.isSuccessful) {
                     if (response.body()?.tracks?.isNotEmpty() == true) {
                         listTracks.addAll(response.body()?.tracks!!)
@@ -128,15 +125,15 @@ class SearchActivity : AppCompatActivity() {
 
     private fun showPlaceHolder(code: Int) {
         if (code in 200..300) {
-            recyclerSearchTrack.visibility = View.GONE
-            btnUpdate.visibility = View.GONE
-            textError.text = NOTHING_FOUND_TEXT
-            placeHolderError.visibility = View.VISIBLE
+            recyclerSearchTrack.isVisible = false
+            btnUpdate.isVisible = false
+            textError.text = getString(R.string.nothing_found_txt)
+            placeHolderError.isVisible = true
         } else {
-            recyclerSearchTrack.visibility = View.GONE
-            textError.text = ERROR_FOUND_TEXT
-            btnUpdate.visibility = View.VISIBLE
-            placeHolderError.visibility = View.VISIBLE
+            recyclerSearchTrack.isVisible = false
+            textError.text = getString(R.string.error_found_txt)
+            btnUpdate.isVisible = true
+            placeHolderError.isVisible = true
             btnUpdate.setOnClickListener {
                 requestToTracks(inputText)
             }
