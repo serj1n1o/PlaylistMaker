@@ -114,17 +114,21 @@ class SearchActivity : AppCompatActivity() {
 
     private fun showPlaceHolder(code: Int, binding: ActivitySearchBinding) {
         if (code in 200..300) {
-            binding.recyclerSearchTrack.isVisible = false
-            binding.buttonUpdate.isVisible = false
-            binding.textError.text = getString(R.string.nothing_found_txt)
-            binding.placeholderError.isVisible = true
+            binding.apply {
+                recyclerSearchTrack.isVisible = false
+                buttonUpdate.isVisible = false
+                textError.text = getString(R.string.nothing_found_txt)
+                placeholderError.isVisible = true
+            }
         } else {
-            binding.recyclerSearchTrack.isVisible = false
-            binding.textError.text = getString(R.string.error_found_txt)
-            binding.buttonUpdate.isVisible = true
-            binding.placeholderError.isVisible = true
-            binding.buttonUpdate.setOnClickListener {
-                requestToTracks(inputText, binding)
+            binding.apply {
+                recyclerSearchTrack.isVisible = false
+                textError.text = getString(R.string.error_found_txt)
+                buttonUpdate.isVisible = true
+                placeholderError.isVisible = true
+                buttonUpdate.setOnClickListener {
+                    requestToTracks(inputText, binding)
+                }
             }
         }
     }
@@ -138,8 +142,10 @@ class SearchActivity : AppCompatActivity() {
         super.onRestoreInstanceState(savedInstanceState)
         val binding = ActivitySearchBinding.inflate(layoutInflater)
         inputText = savedInstanceState.getString(INPUT_TEXT, INPUT_TEXT_DEFAULT)
-        binding.inputSearch.setText(inputText)
-        binding.inputSearch.setSelection(binding.inputSearch.text.length)
+        binding.inputSearch.apply {
+            setText(inputText)
+            setSelection(binding.inputSearch.text.length)
+        }
     }
 
     private fun hideKeyboard(binding: ActivitySearchBinding) {

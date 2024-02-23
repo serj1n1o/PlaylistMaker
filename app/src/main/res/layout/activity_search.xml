@@ -15,7 +15,7 @@
         android:layout_marginBottom="@dimen/padding_min_8dp">
 
         <ImageView
-            android:id="@+id/button_back_search"
+            android:id="@+id/buttonBackSearch"
             style="@style/HeaderImageBack" />
 
         <TextView
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/input_search"
+            android:id="@+id/inputSearch"
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_edittext_36dp"
             android:background="@drawable/background_edittext"
@@ -51,7 +51,7 @@
             android:textFontWeight="400" />
 
         <ImageView
-            android:id="@+id/icon_clear_input"
+            android:id="@+id/iconClearInput"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center"
@@ -63,7 +63,7 @@
     </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_search_track"
+        android:id="@+id/recyclerSearchTrack"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -71,7 +71,7 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     <LinearLayout
-        android:id="@+id/placeholder_error"
+        android:id="@+id/placeholderError"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top_error_load_102dp"
@@ -80,13 +80,13 @@
         android:visibility="gone">
 
         <ImageView
-            android:id="@+id/img_error"
+            android:id="@+id/imgError"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/error_load_light_dark" />
 
         <TextView
-            android:id="@+id/text_error"
+            android:id="@+id/textError"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_top_text_error_16dp"
@@ -97,7 +97,7 @@
             tools:text="Ничего не нашлось\n\n Загрузка не удалась. Проверьте подключение к интернету" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_update"
+            android:id="@+id/buttonUpdate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
