@@ -3,22 +3,20 @@ package com.practicum.playlistmaker
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.widget.ImageView
-import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
+        val binding = ActivitySettingsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val buttonBack = findViewById<ImageView>(R.id.button_back_settings)
-        buttonBack.setOnClickListener {
+        binding.buttonBackSettings.setOnClickListener {
             finish()
         }
 
-        val shareApp = findViewById<ImageView>(R.id.buttonShareApp)
-        shareApp.setOnClickListener {
+        binding.buttonShareApp.setOnClickListener {
             val message = getString(R.string.https_course_android_developer)
             val shareIntent = Intent()
             shareIntent.action = Intent.ACTION_SEND
@@ -27,8 +25,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(Intent.createChooser(shareIntent, getString(R.string.select_app)))
         }
 
-        val sendToSupport = findViewById<ImageView>(R.id.buttonSendSupport)
-        sendToSupport.setOnClickListener {
+        binding.buttonSendSupport.setOnClickListener {
             val message = getString(R.string.subject_text_mail)
             val messageTheme = getString(R.string.message_text_mail)
             val mail = arrayOf(getString(R.string.my_mail_yandex))
@@ -40,8 +37,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(sendToSupportIntent)
         }
 
-        val userAgreement = findViewById<ImageView>(R.id.buttonUserAgreement)
-        userAgreement.setOnClickListener {
+        binding.buttonUserAgreement.setOnClickListener {
             val urlOffer = getString(R.string.offer_yandex)
             val userAgreementIntent = Intent(Intent.ACTION_VIEW, Uri.parse(urlOffer))
             startActivity(userAgreementIntent)

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="height_button_settings_72dp">64dp</dimen>
+    <dimen name="margin_top_error_load_102dp">12dp</dimen>
+    <dimen name="search_header_height_56dp">32dp</dimen>
+    <dimen name="height_edittext_36dp">24dp</dimen>
+
+</resources>

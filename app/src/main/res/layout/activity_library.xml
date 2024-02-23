@@ -8,6 +8,6 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:text="@string/media_library"
-        android:textSize="@dimen/standard_text" />
+        android:textSize="@dimen/standard_text_22sp" />
 
 </FrameLayout>

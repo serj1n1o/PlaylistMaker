@@ -1,37 +1,27 @@
 package com.practicum.playlistmaker
 
-import android.annotation.SuppressLint
-import android.app.ActivityManager
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.view.View.OnClickListener
-import android.widget.ImageView
-import android.widget.Toast
-import com.google.android.material.button.MaterialButton
+import androidx.appcompat.app.AppCompatActivity
+import com.practicum.playlistmaker.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        val binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val buttonSearch = findViewById<MaterialButton>(R.id.search_button)
-        buttonSearch.setOnClickListener {
+        binding.searchButton.setOnClickListener {
             val searchIntent = Intent(this@MainActivity, SearchActivity::class.java)
             startActivity(searchIntent)
         }
 
-
-        val buttonLibrary = findViewById<MaterialButton>(R.id.library_button)
-        buttonLibrary.setOnClickListener {
+        binding.libraryButton.setOnClickListener {
             val libraryIntent = Intent(this@MainActivity, LibraryActivity::class.java)
             startActivity(libraryIntent)
         }
 
-        val buttonSettings = findViewById<MaterialButton>(R.id.settings_button)
-        buttonSettings.setOnClickListener {
+        binding.settingsButton.setOnClickListener {
             val settingsIntent = Intent(this@MainActivity, SettingsActivity::class.java)
             startActivity(settingsIntent)
         }

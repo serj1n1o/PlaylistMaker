@@ -9,7 +9,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:layout_marginBottom="@dimen/padding_button_settings">
+        android:layout_marginBottom="@dimen/padding_button_settings_32dp">
 
         <ImageView
             android:id="@+id/button_back_settings"
@@ -18,7 +18,7 @@
         <TextView
             style="@style/HeaderTextView"
             android:layout_gravity="center|start"
-            android:layout_marginStart="@dimen/padding_button_settings"
+            android:layout_marginStart="@dimen/padding_button_settings_32dp"
             android:text="@string/settings_text" />
 
     </FrameLayout>

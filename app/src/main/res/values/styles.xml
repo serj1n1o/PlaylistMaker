@@ -7,8 +7,8 @@
         <item name="android:layout_weight">1</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:backgroundTint">@color/white</item>
-        <item name="android:textSize">@dimen/standard_text</item>
-        <item name="cornerRadius">@dimen/corner_radius_button</item>
+        <item name="android:textSize">@dimen/standard_text_22sp</item>
+        <item name="cornerRadius">@dimen/corner_radius_button_16dp</item>
         <item name="iconGravity">textStart</item>
         <item name="iconPadding">@dimen/padding_min_8dp</item>
         <item name="iconTint">@color/black</item>
@@ -23,7 +23,7 @@
     <style name="HeaderTextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">@dimen/standard_text</item>
+        <item name="android:textSize">@dimen/standard_text_22sp</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textFontWeight">500</item>
     </style>
@@ -52,7 +52,7 @@
         <item name="android:foreground">?attr/selectableItemBackground</item>
         <item name="tint">?attr/colorOnSecondary</item>
         <item name="android:layout_gravity">end</item>
-        <item name="android:paddingStart">@dimen/padding_button_settings_img</item>
+        <item name="android:paddingStart">@dimen/padding_button_settings_img_56dp</item>
     </style>
 
     <style name="recyclerSearchText">
@@ -61,4 +61,13 @@
         <item name="android:textFontWeight">400</item>
         <item name="android:textColor">?attr/colorOnSecondary</item>
     </style>
+
+    <style name="placeholderText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight">400</item>
+
+    </style>
+
 </resources>
