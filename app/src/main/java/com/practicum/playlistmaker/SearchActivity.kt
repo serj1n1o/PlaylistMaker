@@ -25,12 +25,22 @@ class SearchActivity : AppCompatActivity() {
     companion object {
         const val INPUT_TEXT = "INPUT_TEXT"
         const val INPUT_TEXT_DEFAULT = ""
+        const val PLACEHOLDER_CODE_NO_INTERNET = 0
+        const val PLACEHOLDER_CODE_NOT_VISIBLE = -1
     }
 
     private var inputText = INPUT_TEXT_DEFAULT
     private val listTracks = mutableListOf<Track>()
-    private val trackAdapter by lazy { TrackAdapter(listTracks) }
+    private val trackAdapter by lazy { TrackAdapter<Any>(listTracks) }
+    private val historyTrackAdapter by lazy { HistoryTrackAdapter(SearchHistory.historyList) }
+    private lateinit var searchHistory: SearchHistory
     private lateinit var itunesAPI: ItunesAPI
+    private val sharedPreferencesSearchHistory by lazy {
+        getSharedPreferences(
+            PREFERENCES_HISTORY,
+            MODE_PRIVATE
+        )
+    }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,17 +48,27 @@ class SearchActivity : AppCompatActivity() {
         val binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        searchHistory = SearchHistory(sharedPreferencesSearchHistory)
+        searchHistory.loadHistoryList()
+
+        if (SearchHistory.historyList.isNotEmpty() && binding.inputSearch.hasFocus()) {
+            historyShow(binding)
+        }
+
         val retrofit = Retrofit.Builder().baseUrl(getString(R.string.base_url_itunes))
             .addConverterFactory(GsonConverterFactory.create()).build()
         itunesAPI = retrofit.create<ItunesAPI>()
-
 
         binding.buttonBackSearch.setOnClickListener {
             finish()
         }
 
         binding.iconClearInput.setOnClickListener {
-            binding.inputSearch.setText(INPUT_TEXT_DEFAULT)
+            binding.apply {
+                inputSearch.setText(INPUT_TEXT_DEFAULT)
+                inputSearch.clearFocus()
+                showPlaceHolder(PLACEHOLDER_CODE_NOT_VISIBLE, binding)
+            }
             listTracks.clear()
             trackAdapter.notifyDataSetChanged()
             hideKeyboard(binding)
@@ -61,22 +81,54 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 binding.iconClearInput.visibility = clearInputButtonVisibility(s)
                 inputText = s.toString()
+
+                if (s.isNullOrEmpty() && binding.inputSearch.hasFocus() && SearchHistory.historyList.isNotEmpty()) {
+                    historyShow(binding)
+                    showPlaceHolder(PLACEHOLDER_CODE_NOT_VISIBLE, binding)
+                } else binding.historyListView.isVisible = false
+
             }
 
             override fun afterTextChanged(s: Editable?) {
             }
-
         }
-        binding.inputSearch.addTextChangedListener(inputTextWatcher)
+        binding.apply {
+            inputSearch.addTextChangedListener(inputTextWatcher)
+            inputSearch.setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus && SearchHistory.historyList.isNotEmpty()) historyShow(binding)
+                else historyListView.isVisible = false
+            }
+        }
+
 
         binding.inputSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 requestToTracks(inputText, binding)
                 hideKeyboard(binding)
-                true
             }
 
             false
+        }
+
+        trackAdapter.onItemClickListener = {
+            searchHistory.saveTrackToHistory(it)
+        }
+
+        binding.btnClearHistory.setOnClickListener {
+            searchHistory.clearHistory()
+            historyTrackAdapter.notifyDataSetChanged()
+            binding.historyListView.isVisible = false
+        }
+
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun historyShow(binding: ActivitySearchBinding) {
+        binding.apply {
+            historyTrackAdapter.notifyDataSetChanged()
+            recyclerSearchTrack.isVisible = false
+            recyclerHistoryList.adapter = historyTrackAdapter
+            historyListView.isVisible = true
         }
     }
 
@@ -93,7 +145,7 @@ class SearchActivity : AppCompatActivity() {
             ) {
                 listTracks.clear()
                 binding.recyclerSearchTrack.isVisible = true
-                binding.placeholderError.isVisible = false
+                showPlaceHolder(PLACEHOLDER_CODE_NOT_VISIBLE, binding)
                 if (response.isSuccessful) {
                     if (response.body()?.tracks?.isNotEmpty() == true) {
                         listTracks.addAll(response.body()?.tracks!!)
@@ -106,23 +158,28 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<ItunesResponse>, t: Throwable) {
-                showPlaceHolder(0, binding)
+                showPlaceHolder(PLACEHOLDER_CODE_NO_INTERNET, binding)
             }
 
         })
     }
 
     private fun showPlaceHolder(code: Int, binding: ActivitySearchBinding) {
-        if (code in 200..300) {
-            binding.apply {
-                recyclerSearchTrack.isVisible = false
-                buttonUpdate.isVisible = false
-                textError.text = getString(R.string.nothing_found_txt)
-                placeholderError.isVisible = true
+        when (code) {
+            in 200..300 -> {
+                binding.apply {
+                    recyclerSearchTrack.isVisible = false
+                    historyListView.isVisible = false
+                    buttonUpdate.isVisible = false
+                    textError.text = getString(R.string.nothing_found_txt)
+                    placeholderError.isVisible = true
+                }
             }
-        } else {
-            binding.apply {
+
+            -1 -> binding.placeholderError.isVisible = false
+            else -> binding.apply {
                 recyclerSearchTrack.isVisible = false
+                historyListView.isVisible = false
                 textError.text = getString(R.string.error_found_txt)
                 buttonUpdate.isVisible = true
                 placeholderError.isVisible = true

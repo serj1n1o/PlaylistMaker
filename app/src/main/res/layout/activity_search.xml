@@ -67,7 +67,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     <LinearLayout
@@ -87,34 +87,46 @@
 
         <TextView
             android:id="@+id/textError"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/placeholderText"
             android:layout_marginTop="@dimen/margin_top_text_error_16dp"
-            android:fontFamily="@font/ys_display_medium"
             android:gravity="center"
             android:textFontWeight="400"
-            android:textSize="@dimen/text_error_19sp"
             tools:text="Ничего не нашлось\n\n Загрузка не удалась. Проверьте подключение к интернету" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonUpdate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/button_update_margin_top_24dp"
-            android:backgroundTint="?attr/colorSecondary"
-            android:elevation="0dp"
-            android:fontFamily="@font/ys_display_medium"
-            android:foreground="?attr/selectableItemBackground"
-            android:letterSpacing="0"
-            android:padding="@dimen/padding_btn_update_6dp"
+            style="@style/btnUpdateAndClear"
             android:text="@string/update_button_text"
-            android:textAllCaps="false"
-            android:textColor="?attr/colorPrimary"
-            android:textFontWeight="500"
-            android:textSize="@dimen/button_update_text_14sp"
-            android:visibility="gone"
-            app:cornerRadius="@dimen/radius_btn_update_54dp" />
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/historyListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/history_margin_top_42dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            style="@style/placeholderText"
+            android:text="@string/you_searched"
+            android:textFontWeight="500" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerHistoryList"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/padding_min_8dp"
+            android:layout_weight="1"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/track_view" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnClearHistory"
+            style="@style/btnUpdateAndClear"
+            android:text="@string/clear_search_history" />
+
     </LinearLayout>
 
 </LinearLayout>

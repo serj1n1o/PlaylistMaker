@@ -7,25 +7,24 @@ import androidx.appcompat.app.AppCompatDelegate
 
 const val PREFERENCES_SETTINGS = "PREFERENCES_SETTINGS"
 const val SETTINGS_KEY_THEME = "SETTINGS_KEY_THEME"
+const val PREFERENCES_HISTORY = "PREFERENCES HISTORY"
+const val HISTORY_TRACK_KEY = "HISTORY TRACK KEY"
 
 class App : Application() {
     var isDarkTheme = false
-    private val sharedPreferences by lazy {
+    private val sharedPreferencesSettings by lazy {
         getSharedPreferences(
-            PREFERENCES_SETTINGS,
-            MODE_PRIVATE
+            PREFERENCES_SETTINGS, MODE_PRIVATE
         )
     }
 
     override fun onCreate() {
         super.onCreate()
-        isDarkTheme = sharedPreferences.getBoolean(SETTINGS_KEY_THEME, false)
-        if (sharedPreferences.contains(SETTINGS_KEY_THEME)) {
-            switchTheme(isDarkTheme)
-        } else {
-            isDarkTheme =
-                applicationContext.resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
-        }
+        isDarkTheme = sharedPreferencesSettings.getBoolean(
+            SETTINGS_KEY_THEME,
+            applicationContext.resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+        )
+        switchTheme(isDarkTheme)
     }
 
     fun switchTheme(darkThemeEnabled: Boolean) {
@@ -37,6 +36,6 @@ class App : Application() {
                 AppCompatDelegate.MODE_NIGHT_NO
             }
         )
-        sharedPreferences.edit().putBoolean(SETTINGS_KEY_THEME, darkThemeEnabled).apply()
+        sharedPreferencesSettings.edit().putBoolean(SETTINGS_KEY_THEME, darkThemeEnabled).apply()
     }
 }
