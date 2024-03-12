@@ -75,7 +75,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:layout_marginTop">@dimen/button_update_margin_top_24dp</item>
+        <item name="android:layout_marginTop">@dimen/margin_top_24dp</item>
         <item name="android:backgroundTint">?attr/colorSecondary</item>
         <item name="android:elevation">0dp</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
@@ -85,8 +85,20 @@
         <item name="android:padding">@dimen/padding_btn_update_6dp</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textColor">?attr/colorPrimary</item>
-        <item name="android:textSize">@dimen/button_update_text_14sp</item>
+        <item name="android:textSize">@dimen/text_14sp</item>
         <item name="cornerRadius">@dimen/radius_btn_update_54dp</item>
+    </style>
+
+    <style name="playlistTextDataTrack">
+        <item name="android:textSize">@dimen/text_13sp</item>
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="layout_constraintHorizontal_bias">1</item>
+        <item name="layout_constrainedWidth">true</item>
+    </style>
+
+    <style name="playlistTextDataTrack.playlistDataTrackTitle">
+        <item name="android:textColor">@color/gray</item>
     </style>
 
 </resources>

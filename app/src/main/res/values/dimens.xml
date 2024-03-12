@@ -13,11 +13,14 @@
     <dimen name="text_min_11sp">11sp</dimen>
     <dimen name="margin_top_error_load_102dp">102dp</dimen>
     <dimen name="text_error_19sp">19sp</dimen>
-    <dimen name="button_update_margin_top_24dp">24dp</dimen>
-    <dimen name="button_update_text_14sp">14sp</dimen>
+    <dimen name="margin_top_24dp">24dp</dimen>
+    <dimen name="text_14sp">14sp</dimen>
     <dimen name="margin_top_text_error_16dp">16dp</dimen>
     <dimen name="padding_btn_update_6dp">6dp</dimen>
     <dimen name="radius_btn_update_54dp">54dp</dimen>
+    <dimen name="margin_54dp">54dp</dimen>
     <dimen name="search_header_height_56dp">56dp</dimen>
-    <dimen name="history_margin_top_42dp">42dp</dimen>
+    <dimen name="margin_top_42dp">42dp</dimen>
+    <dimen name="text_13sp">13sp</dimen>
+    <dimen name="margin_bottom_28dp">28dp</dimen>
 </resources>
