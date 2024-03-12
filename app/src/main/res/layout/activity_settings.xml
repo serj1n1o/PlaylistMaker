@@ -12,7 +12,7 @@
         android:layout_marginBottom="@dimen/padding_button_settings_32dp">
 
         <ImageView
-            android:id="@+id/button_back_settings"
+            android:id="@+id/buttonBackSettings"
             style="@style/HeaderImageBack" />
 
         <TextView
@@ -25,7 +25,7 @@
 
 
     <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/switch_theme"
+        android:id="@+id/switchTheme"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_button_settings_72dp"
         android:fontFamily="@font/ys_display_regular"
