@@ -3,6 +3,7 @@ package com.practicum.playlistmaker
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,6 +12,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import com.google.gson.Gson
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -94,24 +96,32 @@ class SearchActivity : AppCompatActivity() {
         }
         binding.apply {
             inputSearch.addTextChangedListener(inputTextWatcher)
+
             inputSearch.setOnFocusChangeListener { _, hasFocus ->
-                if (hasFocus && SearchHistory.historyList.isNotEmpty()) historyShow(binding)
-                else historyListView.isVisible = false
-            }
-        }
-
-
-        binding.inputSearch.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                requestToTracks(inputText, binding)
-                hideKeyboard(binding)
+                if (hasFocus && SearchHistory.historyList.isNotEmpty()) {
+                    historyShow(binding)
+                } else historyListView.isVisible = false
             }
 
-            false
+            inputSearch.setOnEditorActionListener { _, actionId, _ ->
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    requestToTracks(inputText, binding)
+                    hideKeyboard(binding)
+                }
+
+                false
+            }
         }
 
         trackAdapter.onItemClickListener = {
             searchHistory.saveTrackToHistory(it)
+            historyTrackAdapter.notifyItemInserted(0)
+            historyTrackAdapter.notifyItemRangeChanged(0, SearchHistory.historyList.size)
+            startAudioPlayer(it)
+        }
+
+        historyTrackAdapter.onItemClickListener = {
+            startAudioPlayer(it)
         }
 
         binding.btnClearHistory.setOnClickListener {
@@ -122,10 +132,16 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+    private fun startAudioPlayer(track: Track) {
+        startActivity(Intent(this, AudioPlayer::class.java).apply {
+            putExtra(
+                DATA_FROM_AUDIO_PLAYER_KEY, Gson().toJson(track)
+            )
+        })
+    }
+
     private fun historyShow(binding: ActivitySearchBinding) {
         binding.apply {
-            historyTrackAdapter.notifyDataSetChanged()
             recyclerSearchTrack.isVisible = false
             recyclerHistoryList.adapter = historyTrackAdapter
             historyListView.isVisible = true
@@ -159,6 +175,7 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<ItunesResponse>, t: Throwable) {
                 showPlaceHolder(PLACEHOLDER_CODE_NO_INTERNET, binding)
+                t.printStackTrace()
             }
 
         })

@@ -19,4 +19,9 @@
     <string name="base_url_itunes">https://itunes.apple.com</string>
     <string name="you_searched">Вы искали</string>
     <string name="clear_search_history">Очистить историю</string>
+    <string name="track_time">Длительность</string>
+    <string name="album_track">Альбом</string>
+    <string name="release_date_track">Год</string>
+    <string name="genre_track">Жанр</string>
+    <string name="country_track">Страна</string>
 </resources>
