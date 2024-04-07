@@ -23,4 +23,6 @@
     <dimen name="margin_top_42dp">42dp</dimen>
     <dimen name="text_13sp">13sp</dimen>
     <dimen name="margin_bottom_28dp">28dp</dimen>
+    <dimen name="progress_bar_44dp">44dp</dimen>
+    <dimen name="margin_140dp">140dp</dimen>
 </resources>

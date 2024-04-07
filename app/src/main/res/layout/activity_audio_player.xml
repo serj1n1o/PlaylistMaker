@@ -90,7 +90,7 @@
         android:id="@+id/btnPlayPause"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:foreground="?attr/selectableItemBackground"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/btn_play"
         app:layout_constraintBottom_toBottomOf="@id/btnAddPlaylist"
         app:layout_constraintEnd_toStartOf="@id/btnAddFavorites"
