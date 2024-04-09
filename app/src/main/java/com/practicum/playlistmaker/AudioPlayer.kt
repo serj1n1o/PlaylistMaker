@@ -20,7 +20,6 @@ class AudioPlayer : AppCompatActivity() {
         private const val STATE_PREPARED = 1
         private const val STATE_PLAYING = 2
         private const val STATE_PAUSED = 3
-        private const val DURATION_DEFAULT = "00:00"
         private const val DELAY = 300L
     }
 
@@ -86,7 +85,8 @@ class AudioPlayer : AppCompatActivity() {
                     STATE_PAUSED -> handlerMain.removeCallbacks(this)
                     STATE_PREPARED -> {
                         handlerMain.removeCallbacks(this)
-                        binding.playbackProgress.text = DURATION_DEFAULT
+                        binding.playbackProgress.text =
+                            getString(R.string.duration_preview_track_default)
                     }
                 }
             }

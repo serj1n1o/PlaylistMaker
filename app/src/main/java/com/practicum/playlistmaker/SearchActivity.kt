@@ -143,7 +143,6 @@ class SearchActivity : AppCompatActivity() {
             recyclerSearchTrack.isVisible = false
             recyclerHistoryList.adapter = historyTrackAdapter
             historyListView.isVisible = true
-            recyclerHistoryList.isVisible = true
         }
     }
 
@@ -155,7 +154,7 @@ class SearchActivity : AppCompatActivity() {
         if (searchText.isNotEmpty()) {
             with(binding) {
                 recyclerSearchTrack.isVisible = false
-                recyclerHistoryList.isVisible = false
+                historyListView.isVisible = false
                 progressBar.isVisible = true
             }
             itunesAPI.getTrack(searchText).enqueue(object : Callback<ItunesResponse> {

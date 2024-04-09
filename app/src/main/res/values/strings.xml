@@ -24,4 +24,5 @@
     <string name="release_date_track">Год</string>
     <string name="genre_track">Жанр</string>
     <string name="country_track">Страна</string>
+    <string name="duration_preview_track_default">00:00</string>
 </resources>

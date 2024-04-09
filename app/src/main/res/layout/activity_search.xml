@@ -77,7 +77,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/margin_140dp"
         android:visibility="gone"
-        android:indeterminateTint="@color/progress_blue" />
+        android:indeterminateTint="@color/yp_blue" />
 
     <LinearLayout
         android:id="@+id/placeholderError"
