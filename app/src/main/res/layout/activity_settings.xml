@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -20,7 +21,6 @@
             android:layout_gravity="center|start"
             android:layout_marginStart="@dimen/padding_button_settings_32dp"
             android:text="@string/settings_text" />
-
     </FrameLayout>
 
 
@@ -32,7 +32,9 @@
         android:text="@string/dark_theme_text"
         android:textAlignment="textStart"
         android:textFontWeight="400"
-        android:textSize="@dimen/text_in_settings_16sp" />
+        android:textSize="@dimen/text_in_settings_16sp"
+        app:thumbTint="@color/switch_thumb_colors"
+        app:trackTint="@color/switch_track_colors" />
 
 
     <FrameLayout

@@ -70,6 +70,15 @@
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="@dimen/progress_bar_44dp"
+        android:layout_height="@dimen/progress_bar_44dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_140dp"
+        android:visibility="gone"
+        android:indeterminateTint="@color/yp_blue" />
+
     <LinearLayout
         android:id="@+id/placeholderError"
         android:layout_width="match_parent"

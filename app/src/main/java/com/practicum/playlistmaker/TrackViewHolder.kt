@@ -18,14 +18,16 @@ class TrackViewHolder(private val binding: TrackViewBinding) :
     ).toInt()
 
     fun bind(model: Track) {
-        binding.trackName.text = model.trackName
-        binding.artistName.text = model.artistName
-        binding.artistName.requestLayout()
-        binding.trackTime.text =
-            SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTimeMillis)
-        Glide.with(itemView).load(model.artworkUrl100).fitCenter()
-            .placeholder(R.drawable.placeholder).transform(RoundedCorners(imgArtCornersRadius))
-            .into(binding.artwork)
+        with(binding) {
+            trackName.text = model.trackName
+            artistName.text = model.artistName
+            artistName.requestLayout()
+            trackTime.text =
+                SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTimeMillis)
+            Glide.with(itemView).load(model.artworkUrl100).fitCenter()
+                .placeholder(R.drawable.placeholder).transform(RoundedCorners(imgArtCornersRadius))
+                .into(artwork)
+        }
     }
 
 
