@@ -16,16 +16,16 @@
         android:theme="@style/Base.Theme.PlaylistMaker"
         tools:targetApi="31">
         <activity
-            android:name=".AudioPlayer"
+            android:name=".ui.player.AudioPlayer"
             android:exported="false" />
         <activity
-            android:name=".SearchActivity"
+            android:name=".ui.activity.SearchActivity"
             android:exported="false" />
         <activity
-            android:name=".LibraryActivity"
+            android:name=".ui.activity.LibraryActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Main.View">
             <intent-filter>
@@ -35,7 +35,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name=".ui.activity.SettingsActivity"
             android:exported="false" />
     </application>
 
