@@ -1,9 +1,8 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.data.dto
 
 import java.util.Date
 
-
-data class Track(
+data class TrackDto(
     val trackId: Long,
     val trackName: String,
     val artistName: String,

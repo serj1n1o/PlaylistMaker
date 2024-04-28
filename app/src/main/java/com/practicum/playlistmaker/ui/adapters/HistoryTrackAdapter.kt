@@ -1,4 +1,6 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.ui.adapters
+
+import com.practicum.playlistmaker.domain.models.Track
 
 class HistoryTrackAdapter(private val tracks: List<Track>) : TrackAdapter<TrackViewHolder>(tracks) {
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {

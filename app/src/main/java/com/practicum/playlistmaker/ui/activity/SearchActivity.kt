@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.ui.activity
 
 
 import android.annotation.SuppressLint
@@ -14,7 +14,17 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.google.gson.Gson
+import com.practicum.playlistmaker.DATA_FROM_AUDIO_PLAYER_KEY
+import com.practicum.playlistmaker.PREFERENCES_HISTORY
+import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.data.dto.ItunesResponse
+import com.practicum.playlistmaker.data.localstorage.SearchHistory
+import com.practicum.playlistmaker.data.network.ItunesApiService
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
+import com.practicum.playlistmaker.domain.models.Track
+import com.practicum.playlistmaker.ui.adapters.HistoryTrackAdapter
+import com.practicum.playlistmaker.ui.adapters.TrackAdapter
+import com.practicum.playlistmaker.ui.player.AudioPlayer
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -43,7 +53,7 @@ class SearchActivity : AppCompatActivity() {
     private val trackAdapter by lazy { TrackAdapter<Any>(listTracks) }
     private val historyTrackAdapter by lazy { HistoryTrackAdapter(SearchHistory.historyList) }
     private lateinit var searchHistory: SearchHistory
-    private lateinit var itunesAPI: ItunesAPI
+    private lateinit var itunesApiService: ItunesApiService
     private val sharedPreferencesSearchHistory by lazy {
         getSharedPreferences(
             PREFERENCES_HISTORY,
@@ -65,7 +75,7 @@ class SearchActivity : AppCompatActivity() {
 
         val retrofit = Retrofit.Builder().baseUrl(getString(R.string.base_url_itunes))
             .addConverterFactory(GsonConverterFactory.create()).build()
-        itunesAPI = retrofit.create<ItunesAPI>()
+        itunesApiService = retrofit.create<ItunesApiService>()
 
         binding.buttonBackSearch.setOnClickListener {
             finish()
@@ -157,7 +167,7 @@ class SearchActivity : AppCompatActivity() {
                 historyListView.isVisible = false
                 progressBar.isVisible = true
             }
-            itunesAPI.getTrack(searchText).enqueue(object : Callback<ItunesResponse> {
+            itunesApiService.getTrack(searchText).enqueue(object : Callback<ItunesResponse> {
                 @SuppressLint("NotifyDataSetChanged")
                 override fun onResponse(
                     call: Call<ItunesResponse>,
