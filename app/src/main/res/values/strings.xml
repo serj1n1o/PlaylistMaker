@@ -14,7 +14,7 @@
     <string name="my_mail_yandex">serj1n1o@yandex.ru</string>
     <string name="offer_yandex">https://yandex.ru/legal/practicum_offer/</string>
     <string name="update_button_text">Обновить</string>
-    <string name="error_found_txt">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="no_connect_error_txt">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
     <string name="nothing_found_txt">Ничего не нашлось</string>
     <string name="base_url_itunes">https://itunes.apple.com</string>
     <string name="you_searched">Вы искали</string>
@@ -26,4 +26,5 @@
     <string name="country_track">Страна</string>
     <string name="duration_preview_track_default">00:00</string>
     <string name="some_error">ЧТО-ТО ПОШЛО НЕ ТАК</string>
+    <string name="server_error_txt">Ошибка сервера</string>
 </resources>
