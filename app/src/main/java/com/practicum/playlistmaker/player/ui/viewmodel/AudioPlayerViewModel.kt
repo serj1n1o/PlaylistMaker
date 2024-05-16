@@ -17,7 +17,7 @@ import com.practicum.playlistmaker.util.MapperDateTimeFormatter
 
 class AudioPlayerViewModel(
     private val mediaPlayer: PlayerManager,
-) : ViewModel(), PlayerCallback {
+) : ViewModel() {
 
     companion object {
 
@@ -64,14 +64,18 @@ class AudioPlayerViewModel(
         handler.post(startTimer())
     }
 
-    private fun pause() {
+    fun pause() {
         mediaPlayer.pausePlayer()
         playerStateLiveData.value = mediaPlayer.getPlayerState()
         currentPositionVM = getCurrentPositionTrack()
     }
 
     private fun getCurrentPositionTrack(): Int {
-        return mediaPlayer.currentPositionTrack()
+        return if (mediaPlayer.getPlayerState() == PlayerState.PLAYING || mediaPlayer.getPlayerState() == PlayerState.PAUSED) {
+            mediaPlayer.currentPositionTrack()
+        } else {
+            0
+        }
     }
 
     private fun startTimer(): Runnable {
@@ -79,8 +83,11 @@ class AudioPlayerViewModel(
             override fun run() {
                 when (mediaPlayer.getPlayerState()) {
                     PlayerState.PLAYING -> {
-                        currentPositionLiveData.value =
-                            MapperDateTimeFormatter.mapTimeMillisToMinAndSec(getCurrentPositionTrack())
+                        currentPositionLiveData.postValue(
+                            MapperDateTimeFormatter.mapTimeMillisToMinAndSec(
+                                getCurrentPositionTrack()
+                            )
+                        )
                         handler.postDelayed(this, DELAY)
                     }
 
@@ -101,18 +108,13 @@ class AudioPlayerViewModel(
         }
     }
 
-    fun release() = mediaPlayer.release()
-
     override fun onCleared() {
+        mediaPlayer.release()
         handler.removeCallbacks(startTimer())
     }
 
     fun setPlayerScreenState(track: Track) {
         playerScreenStateLiveData.value = track
-    }
-
-    override fun onTrackEnded() {
-        currentPositionVM = START_POSITION
     }
 
 }

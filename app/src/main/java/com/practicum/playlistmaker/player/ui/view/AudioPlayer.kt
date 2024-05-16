@@ -120,11 +120,7 @@ class AudioPlayer : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        //playerViewModel.pause()
+        playerViewModel.pause()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        playerViewModel.release()
-    }
 }

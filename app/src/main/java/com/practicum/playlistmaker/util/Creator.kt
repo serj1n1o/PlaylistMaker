@@ -16,6 +16,14 @@ import com.practicum.playlistmaker.search.domain.api.TrackRepository
 import com.practicum.playlistmaker.search.domain.api.TracksInteractor
 import com.practicum.playlistmaker.search.domain.impl.HistoryTracksInteractorImpl
 import com.practicum.playlistmaker.search.domain.impl.TracksInteractorImpl
+import com.practicum.playlistmaker.settings.data.SettingsRepositoryImpl
+import com.practicum.playlistmaker.settings.domain.api.SettingsInteractor
+import com.practicum.playlistmaker.settings.domain.api.SettingsRepository
+import com.practicum.playlistmaker.settings.domain.impl.SettingsInteractorImpl
+import com.practicum.playlistmaker.sharing.data.ExternalNavigatorImpl
+import com.practicum.playlistmaker.sharing.domain.api.ExternalNavigator
+import com.practicum.playlistmaker.sharing.domain.api.SharingInteractor
+import com.practicum.playlistmaker.sharing.domain.impl.SharingInteractorImpl
 
 object Creator {
 
@@ -28,6 +36,7 @@ object Creator {
     fun providePlayerManager(callback: PlayerCallback): PlayerManager {
         return PlayerManagerImpl(player = getPlayer(callback))
     }
+
 
     fun provideTracksInteractor(): TracksInteractor {
         return TracksInteractorImpl(getTrackRepository())
@@ -44,5 +53,23 @@ object Creator {
 
     private fun getHistoryTracksRepository(): HistoryTracksRepository {
         return HistoryTracksRepositoryImpl(HistoryTracksStorageImpl(application))
+    }
+
+
+    fun provideSharingInteractor(): SharingInteractor {
+        return SharingInteractorImpl(getExternalNavigator())
+    }
+
+    private fun getExternalNavigator(): ExternalNavigator {
+        return ExternalNavigatorImpl(application)
+    }
+
+
+    private fun getSettingsRepository(): SettingsRepository {
+        return SettingsRepositoryImpl(application)
+    }
+
+    fun provideSettingsInteractor(): SettingsInteractor {
+        return SettingsInteractorImpl(getSettingsRepository())
     }
 }

@@ -27,12 +27,12 @@ class PlayerManagerImpl(private val player: Player) : PlayerManager {
         return player.currentPositionTrack()
     }
 
-    override fun seekToTrack(position: Int) {
-        player.seekToTrack(position)
-    }
-
     override fun release() {
         player.release()
+    }
+
+    override fun seekToTrack(position: Int) {
+        player.seekToTrack(position)
     }
 
 }

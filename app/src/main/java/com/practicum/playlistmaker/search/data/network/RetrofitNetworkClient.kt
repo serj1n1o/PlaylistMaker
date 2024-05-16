@@ -11,6 +11,7 @@ import com.practicum.playlistmaker.search.data.dto.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
+import java.io.IOException
 
 class RetrofitNetworkClient(private val context: Context) : NetworkClient {
 
@@ -26,10 +27,15 @@ class RetrofitNetworkClient(private val context: Context) : NetworkClient {
         if (dto !is ItunesRequest) {
             return Response().apply { resultCode = CODE_BAD_REQUEST }
         }
-        val response = itunesApiService.getTrack(dto.expression).execute()
-        val bodyResponse = response.body()
-        return bodyResponse?.apply { resultCode = response.code() }
-            ?: Response().apply { resultCode = response.code() }
+        return try {
+            val response = itunesApiService.getTrack(dto.expression).execute()
+            val bodyResponse = response.body()
+            bodyResponse?.apply { resultCode = response.code() }
+                ?: Response().apply { resultCode = response.code() }
+        } catch (e: IOException) {
+            Response().apply { resultCode = CODE_NO_CONNECT }
+        }
+
     }
 
     private fun isConnected(): Boolean {

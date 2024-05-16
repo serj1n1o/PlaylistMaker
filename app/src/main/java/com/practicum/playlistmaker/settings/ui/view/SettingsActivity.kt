@@ -1,62 +1,48 @@
 package com.practicum.playlistmaker.settings.ui.view
 
-import android.annotation.SuppressLint
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.practicum.playlistmaker.App
-import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
+import com.practicum.playlistmaker.settings.ui.viewmodel.SettingsViewModel
 
 class SettingsActivity : AppCompatActivity() {
-    @SuppressLint("ResourceAsColor")
+
+    private val settingsViewModel by viewModels<SettingsViewModel> { SettingsViewModel.getSettingsViewModelFactory() }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         binding.buttonBackSettings.setOnClickListener {
             finish()
         }
 
+
         binding.switchTheme.apply {
-            isChecked = (application as App).isDarkTheme
+            settingsViewModel.getThemeStateLiveData().observe(this@SettingsActivity) {
+                isChecked = it.isDarkTheme
+            }
+
             setOnCheckedChangeListener { _, isChecked ->
-                (application as App).switchTheme(isChecked)
+                settingsViewModel.switchTheme(isChecked)
             }
         }
+
 
 
         binding.buttonShareApp.setOnClickListener {
-            val message = getString(R.string.https_course_android_developer)
-            val shareIntent = Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, message)
-                type = "text/plane"
-            }
-
-            startActivity(Intent.createChooser(shareIntent, getString(R.string.select_app)))
-
+            settingsViewModel.shareApp()
         }
 
         binding.buttonSendSupport.setOnClickListener {
-            val message = getString(R.string.subject_text_mail)
-            val messageTheme = getString(R.string.message_text_mail)
-            val mail = arrayOf(getString(R.string.my_mail_yandex))
-            val sendToSupportIntent = Intent(Intent.ACTION_SENDTO).apply {
-                data = Uri.parse("mailto:")
-                putExtra(Intent.EXTRA_EMAIL, mail)
-                putExtra(Intent.EXTRA_TEXT, message)
-                putExtra(Intent.EXTRA_SUBJECT, messageTheme)
-            }
-            startActivity(sendToSupportIntent)
+            settingsViewModel.openSupport()
         }
 
         binding.buttonUserAgreement.setOnClickListener {
-            val urlOffer = getString(R.string.offer_yandex)
-            val userAgreementIntent = Intent(Intent.ACTION_VIEW, Uri.parse(urlOffer))
-            startActivity(userAgreementIntent)
+            settingsViewModel.openTerms()
         }
 
     }

@@ -42,5 +42,4 @@ class MediaPlayerImpl(private val callback: PlayerCallback) : Player {
     override fun release() {
         mediaPlayer.release()
     }
-
 }
