@@ -2,7 +2,6 @@ package com.practicum.playlistmaker.player.ui.view
 
 import android.os.Bundle
 import android.util.TypedValue
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -14,25 +13,23 @@ import com.practicum.playlistmaker.player.domain.api.PlayerCallback
 import com.practicum.playlistmaker.player.domain.models.PlayerState
 import com.practicum.playlistmaker.player.ui.viewmodel.AudioPlayerViewModel
 import com.practicum.playlistmaker.search.domain.models.Track
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class AudioPlayer : AppCompatActivity() {
-    private lateinit var playerCallback: PlayerCallback
-    private val playerViewModel by viewModels<AudioPlayerViewModel> {
-        AudioPlayerViewModel.getPlayerViewModelFactory(
-            playerCallback
-        )
+    private val playerCallback: PlayerCallback = object : PlayerCallback {
+        override fun onTrackEnded() {
+            playerViewModel.resetCurrentPosition()
+        }
+    }
+    private val playerViewModel by viewModel<AudioPlayerViewModel> {
+        parametersOf(playerCallback)
     }
     private val binding by lazy { ActivityAudioPlayerBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
-        playerCallback = object : PlayerCallback {
-            override fun onTrackEnded() {
-                playerViewModel.resetCurrentPosition()
-            }
-        }
 
         val track: Track
         if (playerViewModel.getPlayerScreenState().value is Track) {

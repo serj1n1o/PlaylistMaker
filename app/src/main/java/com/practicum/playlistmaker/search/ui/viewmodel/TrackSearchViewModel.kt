@@ -6,19 +6,14 @@ import android.os.SystemClock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.practicum.playlistmaker.search.domain.api.HistoryTracksInteractor
 import com.practicum.playlistmaker.search.domain.api.TracksInteractor
 import com.practicum.playlistmaker.search.domain.models.Track
-import com.practicum.playlistmaker.util.Creator
 
 class TrackSearchViewModel(
     private val tracksInteractor: TracksInteractor,
     private val historyTracksInteractor: HistoryTracksInteractor,
 ) : ViewModel() {
-
 
     private val stateLiveData = MutableLiveData<SearchState>()
     fun observeState(): LiveData<SearchState> = stateLiveData
@@ -76,10 +71,8 @@ class TrackSearchViewModel(
         val tracks = historyTracksInteractor.getTracksHistory()
         if (tracks.isEmpty()) {
             historyStateLiveData.postValue(HistoryState.Empty)
-            //renderHistoryState(state = HistoryState.Empty)
         } else {
             historyStateLiveData.postValue(HistoryState.Content(tracks))
-            //renderHistoryState(state = HistoryState.Content(tracks))
         }
     }
 
@@ -100,13 +93,5 @@ class TrackSearchViewModel(
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private val SEARCH_REQUEST_TOKEN = Any()
-
-        fun getSearchViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val tracksInteractor = Creator.provideTracksInteractor()
-                val historyTracksInteractor = Creator.provideHistoryTracksInteractor()
-                TrackSearchViewModel(tracksInteractor, historyTracksInteractor)
-            }
-        }
     }
 }
