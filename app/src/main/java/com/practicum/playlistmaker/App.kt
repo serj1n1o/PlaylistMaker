@@ -4,12 +4,7 @@ import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import com.practicum.playlistmaker.util.Creator
 
-const val PREFERENCES_SETTINGS = "PREFERENCES_SETTINGS"
-const val SETTINGS_KEY_THEME = "SETTINGS_KEY_THEME"
 const val DATA_FROM_AUDIO_PLAYER_KEY = "TRACK DATA"
-const val CODE_NO_CONNECT = -1
-const val CODE_BAD_REQUEST = 400
-const val CODE_NO_FOUND = 1
 
 class App : Application() {
 
@@ -18,8 +13,8 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         Creator.application = this
-        val themeInteractor = Creator.provideSettingsInteractor()
-        isDarkTheme = themeInteractor.getThemeApp().isDarkTheme
+        val themeAppInteractor = Creator.provideSettingsInteractor()
+        isDarkTheme = themeAppInteractor.getThemeApp().isDarkTheme
         switchTheme(isDarkTheme)
     }
 

@@ -19,17 +19,6 @@ class SettingsViewModel(
     application: Application,
 ) : ViewModel() {
 
-    companion object {
-        fun getSettingsViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val sharingInteractor = Creator.provideSharingInteractor()
-                val settingsInteractor = Creator.provideSettingsInteractor()
-                val application = Creator.application
-                SettingsViewModel(sharingInteractor, settingsInteractor, application)
-            }
-        }
-    }
-
     private val myApp by lazy { application as App }
 
     private val themeStateLiveData = MutableLiveData<ThemeSettings>()
@@ -46,7 +35,6 @@ class SettingsViewModel(
         }
         settingsInteractor.updateThemeApp(ThemeSettings(isDarkTheme))
         themeStateLiveData.value = settingsInteractor.getThemeApp()
-
         themeStateLiveData.value?.let { myApp.switchTheme(it.isDarkTheme) }
     }
 
@@ -60,6 +48,17 @@ class SettingsViewModel(
 
     fun openSupport() {
         sharingInteractor.openSupport()
+    }
+
+    companion object {
+        fun getSettingsViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val sharingInteractor = Creator.provideSharingInteractor()
+                val settingsInteractor = Creator.provideSettingsInteractor()
+                val application = Creator.application
+                SettingsViewModel(sharingInteractor, settingsInteractor, application)
+            }
+        }
     }
 
 }

@@ -1,7 +1,6 @@
 package com.practicum.playlistmaker.search.data.repository
 
-import com.practicum.playlistmaker.CODE_NO_CONNECT
-import com.practicum.playlistmaker.CODE_NO_FOUND
+import com.practicum.playlistmaker.search.CodesRequest
 import com.practicum.playlistmaker.search.data.dto.ItunesRequest
 import com.practicum.playlistmaker.search.data.dto.ItunesResponse
 import com.practicum.playlistmaker.search.data.network.NetworkClient
@@ -16,11 +15,11 @@ class TrackRepositoryImpl(
     override fun searchTracks(expression: String): Resource<List<Track>> {
         val response = networkClient.doRequest(ItunesRequest(expression))
         return when (response.resultCode) {
-            CODE_NO_CONNECT -> Resource.Error(resultCode = response.resultCode)
+            CodesRequest.CODE_NO_CONNECT -> Resource.Error(resultCode = response.resultCode)
 
             in 200..300 -> {
                 if ((response as ItunesResponse).tracks.isEmpty()) {
-                    Resource.Error(resultCode = CODE_NO_FOUND)
+                    Resource.Error(resultCode = CodesRequest.CODE_NO_FOUND)
                 } else {
                     Resource.Success(data = response.tracks.map {
                         Track(

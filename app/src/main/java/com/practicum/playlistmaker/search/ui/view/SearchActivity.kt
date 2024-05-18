@@ -14,11 +14,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import com.google.gson.Gson
-import com.practicum.playlistmaker.CODE_NO_FOUND
 import com.practicum.playlistmaker.DATA_FROM_AUDIO_PLAYER_KEY
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker.player.ui.view.AudioPlayer
+import com.practicum.playlistmaker.search.CodesRequest
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.ui.adapter.HistoryTrackAdapter
 import com.practicum.playlistmaker.search.ui.adapter.TrackAdapter
@@ -28,13 +28,6 @@ import com.practicum.playlistmaker.search.ui.viewmodel.TrackSearchViewModel
 
 
 class SearchActivity : AppCompatActivity() {
-
-    companion object {
-        const val INPUT_TEXT = "INPUT_TEXT"
-        const val INPUT_TEXT_DEFAULT = ""
-        const val PLACEHOLDER_CODE_NOT_VISIBLE = 0
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
-    }
 
     private val binding by lazy { ActivitySearchBinding.inflate(layoutInflater) }
     private var isClickAllowed = true
@@ -191,7 +184,7 @@ class SearchActivity : AppCompatActivity() {
     private fun showPlaceHolder(code: Int) {
         binding.progressBar.isVisible = false
         when (code) {
-            CODE_NO_FOUND -> {
+            CodesRequest.CODE_NO_FOUND -> {
                 with(binding) {
                     recyclerSearchTrack.isVisible = false
                     historyListView.isVisible = false
@@ -209,7 +202,7 @@ class SearchActivity : AppCompatActivity() {
                 buttonUpdate.isVisible = true
                 placeholderError.isVisible = true
                 buttonUpdate.setOnClickListener {
-                    if (clickDebounce()) viewModel.updateSearchBeforeError(inputText)
+                    if (clickDebounce()) viewModel.updateSearchAfterError(inputText)
                 }
             }
         }
@@ -257,6 +250,13 @@ class SearchActivity : AppCompatActivity() {
     private fun hideKeyboard() {
         val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputManager.hideSoftInputFromWindow(binding.inputSearch.windowToken, 0)
+    }
+
+    companion object {
+        private const val INPUT_TEXT = "INPUT_TEXT"
+        private const val INPUT_TEXT_DEFAULT = ""
+        private const val PLACEHOLDER_CODE_NOT_VISIBLE = 0
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
 }

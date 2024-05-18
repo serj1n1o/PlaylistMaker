@@ -13,7 +13,6 @@ android {
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -38,6 +37,7 @@ android {
 }
 
 dependencies {
+    implementation("io.insert-koin:koin-android:3.5.6")
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.activity:activity-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")

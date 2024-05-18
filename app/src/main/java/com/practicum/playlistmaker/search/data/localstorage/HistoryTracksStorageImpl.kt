@@ -6,11 +6,6 @@ import com.google.gson.reflect.TypeToken
 import com.practicum.playlistmaker.search.domain.models.Track
 
 class HistoryTracksStorageImpl(context: Context) : HistoryTracksStorage {
-    private companion object {
-        const val PREFERENCES_HISTORY = "PREFERENCES HISTORY"
-        const val HISTORY_TRACK_KEY = "HISTORY TRACK KEY"
-        const val MAX_CAPACITY_LIST = 10
-    }
 
     private val sharedPreferencesSearchHistory =
         context.getSharedPreferences(PREFERENCES_HISTORY, Context.MODE_PRIVATE)
@@ -47,5 +42,11 @@ class HistoryTracksStorageImpl(context: Context) : HistoryTracksStorage {
 
     override fun clearHistory() {
         sharedPreferencesSearchHistory.edit().remove(HISTORY_TRACK_KEY).apply()
+    }
+
+    private companion object {
+        const val PREFERENCES_HISTORY = "PREFERENCES HISTORY"
+        const val HISTORY_TRACK_KEY = "HISTORY TRACK KEY"
+        const val MAX_CAPACITY_LIST = 10
     }
 }

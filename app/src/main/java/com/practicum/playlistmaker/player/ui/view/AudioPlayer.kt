@@ -30,7 +30,7 @@ class AudioPlayer : AppCompatActivity() {
 
         playerCallback = object : PlayerCallback {
             override fun onTrackEnded() {
-                playerViewModel.currentPositionVM = 0
+                playerViewModel.resetCurrentPosition()
             }
         }
 

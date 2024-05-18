@@ -19,31 +19,17 @@ class AudioPlayerViewModel(
     private val mediaPlayer: PlayerManager,
 ) : ViewModel() {
 
-    companion object {
-
-        fun getPlayerViewModelFactory(playerCallback: PlayerCallback): ViewModelProvider.Factory =
-            viewModelFactory {
-                initializer {
-                    val mediaPlayer = Creator.providePlayerManager(playerCallback)
-                    AudioPlayerViewModel(mediaPlayer)
-                }
-            }
-
-        private const val DELAY = 300L
-        private const val START_POSITION = 0
-    }
-
     private val handler = Handler(Looper.getMainLooper())
     private var isPlaying = false
-    var currentPositionVM = START_POSITION
+    private var currentPositionVM = START_POSITION
 
-    private var playerStateLiveData = MutableLiveData<PlayerState>()
+    private val playerStateLiveData = MutableLiveData<PlayerState>()
     fun getPlayerStateLiveData(): LiveData<PlayerState> = playerStateLiveData
 
     private val currentPositionLiveData = MutableLiveData<String>()
     fun getCurrentPositionLiveData(): LiveData<String> = currentPositionLiveData
 
-    private var playerScreenStateLiveData = MutableLiveData<Track>()
+    private val playerScreenStateLiveData = MutableLiveData<Track>()
     fun getPlayerScreenState(): LiveData<Track> = playerScreenStateLiveData
     fun prepared(url: String) {
         mediaPlayer.preparePlayer(url = url)
@@ -55,6 +41,10 @@ class AudioPlayerViewModel(
         if (isPlaying) {
             play()
         } else pause()
+    }
+
+    fun resetCurrentPosition() {
+        currentPositionVM = START_POSITION
     }
 
     private fun play() {
@@ -115,6 +105,20 @@ class AudioPlayerViewModel(
 
     fun setPlayerScreenState(track: Track) {
         playerScreenStateLiveData.value = track
+    }
+
+    companion object {
+
+        fun getPlayerViewModelFactory(playerCallback: PlayerCallback): ViewModelProvider.Factory =
+            viewModelFactory {
+                initializer {
+                    val mediaPlayer = Creator.providePlayerManager(playerCallback)
+                    AudioPlayerViewModel(mediaPlayer)
+                }
+            }
+
+        private const val DELAY = 300L
+        private const val START_POSITION = 0
     }
 
 }

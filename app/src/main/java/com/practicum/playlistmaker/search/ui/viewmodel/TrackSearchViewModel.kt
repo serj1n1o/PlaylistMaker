@@ -19,18 +19,6 @@ class TrackSearchViewModel(
     private val historyTracksInteractor: HistoryTracksInteractor,
 ) : ViewModel() {
 
-    companion object {
-        private const val SEARCH_DEBOUNCE_DELAY = 2000L
-        private val SEARCH_REQUEST_TOKEN = Any()
-
-        fun getSearchViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val tracksInteractor = Creator.provideTracksInteractor()
-                val historyTracksInteractor = Creator.provideHistoryTracksInteractor()
-                TrackSearchViewModel(tracksInteractor, historyTracksInteractor)
-            }
-        }
-    }
 
     private val stateLiveData = MutableLiveData<SearchState>()
     fun observeState(): LiveData<SearchState> = stateLiveData
@@ -57,13 +45,13 @@ class TrackSearchViewModel(
         )
     }
 
-    fun updateSearchBeforeError(searchText: String) {
+    fun updateSearchAfterError(searchText: String) {
         searchRequest(searchText = searchText)
     }
 
     private fun searchRequest(searchText: String) {
         if (searchText.isNotEmpty()) {
-            renderState(SearchState.Loading)
+            stateLiveData.postValue(SearchState.Loading)
 
             tracksInteractor.searchTracks(
                 searchText,
@@ -75,8 +63,8 @@ class TrackSearchViewModel(
                         }
 
                         when {
-                            errorCode != null -> renderState(SearchState.Error(codeError = errorCode))
-                            else -> renderState(SearchState.Content(tracks = tracks))
+                            errorCode != null -> stateLiveData.postValue(SearchState.Error(codeError = errorCode))
+                            else -> stateLiveData.postValue(SearchState.Content(tracks = tracks))
                         }
                     }
 
@@ -87,9 +75,11 @@ class TrackSearchViewModel(
     fun getTracksHistory() {
         val tracks = historyTracksInteractor.getTracksHistory()
         if (tracks.isEmpty()) {
-            renderHistoryState(state = HistoryState.Empty)
+            historyStateLiveData.postValue(HistoryState.Empty)
+            //renderHistoryState(state = HistoryState.Empty)
         } else {
-            renderHistoryState(state = HistoryState.Content(tracks))
+            historyStateLiveData.postValue(HistoryState.Content(tracks))
+            //renderHistoryState(state = HistoryState.Content(tracks))
         }
     }
 
@@ -103,15 +93,20 @@ class TrackSearchViewModel(
         getTracksHistory()
     }
 
-    private fun renderHistoryState(state: HistoryState) {
-        historyStateLiveData.postValue(state)
-    }
-
-    private fun renderState(state: SearchState) {
-        stateLiveData.postValue(state)
-    }
-
     override fun onCleared() {
         handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
+    }
+
+    companion object {
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private val SEARCH_REQUEST_TOKEN = Any()
+
+        fun getSearchViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val tracksInteractor = Creator.provideTracksInteractor()
+                val historyTracksInteractor = Creator.provideHistoryTracksInteractor()
+                TrackSearchViewModel(tracksInteractor, historyTracksInteractor)
+            }
+        }
     }
 }

@@ -9,6 +9,7 @@ class MediaPlayerImpl(private val callback: PlayerCallback) : Player {
     override var playerState = PlayerState.DEFAULT
     private val mediaPlayer = MediaPlayer()
 
+
     override fun preparePlayer(url: String) {
         mediaPlayer.setDataSource(url)
         mediaPlayer.prepareAsync()
