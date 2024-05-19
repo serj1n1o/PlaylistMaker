@@ -10,5 +10,6 @@ interface Player {
     fun currentPositionTrack(): Int
     fun release()
     fun seekToTrack(position: Int)
+    fun addOnEndCallback(callback: () -> Unit)
 
 }

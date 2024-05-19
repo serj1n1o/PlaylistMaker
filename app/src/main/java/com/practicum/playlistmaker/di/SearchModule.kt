@@ -34,12 +34,12 @@ val searchModule = module {
             .create<ItunesApiService>()
     }
 
-    single<NetworkClient> {
+    factory<NetworkClient> {
         RetrofitNetworkClient(itunesApiService = get(), context = get())
     }
 
 
-    single<TrackRepository> {
+    factory<TrackRepository> {
         TrackRepositoryImpl(networkClient = get())
     }
     factory<TracksInteractor> {
@@ -47,11 +47,11 @@ val searchModule = module {
     }
 
 
-    single<HistoryTracksStorage> {
+    factory<HistoryTracksStorage> {
         HistoryTracksStorageImpl(context = get())
     }
 
-    single<HistoryTracksRepository> {
+    factory<HistoryTracksRepository> {
         HistoryTracksRepositoryImpl(historyTracksStorage = get())
     }
     factory<HistoryTracksInteractor> {

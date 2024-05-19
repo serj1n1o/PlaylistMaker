@@ -9,22 +9,15 @@ import com.google.gson.Gson
 import com.practicum.playlistmaker.DATA_FROM_AUDIO_PLAYER_KEY
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivityAudioPlayerBinding
-import com.practicum.playlistmaker.player.domain.api.PlayerCallback
 import com.practicum.playlistmaker.player.domain.models.PlayerState
 import com.practicum.playlistmaker.player.ui.viewmodel.AudioPlayerViewModel
 import com.practicum.playlistmaker.search.domain.models.Track
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 
 class AudioPlayer : AppCompatActivity() {
-    private val playerCallback: PlayerCallback = object : PlayerCallback {
-        override fun onTrackEnded() {
-            playerViewModel.resetCurrentPosition()
-        }
-    }
-    private val playerViewModel by viewModel<AudioPlayerViewModel> {
-        parametersOf(playerCallback)
-    }
+
+    private val playerViewModel by viewModel<AudioPlayerViewModel>()
+
     private val binding by lazy { ActivityAudioPlayerBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {

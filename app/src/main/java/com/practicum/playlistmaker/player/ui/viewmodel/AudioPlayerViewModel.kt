@@ -27,6 +27,7 @@ class AudioPlayerViewModel(
     private val playerScreenStateLiveData = MutableLiveData<Track>()
     fun getPlayerScreenState(): LiveData<Track> = playerScreenStateLiveData
 
+
     fun prepared(url: String) {
         mediaPlayer.preparePlayer(url = url)
         playerStateLiveData.postValue(mediaPlayer.getPlayerState())
@@ -39,15 +40,15 @@ class AudioPlayerViewModel(
         } else pause()
     }
 
-    fun resetCurrentPosition() {
-        currentPositionVM = START_POSITION
-    }
-
     private fun play() {
         mediaPlayer.seekToTrack(currentPositionVM)
         mediaPlayer.startPlayer()
         playerStateLiveData.value = mediaPlayer.getPlayerState()
         handler.post(startTimer())
+
+        mediaPlayer.addOnEndCallback {
+            currentPositionVM = START_POSITION
+        }
     }
 
     fun pause() {
@@ -60,7 +61,7 @@ class AudioPlayerViewModel(
         return if (mediaPlayer.getPlayerState() == PlayerState.PLAYING || mediaPlayer.getPlayerState() == PlayerState.PAUSED) {
             mediaPlayer.currentPositionTrack()
         } else {
-            0
+            START_POSITION
         }
     }
 
