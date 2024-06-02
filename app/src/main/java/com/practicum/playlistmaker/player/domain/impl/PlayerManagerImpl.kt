@@ -35,4 +35,8 @@ class PlayerManagerImpl(private val player: Player) : PlayerManager {
         player.seekToTrack(position)
     }
 
+    override fun addOnEndCallback(callback: () -> Unit) {
+        player.addOnEndCallback(callback)
+    }
+
 }

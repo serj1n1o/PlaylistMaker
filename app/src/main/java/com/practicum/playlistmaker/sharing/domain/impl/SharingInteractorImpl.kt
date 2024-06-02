@@ -7,11 +7,9 @@ class SharingInteractorImpl(private val externalNavigator: ExternalNavigator) : 
     override fun shareApp() {
         externalNavigator.shareLink()
     }
-
     override fun openTerms() {
         externalNavigator.openLink()
     }
-
     override fun openSupport() {
         externalNavigator.openEmail()
     }

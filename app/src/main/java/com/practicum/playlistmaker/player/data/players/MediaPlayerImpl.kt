@@ -2,13 +2,12 @@ package com.practicum.playlistmaker.player.data.players
 
 import android.media.MediaPlayer
 import com.practicum.playlistmaker.player.domain.api.Player
-import com.practicum.playlistmaker.player.domain.api.PlayerCallback
 import com.practicum.playlistmaker.player.domain.models.PlayerState
 
-class MediaPlayerImpl(private val callback: PlayerCallback) : Player {
+class MediaPlayerImpl : Player {
     override var playerState = PlayerState.DEFAULT
     private val mediaPlayer = MediaPlayer()
-
+    private var onEndCallback: (() -> Unit)? = null
 
     override fun preparePlayer(url: String) {
         mediaPlayer.setDataSource(url)
@@ -18,7 +17,7 @@ class MediaPlayerImpl(private val callback: PlayerCallback) : Player {
         }
         mediaPlayer.setOnCompletionListener {
             playerState = PlayerState.PREPARED
-            callback.onTrackEnded()
+            onEndCallback?.invoke()
         }
     }
 
@@ -38,6 +37,10 @@ class MediaPlayerImpl(private val callback: PlayerCallback) : Player {
 
     override fun seekToTrack(position: Int) {
         mediaPlayer.seekTo(position)
+    }
+
+    override fun addOnEndCallback(callback: () -> Unit) {
+        this.onEndCallback = callback
     }
 
     override fun release() {

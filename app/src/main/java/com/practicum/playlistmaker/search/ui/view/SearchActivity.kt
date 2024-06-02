@@ -9,7 +9,6 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
@@ -25,6 +24,7 @@ import com.practicum.playlistmaker.search.ui.adapter.TrackAdapter
 import com.practicum.playlistmaker.search.ui.viewmodel.HistoryState
 import com.practicum.playlistmaker.search.ui.viewmodel.SearchState
 import com.practicum.playlistmaker.search.ui.viewmodel.TrackSearchViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class SearchActivity : AppCompatActivity() {
@@ -33,7 +33,7 @@ class SearchActivity : AppCompatActivity() {
     private var isClickAllowed = true
     private val handlerMain = Handler(Looper.getMainLooper())
 
-    private val viewModel by viewModels<TrackSearchViewModel> { TrackSearchViewModel.getSearchViewModelFactory() }
+    private val viewModel by viewModel<TrackSearchViewModel>()
 
     private var inputText = INPUT_TEXT_DEFAULT
     private val trackAdapter by lazy {

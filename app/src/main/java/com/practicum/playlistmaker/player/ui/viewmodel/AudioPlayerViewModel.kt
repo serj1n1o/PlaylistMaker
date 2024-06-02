@@ -5,14 +5,9 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.practicum.playlistmaker.player.domain.api.PlayerCallback
 import com.practicum.playlistmaker.player.domain.api.PlayerManager
 import com.practicum.playlistmaker.player.domain.models.PlayerState
 import com.practicum.playlistmaker.search.domain.models.Track
-import com.practicum.playlistmaker.util.Creator
 import com.practicum.playlistmaker.util.MapperDateTimeFormatter
 
 class AudioPlayerViewModel(
@@ -31,6 +26,8 @@ class AudioPlayerViewModel(
 
     private val playerScreenStateLiveData = MutableLiveData<Track>()
     fun getPlayerScreenState(): LiveData<Track> = playerScreenStateLiveData
+
+
     fun prepared(url: String) {
         mediaPlayer.preparePlayer(url = url)
         playerStateLiveData.postValue(mediaPlayer.getPlayerState())
@@ -43,15 +40,15 @@ class AudioPlayerViewModel(
         } else pause()
     }
 
-    fun resetCurrentPosition() {
-        currentPositionVM = START_POSITION
-    }
-
     private fun play() {
         mediaPlayer.seekToTrack(currentPositionVM)
         mediaPlayer.startPlayer()
         playerStateLiveData.value = mediaPlayer.getPlayerState()
         handler.post(startTimer())
+
+        mediaPlayer.addOnEndCallback {
+            currentPositionVM = START_POSITION
+        }
     }
 
     fun pause() {
@@ -64,7 +61,7 @@ class AudioPlayerViewModel(
         return if (mediaPlayer.getPlayerState() == PlayerState.PLAYING || mediaPlayer.getPlayerState() == PlayerState.PAUSED) {
             mediaPlayer.currentPositionTrack()
         } else {
-            0
+            START_POSITION
         }
     }
 
@@ -108,15 +105,6 @@ class AudioPlayerViewModel(
     }
 
     companion object {
-
-        fun getPlayerViewModelFactory(playerCallback: PlayerCallback): ViewModelProvider.Factory =
-            viewModelFactory {
-                initializer {
-                    val mediaPlayer = Creator.providePlayerManager(playerCallback)
-                    AudioPlayerViewModel(mediaPlayer)
-                }
-            }
-
         private const val DELAY = 300L
         private const val START_POSITION = 0
     }
