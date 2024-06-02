@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".medialibrary.ui.view.PlaylistFragment">
+
+    <LinearLayout
+        android:id="@+id/placeholderEmptyPlaylist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/newPlaylistBtn"
+            style="@style/btnUpdateAndClear"
+            android:text="@string/new_playlist_txt" />
+
+        <ImageView
+            android:id="@+id/placeholderLibraryImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_playlist_frag_46"
+            android:src="@drawable/error_load_light_dark" />
+
+        <TextView
+            android:id="@+id/placeholderEmptyPlaylistTxt"
+            style="@style/placeholderText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/empty_playlist_txt" />
+
+    </LinearLayout>
+
+
+</FrameLayout>

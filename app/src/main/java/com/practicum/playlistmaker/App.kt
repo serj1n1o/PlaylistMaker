@@ -2,6 +2,7 @@ package com.practicum.playlistmaker
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import com.practicum.playlistmaker.di.mediaLibraryModule
 import com.practicum.playlistmaker.di.playerModule
 import com.practicum.playlistmaker.di.searchModule
 import com.practicum.playlistmaker.di.settingsModule
@@ -26,7 +27,7 @@ class App : Application() {
         startKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@App)
-            modules(playerModule, searchModule, settingsModule, sharingModule)
+            modules(playerModule, searchModule, settingsModule, sharingModule, mediaLibraryModule)
         }
 
         val themeAppInteractor by inject<SettingsInteractor>()
