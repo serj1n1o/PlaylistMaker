@@ -29,18 +29,13 @@ class PlaylistFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         playlistViewModel.getPlaylistState().observe(viewLifecycleOwner) {
             when (it) {
-                is PlaylistState.Content -> Unit
+                is PlaylistState.Content -> TODO()
                 PlaylistState.Empty -> binding.placeholderEmptyPlaylist.isVisible = true
             }
         }
     }
 
     companion object {
-        fun newInstance() =
-            PlaylistFragment().apply {
-                arguments = Bundle().apply {
-
-                }
-            }
+        fun newInstance() = PlaylistFragment()
     }
 }

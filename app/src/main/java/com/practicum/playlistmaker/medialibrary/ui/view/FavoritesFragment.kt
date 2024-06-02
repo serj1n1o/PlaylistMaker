@@ -28,18 +28,13 @@ class FavoritesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         favoritesViewModel.getFavoritesState().observe(viewLifecycleOwner) {
             when (it) {
-                is FavoritesState.Content -> Unit
+                is FavoritesState.Content -> TODO()
                 FavoritesState.Empty -> binding.placeholderEmptyFavorites.isVisible = true
             }
         }
     }
 
     companion object {
-        fun newInstance() =
-            FavoritesFragment().apply {
-                arguments = Bundle().apply {
-
-                }
-            }
+        fun newInstance() = FavoritesFragment()
     }
 }
