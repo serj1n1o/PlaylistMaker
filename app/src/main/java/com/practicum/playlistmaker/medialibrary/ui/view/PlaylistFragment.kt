@@ -13,7 +13,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistFragment : Fragment() {
 
-    private lateinit var binding: FragmentPlaylistBinding
+    private var _binding: FragmentPlaylistBinding? = null
+
+    private val binding get() = _binding!!
 
     private val playlistViewModel by viewModel<PlaylistViewModel>()
 
@@ -21,7 +23,7 @@ class PlaylistFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        binding = FragmentPlaylistBinding.inflate(inflater)
+        _binding = FragmentPlaylistBinding.inflate(inflater)
         return binding.root
     }
 
@@ -33,6 +35,11 @@ class PlaylistFragment : Fragment() {
                 PlaylistState.Empty -> binding.placeholderEmptyPlaylist.isVisible = true
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

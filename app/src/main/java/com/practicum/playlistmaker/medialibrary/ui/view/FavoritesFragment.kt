@@ -13,14 +13,15 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoritesFragment : Fragment() {
 
-    private lateinit var binding: FragmentFavoritesBinding
+    private var _binding: FragmentFavoritesBinding? = null
+    private val binding get() = _binding!!
 
     private val favoritesViewModel by viewModel<FavoritesViewModel>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        binding = FragmentFavoritesBinding.inflate(inflater)
+        _binding = FragmentFavoritesBinding.inflate(inflater)
         return binding.root
     }
 
@@ -32,6 +33,11 @@ class FavoritesFragment : Fragment() {
                 FavoritesState.Empty -> binding.placeholderEmptyFavorites.isVisible = true
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {
