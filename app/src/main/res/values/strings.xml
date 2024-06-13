@@ -27,4 +27,9 @@
     <string name="duration_preview_track_default">00:00</string>
     <string name="some_error">ЧТО-ТО ПОШЛО НЕ ТАК</string>
     <string name="server_error_txt">Ошибка сервера</string>
+    <string name="favorites_tracks_txt">Избранные треки</string>
+    <string name="playlists_txt">Плейлисты</string>
+    <string name="favorites_track_is_empty_text">Ваша медиатека пуста</string>
+    <string name="new_playlist_txt">Новый плейлист</string>
+    <string name="empty_playlist_txt">Вы не создали\nни одного плейлиста</string>
 </resources>

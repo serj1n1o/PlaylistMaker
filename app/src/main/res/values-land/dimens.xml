@@ -4,5 +4,5 @@
     <dimen name="margin_top_error_load_102dp">12dp</dimen>
     <dimen name="search_header_height_56dp">32dp</dimen>
     <dimen name="height_edittext_36dp">24dp</dimen>
-
+    <dimen name="margin_playlist_frag_46">16dp</dimen>
 </resources>
