@@ -3,20 +3,20 @@ package com.practicum.playlistmaker.search.ui.view
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
+import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.practicum.playlistmaker.DATA_FROM_AUDIO_PLAYER_KEY
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.databinding.ActivitySearchBinding
-import com.practicum.playlistmaker.player.ui.view.AudioPlayer
+import com.practicum.playlistmaker.databinding.FragmentSearchBinding
 import com.practicum.playlistmaker.search.CodesRequest
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.ui.adapter.HistoryTrackAdapter
@@ -24,18 +24,20 @@ import com.practicum.playlistmaker.search.ui.adapter.TrackAdapter
 import com.practicum.playlistmaker.search.ui.viewmodel.HistoryState
 import com.practicum.playlistmaker.search.ui.viewmodel.SearchState
 import com.practicum.playlistmaker.search.ui.viewmodel.TrackSearchViewModel
+import com.practicum.playlistmaker.util.FragmentWithBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment : FragmentWithBinding<FragmentSearchBinding>() {
 
-    private val binding by lazy { ActivitySearchBinding.inflate(layoutInflater) }
     private var isClickAllowed = true
+
     private val handlerMain = Handler(Looper.getMainLooper())
 
     private val viewModel by viewModel<TrackSearchViewModel>()
 
     private var inputText = INPUT_TEXT_DEFAULT
+
     private val trackAdapter by lazy {
         TrackAdapter<Any>(
             object : TrackAdapter.TrackClickListener {
@@ -50,6 +52,7 @@ class SearchActivity : AppCompatActivity() {
             }
         )
     }
+
     private val historyTrackAdapter by lazy {
         HistoryTrackAdapter(
             object : TrackAdapter.TrackClickListener {
@@ -59,30 +62,32 @@ class SearchActivity : AppCompatActivity() {
             }
         )
     }
+
     private var isNotEmptyHistoryTracks = false
 
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+    ): FragmentSearchBinding {
+        return FragmentSearchBinding.inflate(inflater, container, false)
+    }
 
     @SuppressLint("NotifyDataSetChanged")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        viewModel.observeState().observe(this) {
+        viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
         binding.recyclerSearchTrack.adapter = trackAdapter
         binding.recyclerHistoryList.adapter = historyTrackAdapter
         viewModel.getTracksHistory()
-        viewModel.observeHistoryState().observe(this) {
+        viewModel.observeHistoryState().observe(viewLifecycleOwner) {
             renderHistory(it)
         }
 
         if (isNotEmptyHistoryTracks && binding.inputSearch.hasFocus()) {
             showHistory()
-        }
-
-        binding.buttonBackSearch.setOnClickListener {
-            finish()
         }
 
         binding.iconClearInput.setOnClickListener {
@@ -108,28 +113,28 @@ class SearchActivity : AppCompatActivity() {
 
         }
 
-
         binding.inputSearch.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus && isNotEmptyHistoryTracks && inputText.isEmpty()) {
                 showHistory()
             } else hideHistory()
         }
 
-
         binding.btnClearHistory.setOnClickListener {
             viewModel.clearHistoryTracks()
             historyTrackAdapter.notifyDataSetChanged()
             hideHistory()
         }
-
     }
 
     private fun startAudioPlayer(track: Track) {
-        startActivity(Intent(this, AudioPlayer::class.java).apply {
-            putExtra(
-                DATA_FROM_AUDIO_PLAYER_KEY, Gson().toJson(track)
-            )
-        })
+
+        findNavController().navigate(
+            R.id.action_searchFragment_to_audioPlayer,
+            Bundle().apply {
+                putString(
+                    DATA_FROM_AUDIO_PLAYER_KEY, Gson().toJson(track)
+                )
+            })
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -162,7 +167,6 @@ class SearchActivity : AppCompatActivity() {
     private fun clearInputButtonVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
     }
-
 
     private fun render(state: SearchState) {
         when (state) {
@@ -231,16 +235,16 @@ class SearchActivity : AppCompatActivity() {
         return current
     }
 
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(INPUT_TEXT, inputText)
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        val binding = ActivitySearchBinding.inflate(layoutInflater)
-        inputText = savedInstanceState.getString(INPUT_TEXT, INPUT_TEXT_DEFAULT)
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        if (savedInstanceState != null) {
+            inputText = savedInstanceState.getString(INPUT_TEXT, INPUT_TEXT_DEFAULT)
+        }
         binding.inputSearch.apply {
             setText(inputText)
             setSelection(binding.inputSearch.text.length)
@@ -248,7 +252,8 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun hideKeyboard() {
-        val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val inputManager =
+            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputManager.hideSoftInputFromWindow(binding.inputSearch.windowToken, 0)
     }
 

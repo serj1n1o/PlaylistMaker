@@ -1,23 +1,31 @@
 package com.practicum.playlistmaker.medialibrary.ui.view
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.google.android.material.tabs.TabLayoutMediator
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.databinding.ActivityLibraryBinding
+import com.practicum.playlistmaker.databinding.FragmentLibraryBinding
 import com.practicum.playlistmaker.medialibrary.ui.adapters.LibraryAdapter
+import com.practicum.playlistmaker.util.FragmentWithBinding
 
-class LibraryActivity : AppCompatActivity() {
-
-    private val binding by lazy { ActivityLibraryBinding.inflate(layoutInflater) }
+class LibraryFragment : FragmentWithBinding<FragmentLibraryBinding>() {
 
     private lateinit var tabLibraryMediator: TabLayoutMediator
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+    ): FragmentLibraryBinding {
+        return FragmentLibraryBinding.inflate(inflater, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.pagerLibrary.adapter =
-            LibraryAdapter(fragmentManager = supportFragmentManager, lifecycle = lifecycle)
+            LibraryAdapter(fragmentManager = childFragmentManager, lifecycle = lifecycle)
 
         tabLibraryMediator =
             TabLayoutMediator(binding.tabLibrary, binding.pagerLibrary) { tab, position ->
@@ -33,15 +41,10 @@ class LibraryActivity : AppCompatActivity() {
             }
 
         tabLibraryMediator.attach()
-
-        binding.buttonBackLibrary.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
-
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         tabLibraryMediator.detach()
     }
 

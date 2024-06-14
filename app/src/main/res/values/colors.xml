@@ -10,8 +10,6 @@
     <color name="gray">#AEAFB4</color>
     <color name="yp_blue">#3772E7</color>
     <color name="yp_blue_light">#9FBBF3</color>
-    <color name="background_main_activity_color_LiteTheme">@color/yp_blue</color>
-    <color name="background_color_DarkTheme">@color/black</color>
     <color name="light_grey">#E6E8EB</color>
     <color name="btn_audio_player_light">#401A1B22</color>
     <color name="btn_audio_player_night">#40FFFFFF</color>
