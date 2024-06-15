@@ -57,8 +57,10 @@ class SearchFragment : FragmentWithBinding<FragmentSearchBinding>() {
         HistoryTrackAdapter(
             object : TrackAdapter.TrackClickListener {
                 override val onItemClickListener: ((Track) -> Unit)
-                    get() = { if (clickDebounce()) startAudioPlayer(it) }
-
+                    get() = {
+                        viewModel.addTrackToHistory(it)
+                        if (clickDebounce()) startAudioPlayer(it)
+                    }
             }
         )
     }
@@ -75,7 +77,6 @@ class SearchFragment : FragmentWithBinding<FragmentSearchBinding>() {
     @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }

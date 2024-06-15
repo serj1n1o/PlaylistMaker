@@ -27,10 +27,11 @@ class AudioPlayerViewModel(
     private val playerScreenStateLiveData = MutableLiveData<Track>()
     fun getPlayerScreenState(): LiveData<Track> = playerScreenStateLiveData
 
-
-    fun prepared(url: String) {
-        mediaPlayer.preparePlayer(url = url)
-        playerStateLiveData.postValue(mediaPlayer.getPlayerState())
+    fun prepared(url: String?) {
+        if (url != null) {
+            mediaPlayer.preparePlayer(url = url)
+            playerStateLiveData.postValue(mediaPlayer.getPlayerState())
+        }
     }
 
     fun togglePlaybackState() {
