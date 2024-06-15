@@ -80,8 +80,10 @@ class SearchFragment : FragmentWithBinding<FragmentSearchBinding>() {
             render(it)
         }
         binding.recyclerSearchTrack.adapter = trackAdapter
+
         binding.recyclerHistoryList.adapter = historyTrackAdapter
         viewModel.getTracksHistory()
+
         viewModel.observeHistoryState().observe(viewLifecycleOwner) {
             renderHistory(it)
         }
@@ -99,6 +101,7 @@ class SearchFragment : FragmentWithBinding<FragmentSearchBinding>() {
             trackAdapter.tracks.clear()
             trackAdapter.notifyDataSetChanged()
             hideKeyboard()
+            viewModel.clearResultSearchTracks()
         }
 
         binding.inputSearch.doOnTextChanged { text, _, _, _ ->
