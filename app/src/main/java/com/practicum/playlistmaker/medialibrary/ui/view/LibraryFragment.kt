@@ -12,7 +12,7 @@ import com.practicum.playlistmaker.util.FragmentWithBinding
 
 class LibraryFragment : FragmentWithBinding<FragmentLibraryBinding>() {
 
-    private lateinit var tabLibraryMediator: TabLayoutMediator
+    private var tabLibraryMediator: TabLayoutMediator? = null
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -24,8 +24,12 @@ class LibraryFragment : FragmentWithBinding<FragmentLibraryBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         binding.pagerLibrary.adapter =
-            LibraryAdapter(fragmentManager = childFragmentManager, lifecycle = lifecycle)
+            LibraryAdapter(
+                fragmentManager = childFragmentManager,
+                lifecycle = viewLifecycleOwner.lifecycle
+            )
 
         tabLibraryMediator =
             TabLayoutMediator(binding.tabLibrary, binding.pagerLibrary) { tab, position ->
@@ -40,12 +44,13 @@ class LibraryFragment : FragmentWithBinding<FragmentLibraryBinding>() {
                 }
             }
 
-        tabLibraryMediator.attach()
+        tabLibraryMediator?.attach()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        tabLibraryMediator.detach()
+        tabLibraryMediator?.detach()
+        tabLibraryMediator = null
     }
 
 }
