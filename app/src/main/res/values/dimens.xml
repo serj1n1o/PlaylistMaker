@@ -27,4 +27,5 @@
     <dimen name="margin_140dp">140dp</dimen>
     <dimen name="margin_46dp">46dp</dimen>
     <dimen name="margin_playlist_frag_46">46dp</dimen>
+    <dimen name="text_12sp">12sp</dimen>
 </resources>

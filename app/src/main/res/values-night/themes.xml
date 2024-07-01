@@ -14,7 +14,4 @@
 
     <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker" />
 
-    <style name="Theme.Main.View" parent="Theme.PlaylistMaker">
-        <item name="android:textColor">@color/white</item>
-    </style>
 </resources>

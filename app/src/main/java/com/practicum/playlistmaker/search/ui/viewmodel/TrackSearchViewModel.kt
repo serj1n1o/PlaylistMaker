@@ -86,8 +86,13 @@ class TrackSearchViewModel(
         getTracksHistory()
     }
 
+    fun clearResultSearchTracks() {
+        stateLiveData.value = SearchState.Content(emptyList())
+    }
+
     override fun onCleared() {
         handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
+
     }
 
     companion object {

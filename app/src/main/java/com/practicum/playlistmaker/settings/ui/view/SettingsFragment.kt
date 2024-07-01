@@ -1,28 +1,30 @@
 package com.practicum.playlistmaker.settings.ui.view
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import com.practicum.playlistmaker.databinding.FragmentSettingsBinding
 import com.practicum.playlistmaker.settings.ui.viewmodel.SettingsViewModel
+import com.practicum.playlistmaker.util.FragmentWithBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsFragment : FragmentWithBinding<FragmentSettingsBinding>() {
 
     private val settingsViewModel by viewModel<SettingsViewModel>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val binding = ActivitySettingsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+    ): FragmentSettingsBinding {
+        return FragmentSettingsBinding.inflate(inflater, container, false)
+    }
 
-
-        binding.buttonBackSettings.setOnClickListener {
-            finish()
-        }
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.switchTheme.apply {
-            settingsViewModel.getThemeStateLiveData().observe(this@SettingsActivity) {
+            settingsViewModel.getThemeStateLiveData().observe(viewLifecycleOwner) {
                 isChecked = it.isDarkTheme
             }
 
@@ -30,8 +32,6 @@ class SettingsActivity : AppCompatActivity() {
                 settingsViewModel.switchTheme(isChecked)
             }
         }
-
-
 
         binding.buttonShareApp.setOnClickListener {
             settingsViewModel.shareApp()
@@ -44,6 +44,6 @@ class SettingsActivity : AppCompatActivity() {
         binding.buttonUserAgreement.setOnClickListener {
             settingsViewModel.openTerms()
         }
-
     }
+
 }

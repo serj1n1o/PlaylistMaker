@@ -7,23 +7,25 @@
     tools:context=".medialibrary.ui.view.PlaylistFragment">
 
 
-<LinearLayout
+    <LinearLayout
         android:id="@+id/placeholderEmptyPlaylist"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="visible">
+        android:orientation="horizontal"
+        android:gravity="center">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/newPlaylistBtn"
             style="@style/btnUpdateAndClear"
+            android:layout_gravity="top|center"
             android:text="@string/new_playlist_txt" />
 
         <ImageView
             android:id="@+id/placeholderLibraryImg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="center|top"
+            android:layout_marginHorizontal="@dimen/standard_indent_16dp"
             android:layout_marginTop="@dimen/margin_playlist_frag_46"
             android:src="@drawable/error_load_light_dark" />
 
@@ -32,7 +34,8 @@
             style="@style/placeholderText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
+            android:layout_gravity="center|top"
+            android:layout_marginTop="@dimen/margin_playlist_frag_46"
             android:text="@string/empty_playlist_txt" />
 
     </LinearLayout>
