@@ -1,21 +1,23 @@
 package com.practicum.playlistmaker.player.ui.viewmodel
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.player.domain.api.PlayerManager
 import com.practicum.playlistmaker.player.domain.models.PlayerState
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.util.MapperDateTimeFormatter
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class AudioPlayerViewModel(
     private val mediaPlayer: PlayerManager,
 ) : ViewModel() {
 
-    private val handler = Handler(Looper.getMainLooper())
-    private var isPlaying = false
+
+    private var timerJob: Job? = null
     private var currentPositionVM = START_POSITION
 
     private val playerStateLiveData = MutableLiveData<PlayerState>()
@@ -35,8 +37,7 @@ class AudioPlayerViewModel(
     }
 
     fun togglePlaybackState() {
-        isPlaying = !isPlaying
-        if (isPlaying) {
+        if (playerStateLiveData.value != PlayerState.PLAYING) {
             play()
         } else pause()
     }
@@ -45,15 +46,17 @@ class AudioPlayerViewModel(
         mediaPlayer.seekToTrack(currentPositionVM)
         mediaPlayer.startPlayer()
         playerStateLiveData.value = mediaPlayer.getPlayerState()
-        handler.post(startTimer())
+        startTimer()
 
         mediaPlayer.addOnEndCallback {
             currentPositionVM = START_POSITION
+            playerStateLiveData.value = PlayerState.PREPARED
         }
     }
 
     fun pause() {
         mediaPlayer.pausePlayer()
+        timerJob?.cancel()
         playerStateLiveData.value = mediaPlayer.getPlayerState()
         currentPositionVM = getCurrentPositionTrack()
     }
@@ -66,43 +69,34 @@ class AudioPlayerViewModel(
         }
     }
 
-    private fun startTimer(): Runnable {
-        return object : Runnable {
-            override fun run() {
-                when (mediaPlayer.getPlayerState()) {
-                    PlayerState.PLAYING -> {
-                        currentPositionLiveData.postValue(
-                            MapperDateTimeFormatter.mapTimeMillisToMinAndSec(
-                                getCurrentPositionTrack()
-                            )
-                        )
-                        handler.postDelayed(this, DELAY)
-                    }
-
-                    PlayerState.PAUSED -> handler.removeCallbacks(this)
-
-                    PlayerState.PREPARED -> {
-                        isPlaying = false
-                        playerStateLiveData.value = PlayerState.PREPARED
-                        handler.removeCallbacks(this)
-
-                    }
-
-                    else -> {
-                        return
-                    }
-                }
+    private fun startTimer() {
+        timerJob = viewModelScope.launch {
+            while (mediaPlayer.getPlayerState() == PlayerState.PLAYING) {
+                delay(DELAY)
+                currentPositionLiveData.postValue(
+                    MapperDateTimeFormatter.mapTimeMillisToMinAndSec(
+                        getCurrentPositionTrack()
+                    )
+                )
             }
         }
     }
 
+
     override fun onCleared() {
         mediaPlayer.release()
-        handler.removeCallbacks(startTimer())
     }
 
     fun setPlayerScreenState(track: Track) {
         playerScreenStateLiveData.value = track
+    }
+
+    fun addToPlaylist(track: Track) {
+
+    }
+
+    fun addToFavorites(track: Track) {
+
     }
 
     companion object {

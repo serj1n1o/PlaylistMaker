@@ -14,7 +14,6 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 
-const val DATA_FROM_AUDIO_PLAYER_KEY = "TRACK DATA"
 
 class App : Application() {
 

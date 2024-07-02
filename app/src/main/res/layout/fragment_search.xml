@@ -111,7 +111,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top_42dp"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <TextView
             style="@style/placeholderText"

@@ -6,6 +6,8 @@ import android.net.NetworkCapabilities
 import com.practicum.playlistmaker.search.CodesRequest
 import com.practicum.playlistmaker.search.data.dto.ItunesRequest
 import com.practicum.playlistmaker.search.data.dto.Response
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.IOException
 
 class RetrofitNetworkClient(
@@ -13,20 +15,20 @@ class RetrofitNetworkClient(
     private val context: Context,
 ) : NetworkClient {
 
-    override fun doRequest(dto: Any): Response {
+    override suspend fun doRequest(dto: Any): Response {
         if (!isConnected()) {
             return Response().apply { resultCode = CodesRequest.CODE_NO_CONNECT }
         }
         if (dto !is ItunesRequest) {
             return Response().apply { resultCode = CodesRequest.CODE_BAD_REQUEST }
         }
-        return try {
-            val response = itunesApiService.getTrack(dto.expression).execute()
-            val bodyResponse = response.body()
-            bodyResponse?.apply { resultCode = response.code() }
-                ?: Response().apply { resultCode = response.code() }
-        } catch (e: IOException) {
-            Response().apply { resultCode = CodesRequest.CODE_NO_CONNECT }
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = itunesApiService.getTrack(dto.expression)
+                response.apply { resultCode = CodesRequest.CODE_OK }
+            } catch (e: IOException) {
+                Response().apply { resultCode = CodesRequest.CODE_NO_CONNECT }
+            }
         }
 
     }

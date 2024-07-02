@@ -5,4 +5,6 @@
     <dimen name="search_header_height_56dp">32dp</dimen>
     <dimen name="height_edittext_36dp">24dp</dimen>
     <dimen name="margin_playlist_frag_46">16dp</dimen>
+    <dimen name="margin_top_42dp">16dp</dimen>
+    <dimen name="margin_top_24dp">8dp</dimen>
 </resources>
