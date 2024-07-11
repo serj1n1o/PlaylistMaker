@@ -8,20 +8,22 @@ import com.practicum.playlistmaker.search.domain.api.TrackRepository
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.util.MapperDateTimeFormatter
 import com.practicum.playlistmaker.util.Resource
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class TrackRepositoryImpl(
     private val networkClient: NetworkClient,
 ) : TrackRepository {
-    override fun searchTracks(expression: String): Resource<List<Track>> {
+    override fun searchTracks(expression: String): Flow<Resource<List<Track>>> = flow {
         val response = networkClient.doRequest(ItunesRequest(expression))
-        return when (response.resultCode) {
-            CodesRequest.CODE_NO_CONNECT -> Resource.Error(resultCode = response.resultCode)
+        when (response.resultCode) {
+            CodesRequest.CODE_NO_CONNECT -> emit(Resource.Error(resultCode = response.resultCode))
 
-            in 200..300 -> {
+            CodesRequest.CODE_OK -> {
                 if ((response as ItunesResponse).tracks.isEmpty()) {
-                    Resource.Error(resultCode = CodesRequest.CODE_NO_FOUND)
+                    emit(Resource.Error(resultCode = CodesRequest.CODE_NO_FOUND))
                 } else {
-                    Resource.Success(data = response.tracks.map {
+                    val dataTracks = response.tracks.map {
                         Track(
                             trackId = it.trackId,
                             trackName = it.trackName,
@@ -34,11 +36,12 @@ class TrackRepositoryImpl(
                             country = it.country,
                             previewUrl = it.previewUrl
                         )
-                    })
+                    }
+                    emit(Resource.Success(data = dataTracks))
                 }
             }
 
-            else -> Resource.Error(resultCode = response.resultCode)
+            else -> emit(Resource.Error(resultCode = response.resultCode))
 
         }
     }

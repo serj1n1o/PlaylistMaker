@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.search.domain.models
 
-
 data class Track(
     val trackId: Long,
     val trackName: String,

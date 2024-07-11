@@ -2,34 +2,41 @@ package com.practicum.playlistmaker.player.ui.view
 
 import android.os.Bundle
 import android.util.TypedValue
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
-import com.practicum.playlistmaker.DATA_FROM_AUDIO_PLAYER_KEY
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.databinding.ActivityAudioPlayerBinding
+import com.practicum.playlistmaker.databinding.FragmentAudioPlayerBinding
 import com.practicum.playlistmaker.player.domain.models.PlayerState
 import com.practicum.playlistmaker.player.ui.viewmodel.AudioPlayerViewModel
 import com.practicum.playlistmaker.search.domain.models.Track
+import com.practicum.playlistmaker.util.FragmentWithBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class AudioPlayer : AppCompatActivity() {
+class AudioPlayer : FragmentWithBinding<FragmentAudioPlayerBinding>() {
 
     private val playerViewModel by viewModel<AudioPlayerViewModel>()
 
-    private val binding by lazy { ActivityAudioPlayerBinding.inflate(layoutInflater) }
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+    ): FragmentAudioPlayerBinding {
+        return FragmentAudioPlayerBinding.inflate(inflater, container, false)
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val track: Track
         if (playerViewModel.getPlayerScreenState().value is Track) {
             track = playerViewModel.getPlayerScreenState().value!!
         } else {
             track = Gson().fromJson(
-                intent.getStringExtra(DATA_FROM_AUDIO_PLAYER_KEY),
+                requireArguments().getString(DATA_FROM_AUDIO_PLAYER_KEY),
                 Track::class.java
             )
             val audioPreviewData = track.previewUrl
@@ -37,35 +44,38 @@ class AudioPlayer : AppCompatActivity() {
             playerViewModel.setPlayerScreenState(track)
         }
 
-        playerViewModel.getPlayerStateLiveData().observe(this) {
+        playerViewModel.getPlayerStateLiveData().observe(viewLifecycleOwner) {
             playbackControl(it)
             if (it == PlayerState.PREPARED) {
                 setTime(getString(R.string.duration_preview_track_default))
             }
         }
 
-        playerViewModel.getCurrentPositionLiveData().observe(this) {
+        playerViewModel.getCurrentPositionLiveData().observe(viewLifecycleOwner) {
             setTime(it)
         }
 
         initScreenPlayer(track)
 
         binding.buttonBackPlayer.setOnClickListener {
-            finish()
-        }
-
-        binding.btnAddPlaylist.setOnClickListener {
-
+            findNavController().popBackStack()
         }
 
         binding.btnPlayPause.setOnClickListener {
             playerViewModel.togglePlaybackState()
         }
 
-        binding.btnAddFavorites.setOnClickListener {
-
+        binding.btnAddPlaylist.setOnClickListener {
+            playerViewModel.addToPlaylist(track)
         }
+
+        binding.btnAddFavorites.setOnClickListener {
+            playerViewModel.addToFavorites(track)
+        }
+
+
     }
+
 
     private fun playbackControl(state: PlayerState) {
         when (state) {
@@ -111,6 +121,14 @@ class AudioPlayer : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         playerViewModel.pause()
+    }
+
+    companion object {
+        const val DATA_FROM_AUDIO_PLAYER_KEY = "TRACK DATA"
+        fun createArgs(track: String): Bundle =
+            bundleOf(
+                DATA_FROM_AUDIO_PLAYER_KEY to track
+            )
     }
 
 }
