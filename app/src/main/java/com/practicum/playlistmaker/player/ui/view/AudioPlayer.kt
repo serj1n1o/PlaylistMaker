@@ -5,11 +5,11 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.BundleCompat
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.google.gson.Gson
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentAudioPlayerBinding
 import com.practicum.playlistmaker.player.domain.models.PlayerState
@@ -29,16 +29,19 @@ class AudioPlayer : FragmentWithBinding<FragmentAudioPlayerBinding>() {
         return FragmentAudioPlayerBinding.inflate(inflater, container, false)
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val track: Track
         if (playerViewModel.getPlayerScreenState().value is Track) {
             track = playerViewModel.getPlayerScreenState().value!!
         } else {
-            track = Gson().fromJson(
-                requireArguments().getString(DATA_FROM_AUDIO_PLAYER_KEY),
+            track = BundleCompat.getParcelable(
+                requireArguments(),
+                DATA_FROM_AUDIO_PLAYER_KEY,
                 Track::class.java
-            )
+            ) as Track
+
             val audioPreviewData = track.previewUrl
             playerViewModel.prepared(audioPreviewData)
             playerViewModel.setPlayerScreenState(track)
@@ -53,6 +56,10 @@ class AudioPlayer : FragmentWithBinding<FragmentAudioPlayerBinding>() {
 
         playerViewModel.getCurrentPositionLiveData().observe(viewLifecycleOwner) {
             setTime(it)
+        }
+
+        playerViewModel.getPlayerScreenState().observe(viewLifecycleOwner) {
+            setFavoritesBtnState(it.inFavorite)
         }
 
         initScreenPlayer(track)
@@ -114,6 +121,11 @@ class AudioPlayer : FragmentWithBinding<FragmentAudioPlayerBinding>() {
         }
     }
 
+    private fun setFavoritesBtnState(inFavorites: Boolean) {
+        if (inFavorites) binding.btnAddFavorites.setImageResource(R.drawable.btn_added_to_favorite)
+        else binding.btnAddFavorites.setImageResource(R.drawable.btn_add_favorites)
+    }
+
     private fun setTime(time: String) {
         binding.playbackProgress.text = time
     }
@@ -125,7 +137,7 @@ class AudioPlayer : FragmentWithBinding<FragmentAudioPlayerBinding>() {
 
     companion object {
         const val DATA_FROM_AUDIO_PLAYER_KEY = "TRACK DATA"
-        fun createArgs(track: String): Bundle =
+        fun createArgs(track: Track): Bundle =
             bundleOf(
                 DATA_FROM_AUDIO_PLAYER_KEY to track
             )

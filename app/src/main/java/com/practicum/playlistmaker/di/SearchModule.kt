@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker.di
 
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.search.converters.TrackConverter
 import com.practicum.playlistmaker.search.data.localstorage.HistoryTracksStorage
 import com.practicum.playlistmaker.search.data.localstorage.HistoryTracksStorageImpl
 import com.practicum.playlistmaker.search.data.network.ItunesApiService
@@ -34,13 +35,21 @@ val searchModule = module {
             .create<ItunesApiService>()
     }
 
+    factory {
+        TrackConverter()
+    }
+
     factory<NetworkClient> {
         RetrofitNetworkClient(itunesApiService = get(), context = get())
     }
 
 
     factory<TrackRepository> {
-        TrackRepositoryImpl(networkClient = get())
+        TrackRepositoryImpl(
+            networkClient = get(),
+            favoritesDatabase = get(),
+            trackConverter = get()
+        )
     }
     factory<TracksInteractor> {
         TracksInteractorImpl(repository = get())
@@ -52,7 +61,11 @@ val searchModule = module {
     }
 
     factory<HistoryTracksRepository> {
-        HistoryTracksRepositoryImpl(historyTracksStorage = get())
+        HistoryTracksRepositoryImpl(
+            historyTracksStorage = get(),
+            favoritesDatabase = get(),
+            trackConverter = get()
+        )
     }
     factory<HistoryTracksInteractor> {
         HistoryTracksInteractorImpl(historyTracksRepository = get())

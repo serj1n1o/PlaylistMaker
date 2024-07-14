@@ -65,11 +65,14 @@ class TrackSearchViewModel(
     }
 
     fun getTracksHistory() {
-        val tracks = historyTracksInteractor.getTracksHistory()
-        if (tracks.isEmpty()) {
-            historyStateLiveData.postValue(HistoryState.Empty)
-        } else {
-            historyStateLiveData.postValue(HistoryState.Content(tracks))
+        viewModelScope.launch {
+            val tracks = historyTracksInteractor.getTracksHistory()
+
+            if (tracks.isEmpty()) {
+                historyStateLiveData.postValue(HistoryState.Empty)
+            } else {
+                historyStateLiveData.postValue(HistoryState.Content(tracks))
+            }
         }
     }
 

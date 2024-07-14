@@ -8,6 +8,7 @@ import com.practicum.playlistmaker.search.data.dto.ItunesRequest
 import com.practicum.playlistmaker.search.data.dto.Response
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import retrofit2.HttpException
 import java.io.IOException
 
 class RetrofitNetworkClient(
@@ -27,6 +28,8 @@ class RetrofitNetworkClient(
                 val response = itunesApiService.getTrack(dto.expression)
                 response.apply { resultCode = CodesRequest.CODE_OK }
             } catch (e: IOException) {
+                Response().apply { resultCode = CodesRequest.CODE_NO_CONNECT }
+            } catch (e: HttpException) {
                 Response().apply { resultCode = CodesRequest.CODE_NO_CONNECT }
             }
         }

@@ -10,7 +10,7 @@ class HistoryTracksInteractorImpl(private val historyTracksRepository: HistoryTr
         historyTracksRepository.addTrackToHistory(track)
     }
 
-    override fun getTracksHistory(): List<Track> {
+    override suspend fun getTracksHistory(): List<Track> {
         return historyTracksRepository.getTracksHistory()
     }
 
