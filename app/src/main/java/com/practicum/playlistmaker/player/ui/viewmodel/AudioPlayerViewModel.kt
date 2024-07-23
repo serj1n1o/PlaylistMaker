@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.practicum.playlistmaker.medialibrary.domain.dbapi.FavoritesInteractor
 import com.practicum.playlistmaker.player.domain.api.PlayerManager
 import com.practicum.playlistmaker.player.domain.models.PlayerState
 import com.practicum.playlistmaker.search.domain.models.Track
@@ -14,6 +15,7 @@ import kotlinx.coroutines.launch
 
 class AudioPlayerViewModel(
     private val mediaPlayer: PlayerManager,
+    private val favoritesInteractor: FavoritesInteractor,
 ) : ViewModel() {
 
 
@@ -96,6 +98,18 @@ class AudioPlayerViewModel(
     }
 
     fun addToFavorites(track: Track) {
+        viewModelScope.launch {
+            if (track.inFavorite) {
+                track.inFavorite = false
+                favoritesInteractor.deleteTrackFromFavorites(track)
+                playerScreenStateLiveData.postValue(track)
+            } else {
+                track.inFavorite = true
+                favoritesInteractor.addTrackToFavorites(track)
+                playerScreenStateLiveData.postValue(track)
+            }
+
+        }
 
     }
 

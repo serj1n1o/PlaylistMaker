@@ -12,7 +12,6 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.gson.Gson
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentSearchBinding
 import com.practicum.playlistmaker.player.ui.view.AudioPlayer
@@ -140,7 +139,7 @@ class SearchFragment : FragmentWithBinding<FragmentSearchBinding>() {
     private fun startAudioPlayer(track: Track) {
         findNavController().navigate(
             R.id.action_searchFragment_to_audioPlayer,
-            AudioPlayer.createArgs(Gson().toJson(track))
+            AudioPlayer.createArgs(track)
         )
     }
 
@@ -264,6 +263,7 @@ class SearchFragment : FragmentWithBinding<FragmentSearchBinding>() {
         with(binding) {
             recyclerSearchTrack.adapter = null
             recyclerHistoryList.adapter = null
+            trackAdapter.tracks.clear()
         }
         super.onDestroyView()
     }
