@@ -2,7 +2,7 @@ package com.practicum.playlistmaker.medialibrary.data.repository
 
 import com.practicum.playlistmaker.db.FavoritesDatabase
 import com.practicum.playlistmaker.db.entity.TrackDbo
-import com.practicum.playlistmaker.medialibrary.converters.TrackDbConvertor
+import com.practicum.playlistmaker.medialibrary.converters.TrackDbConverter
 import com.practicum.playlistmaker.medialibrary.domain.dbapi.FavoritesRepository
 import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.Dispatchers
@@ -12,7 +12,7 @@ import kotlinx.coroutines.withContext
 
 class FavoritesRepositoryImpl(
     private val favoritesDatabase: FavoritesDatabase,
-    private val trackConverter: TrackDbConvertor,
+    private val trackConverter: TrackDbConverter,
 ) : FavoritesRepository {
     override suspend fun addTrackToFavorites(track: Track) {
         withContext(Dispatchers.IO) {

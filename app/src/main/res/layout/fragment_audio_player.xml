@@ -24,7 +24,6 @@
     <ImageView
         android:id="@+id/buttonBackPlayer"
         style="@style/HeaderImageBack"
-        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/standard_indent_16dp"
         android:src="@drawable/icon_back"
         app:layout_constraintStart_toStartOf="@id/leftBorder"
