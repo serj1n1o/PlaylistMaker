@@ -25,12 +25,8 @@ class SharingInteractorImpl(
         externalNavigator.openSettingsPermission()
     }
 
-    override suspend fun saveImageToStorage(artworkUri: Uri, namePlaylist: String) {
-        internalNavigator.saveImageToStorage(artworkUri, namePlaylist)
-    }
-
-    override suspend fun loadImageFromStorage(namePlaylist: String): Uri {
-        return internalNavigator.loadImageFromStorage(namePlaylist)
+    override suspend fun saveImageToStorage(artworkUri: Uri, namePlaylist: String): Uri {
+        return internalNavigator.saveImageToStorage(artworkUri, namePlaylist)
     }
 
 }

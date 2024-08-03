@@ -13,7 +13,7 @@ data class PlaylistDbo(
     val playlistId: Long = 0,
     val name: String,
     val description: String,
-    val cover: Uri,
+    val cover: Uri?,
     val listTrackIdDbo: List<Long>,
     val amountTracks: Int,
 )

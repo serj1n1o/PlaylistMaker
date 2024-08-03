@@ -1,8 +1,7 @@
 package com.practicum.playlistmaker.di
 
 import androidx.room.Room
-import com.practicum.playlistmaker.db.FavoritesDatabase
-import com.practicum.playlistmaker.db.PlaylistDatabase
+import com.practicum.playlistmaker.db.Database
 import com.practicum.playlistmaker.medialibrary.converters.PlaylistDbConverter
 import com.practicum.playlistmaker.medialibrary.converters.TrackDbConverter
 import com.practicum.playlistmaker.medialibrary.data.repository.FavoritesRepositoryImpl
@@ -34,21 +33,15 @@ val mediaLibraryModule = module {
     single {
         Room.databaseBuilder(
             context = get(),
-            klass = FavoritesDatabase::class.java,
-            name = "favorites_database.db"
+            klass = Database::class.java,
+            name = "playlist_maker_database.db"
         ).build()
     }
 
-    single {
-        Room.databaseBuilder(
-            context = get(),
-            klass = PlaylistDatabase::class.java,
-            name = "playlist_database.db"
-        ).build()
-    }
+
 
     factory<PlaylistRepository> {
-        PlaylistRepositoryImpl(playlistDatabase = get(), playlistConverter = get())
+        PlaylistRepositoryImpl(database = get(), playlistConverter = get())
     }
 
     factory<PlaylistInteractor> {
@@ -57,7 +50,7 @@ val mediaLibraryModule = module {
 
 
     factory<FavoritesRepository> {
-        FavoritesRepositoryImpl(favoritesDatabase = get(), trackConverter = get())
+        FavoritesRepositoryImpl(database = get(), trackConverter = get())
     }
 
     factory<FavoritesInteractor> {

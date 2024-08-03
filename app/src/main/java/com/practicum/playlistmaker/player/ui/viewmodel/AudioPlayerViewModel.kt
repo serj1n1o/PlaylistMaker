@@ -5,6 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.medialibrary.domain.dbapi.FavoritesInteractor
+import com.practicum.playlistmaker.medialibrary.domain.dbapi.PlaylistInteractor
+import com.practicum.playlistmaker.medialibrary.domain.model.Playlist
+import com.practicum.playlistmaker.medialibrary.ui.viewmodel.PlaylistState
 import com.practicum.playlistmaker.player.domain.api.PlayerManager
 import com.practicum.playlistmaker.player.domain.models.PlayerState
 import com.practicum.playlistmaker.search.domain.models.Track
@@ -16,6 +19,7 @@ import kotlinx.coroutines.launch
 class AudioPlayerViewModel(
     private val mediaPlayer: PlayerManager,
     private val favoritesInteractor: FavoritesInteractor,
+    private val playlistInteractor: PlaylistInteractor,
 ) : ViewModel() {
 
 
@@ -30,6 +34,9 @@ class AudioPlayerViewModel(
 
     private val playerScreenStateLiveData = MutableLiveData<Track>()
     fun getPlayerScreenState(): LiveData<Track> = playerScreenStateLiveData
+
+    private val playlistStateLiveData = MutableLiveData<PlaylistState>()
+    fun getPlaylistState(): LiveData<PlaylistState> = playlistStateLiveData
 
     fun prepared(url: String?) {
         if (url != null) {
@@ -94,6 +101,12 @@ class AudioPlayerViewModel(
     }
 
     fun addToPlaylist(track: Track) {
+        viewModelScope.launch {
+            playlistInteractor.getAllPlaylist()
+                .collect { playlists ->
+                    processResultPlaylist(playlists)
+                }
+        }
 
     }
 
@@ -111,6 +124,11 @@ class AudioPlayerViewModel(
 
         }
 
+    }
+
+    private fun processResultPlaylist(playlists: List<Playlist>) {
+        if (playlists.isEmpty()) playlistStateLiveData.postValue(PlaylistState.Empty)
+        else playlistStateLiveData.postValue(PlaylistState.Content(playlists))
     }
 
     companion object {

@@ -5,5 +5,6 @@ import android.net.Uri
 data class Playlist(
     val name: String,
     val description: String?,
-    val cover: Uri?,
+    val cover: Uri? = null,
+    var amountTracks: Int = 0,
 )

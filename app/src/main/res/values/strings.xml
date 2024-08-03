@@ -43,4 +43,6 @@
     <string name="uploaded_tag_image">image</string>
     <string name="rationale_the_request">Доступ к хранилищу необходим для установки обложки плейлиста</string>
     <string name="playlist_created">Плейлист %1$s создан</string>
+    <string name="playlist_covers">myPlaylistsArtworks</string>
+    <string name="add_to_playlist_txt">Добавить в плейлист</string>
 </resources>

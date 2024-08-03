@@ -5,6 +5,8 @@
     <dimen name="corner_radius_button_16dp">16dp</dimen>
     <dimen name="text_in_settings_16sp">16sp</dimen>
     <dimen name="padding_min_8dp">8dp</dimen>
+    <dimen name="radius_8dp">8dp</dimen>
+    <dimen name="radius_2dp">2dp</dimen>
     <dimen name="padding_button_settings_32dp">32dp</dimen>
     <dimen name="height_edittext_36dp">36dp</dimen>
     <dimen name="padding_button_settings_img_56dp">56dp</dimen>
@@ -29,4 +31,5 @@
     <dimen name="margin_playlist_frag_46">46dp</dimen>
     <dimen name="text_12sp">12sp</dimen>
     <dimen name="margin_12dp">12dp</dimen>
+    <dimen name="margin_4dp">4dp</dimen>
 </resources>

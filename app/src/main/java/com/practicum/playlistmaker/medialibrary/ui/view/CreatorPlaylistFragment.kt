@@ -8,6 +8,7 @@ import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doOnTextChanged
@@ -26,22 +28,22 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.markodevcic.peko.PermissionRequester
 import com.markodevcic.peko.PermissionResult
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.databinding.FragmentItemPlaylistBinding
+import com.practicum.playlistmaker.databinding.FragmentCreatorPlaylistBinding
 import com.practicum.playlistmaker.medialibrary.ui.viewmodel.PlaylistViewModel
 import com.practicum.playlistmaker.util.FragmentWithBinding
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class ItemPlaylistFragment : FragmentWithBinding<FragmentItemPlaylistBinding>() {
+class CreatorPlaylistFragment : FragmentWithBinding<FragmentCreatorPlaylistBinding>() {
 
     private val viewModel by viewModel<PlaylistViewModel>()
 
     override fun createBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
-    ): FragmentItemPlaylistBinding {
-        return FragmentItemPlaylistBinding.inflate(inflater, container, false)
+    ): FragmentCreatorPlaylistBinding {
+        return FragmentCreatorPlaylistBinding.inflate(inflater, container, false)
     }
 
     private val confirmDialog by lazy {
@@ -59,12 +61,13 @@ class ItemPlaylistFragment : FragmentWithBinding<FragmentItemPlaylistBinding>() 
     private var descriptionPlaylist: String? = null
     private var namePlaylist: String? = null
 
+    private val requester = PermissionRequester.instance()
+
+
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-
-        val requester = PermissionRequester.instance()
 
         binding.btnCreatePlaylist.isEnabled = false
 
@@ -72,10 +75,10 @@ class ItemPlaylistFragment : FragmentWithBinding<FragmentItemPlaylistBinding>() 
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 if (uri != null) {
                     coverUri = uri
-                    binding.coverPlaylist.apply {
+                    with(binding.coverPlaylist) {
                         setImageURI(uri)
-                        this.tag = requireContext().getString(R.string.uploaded_tag_image)
                         scaleType = ImageView.ScaleType.CENTER_CROP
+                        tag = requireContext().getString(R.string.uploaded_tag_image)
                     }
                 }
             }
@@ -86,31 +89,7 @@ class ItemPlaylistFragment : FragmentWithBinding<FragmentItemPlaylistBinding>() 
 
         binding.coverPlaylist.setOnClickListener {
             lifecycleScope.launch {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    requester.request(Manifest.permission.READ_MEDIA_IMAGES).collect { result ->
-                        when (result) {
-                            is PermissionResult.Granted -> {
-                                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-                            }
-
-                            is PermissionResult.Denied.NeedsRationale -> {
-                                Toast.makeText(
-                                    requireContext(),
-                                    getString(R.string.rationale_the_request),
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-
-                            is PermissionResult.Denied.DeniedPermanently -> {
-                                viewModel.openSettingsPermission()
-                            }
-
-                            PermissionResult.Cancelled -> return@collect
-                        }
-                    }
-                } else {
-                    pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-                }
+                checkPermissionAndSelectImg(pickMedia)
             }
         }
 
@@ -155,16 +134,24 @@ class ItemPlaylistFragment : FragmentWithBinding<FragmentItemPlaylistBinding>() 
 
 
         binding.btnCreatePlaylist.setOnClickListener {
+            Log.d("BD", "gallery: $coverUri")
             if (namePlaylist != null) {
-                coverUri?.let { uri ->
-                    viewModel.saveImageToStorage(artworkUri = uri, namePlaylist = namePlaylist!!)
+                lifecycleScope.launch {
+                    val savedCover = coverUri?.let { uri ->
+                        viewModel.saveImageToStorage(
+                            coverUri = uri,
+                            namePlaylist = namePlaylist!!
+                        )
+                    }
+                    Log.d("BD", "on BD: $savedCover")
+                    viewModel.createPlaylist(namePlaylist, descriptionPlaylist, savedCover)
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.playlist_created, namePlaylist), Toast.LENGTH_SHORT
+                    ).show()
+                    findNavController().popBackStack()
                 }
-                viewModel.createPlaylist(namePlaylist, descriptionPlaylist, coverUri)
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.playlist_created, namePlaylist), Toast.LENGTH_SHORT
-                ).show()
-                findNavController().popBackStack()
+
             }
         }
 
@@ -219,6 +206,34 @@ class ItemPlaylistFragment : FragmentWithBinding<FragmentItemPlaylistBinding>() 
         val theme = context.theme
         theme.resolveAttribute(attr, typedValue, true)
         return typedValue.data
+    }
+
+    private suspend fun checkPermissionAndSelectImg(pickMedia: ActivityResultLauncher<PickVisualMediaRequest>) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requester.request(Manifest.permission.READ_MEDIA_IMAGES).collect { result ->
+                when (result) {
+                    is PermissionResult.Granted -> {
+                        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                    }
+
+                    is PermissionResult.Denied.NeedsRationale -> {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.rationale_the_request),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                    is PermissionResult.Denied.DeniedPermanently -> {
+                        viewModel.openSettingsPermission()
+                    }
+
+                    PermissionResult.Cancelled -> return@collect
+                }
+            }
+        } else {
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
     }
 
     override fun onDestroyView() {

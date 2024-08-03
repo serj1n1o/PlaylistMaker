@@ -7,12 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.BundleCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentAudioPlayerBinding
+import com.practicum.playlistmaker.medialibrary.domain.model.Playlist
+import com.practicum.playlistmaker.medialibrary.ui.viewmodel.PlaylistState
 import com.practicum.playlistmaker.player.domain.models.PlayerState
+import com.practicum.playlistmaker.player.ui.adapters.PlayerPlaylistAdapter
 import com.practicum.playlistmaker.player.ui.viewmodel.AudioPlayerViewModel
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.util.FragmentWithBinding
@@ -29,9 +35,22 @@ class AudioPlayer : FragmentWithBinding<FragmentAudioPlayerBinding>() {
         return FragmentAudioPlayerBinding.inflate(inflater, container, false)
     }
 
+    private val playlistAdapter by lazy {
+        PlayerPlaylistAdapter(
+            object : PlayerPlaylistAdapter.PlaylistClickListener {
+                override val onItemClickListener: ((Playlist) -> Unit)
+                    get() = { playlist ->
+                    }
+            }
+        )
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheetPlayer).apply {
+            state = BottomSheetBehavior.STATE_HIDDEN
+        }
+
         val track: Track
         if (playerViewModel.getPlayerScreenState().value is Track) {
             track = playerViewModel.getPlayerScreenState().value!!
@@ -46,6 +65,10 @@ class AudioPlayer : FragmentWithBinding<FragmentAudioPlayerBinding>() {
             playerViewModel.prepared(audioPreviewData)
             playerViewModel.setPlayerScreenState(track)
         }
+
+        binding.recyclerViewPlaylistsFromPlayer.layoutManager =
+            LinearLayoutManager(requireContext())
+        binding.recyclerViewPlaylistsFromPlayer.adapter = playlistAdapter
 
         playerViewModel.getPlayerStateLiveData().observe(viewLifecycleOwner) {
             playbackControl(it)
@@ -62,6 +85,18 @@ class AudioPlayer : FragmentWithBinding<FragmentAudioPlayerBinding>() {
             setFavoritesBtnState(it.inFavorite)
         }
 
+        playerViewModel.getPlaylistState().observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is PlaylistState.Content -> {
+                    showContent(state.playlists)
+                }
+
+                PlaylistState.Empty -> {
+                    hidePlaylists()
+                }
+            }
+        }
+
         initScreenPlayer(track)
 
         binding.buttonBackPlayer.setOnClickListener {
@@ -73,16 +108,46 @@ class AudioPlayer : FragmentWithBinding<FragmentAudioPlayerBinding>() {
         }
 
         binding.btnAddPlaylist.setOnClickListener {
+
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             playerViewModel.addToPlaylist(track)
+
         }
 
         binding.btnAddFavorites.setOnClickListener {
             playerViewModel.addToFavorites(track)
         }
 
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_COLLAPSED -> binding.overlay.isVisible = true
+                    BottomSheetBehavior.STATE_HIDDEN -> binding.overlay.isVisible = false
+                    else -> {}
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+        })
+
+        binding.newPlaylistBtnFromPlayer.setOnClickListener {
+            findNavController().navigate(R.id.action_audioPlayer_to_itemPlaylistFragment)
+        }
+
 
     }
 
+    private fun hidePlaylists() {
+        binding.recyclerViewPlaylistsFromPlayer.isVisible = false
+    }
+
+    private fun showContent(playlists: List<Playlist>) {
+        binding.recyclerViewPlaylistsFromPlayer.isVisible = true
+        playlistAdapter.playlists.clear()
+        playlistAdapter.playlists.addAll(playlists)
+        playlistAdapter.notifyDataSetChanged()
+    }
 
     private fun playbackControl(state: PlayerState) {
         when (state) {
@@ -133,6 +198,12 @@ class AudioPlayer : FragmentWithBinding<FragmentAudioPlayerBinding>() {
     override fun onPause() {
         super.onPause()
         playerViewModel.pause()
+    }
+
+    override fun onDestroyView() {
+        playlistAdapter.playlists.clear()
+        binding.recyclerViewPlaylistsFromPlayer.adapter = null
+        super.onDestroyView()
     }
 
     companion object {

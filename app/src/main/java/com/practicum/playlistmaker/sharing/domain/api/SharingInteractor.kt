@@ -7,6 +7,5 @@ interface SharingInteractor {
     fun openTerms()
     fun openSupport()
     fun openSettingsPermission()
-    suspend fun saveImageToStorage(artworkUri: Uri, namePlaylist: String)
-    suspend fun loadImageFromStorage(namePlaylist: String): Uri
+    suspend fun saveImageToStorage(artworkUri: Uri, namePlaylist: String): Uri
 }

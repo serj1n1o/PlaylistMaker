@@ -1,9 +1,9 @@
 package com.practicum.playlistmaker.medialibrary.ui.viewmodel
 
-import com.practicum.playlistmaker.search.domain.models.Track
+import com.practicum.playlistmaker.medialibrary.domain.model.Playlist
 
 sealed interface PlaylistState {
-    data class Content(val playlists: List<List<Track>>) : PlaylistState
+    data class Content(val playlists: List<Playlist>) : PlaylistState
     data object Empty : PlaylistState
 
 }

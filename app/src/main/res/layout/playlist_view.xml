@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="160dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginHorizontal="@dimen/margin_4dp"
+    android:layout_marginBottom="@dimen/standard_indent_16dp"
+    android:orientation="vertical">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/coverPlaylist"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        app:shapeAppearanceOverlay="@style/cornerRadiusPlaylistImage"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/placeholder" />
+
+    <TextView
+        android:id="@+id/namePlaylist"
+        style="@style/TextBottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        tools:text="Summer party" />
+
+    <TextView
+        android:id="@+id/amountTracks"
+        style="@style/TextBottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        tools:text="123 tracks" />
+
+
+</LinearLayout>

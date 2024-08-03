@@ -51,4 +51,5 @@ class ExternalNavigatorImpl(private val application: Application) : ExternalNavi
         }
         application.startActivity(intentPermission)
     }
+
 }

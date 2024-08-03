@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.medialibrary.converters
 
-import android.net.Uri
 import com.practicum.playlistmaker.db.entity.PlaylistDbo
 import com.practicum.playlistmaker.medialibrary.domain.model.Playlist
 
@@ -10,9 +9,9 @@ class PlaylistDbConverter {
         return PlaylistDbo(
             name = playlist.name,
             description = playlist.description ?: "",
-            cover = playlist.cover ?: Uri.EMPTY,
+            cover = playlist.cover,
             listTrackIdDbo = emptyList(),
-            amountTracks = 0,
+            amountTracks = playlist.amountTracks,
         )
     }
 
@@ -21,6 +20,7 @@ class PlaylistDbConverter {
             name = playlistDbo.name,
             description = playlistDbo.description,
             cover = playlistDbo.cover,
+            amountTracks = playlistDbo.amountTracks,
         )
     }
 }

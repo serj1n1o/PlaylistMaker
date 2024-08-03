@@ -10,13 +10,13 @@ class Converters {
     private val gson = Gson()
 
     @TypeConverter
-    fun coverFromUri(uri: Uri): String {
-        return uri.toString()
+    fun coverFromUri(uri: Uri?): String? {
+        return uri?.toString()
     }
 
     @TypeConverter
-    fun coverToUri(uriString: String): Uri {
-        return uriString.toUri()
+    fun coverToUri(uriString: String?): Uri? {
+        return uriString?.toUri()
     }
 
     @TypeConverter

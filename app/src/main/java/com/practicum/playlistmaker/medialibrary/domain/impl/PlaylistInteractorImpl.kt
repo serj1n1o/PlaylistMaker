@@ -3,6 +3,7 @@ package com.practicum.playlistmaker.medialibrary.domain.impl
 import com.practicum.playlistmaker.medialibrary.domain.dbapi.PlaylistInteractor
 import com.practicum.playlistmaker.medialibrary.domain.dbapi.PlaylistRepository
 import com.practicum.playlistmaker.medialibrary.domain.model.Playlist
+import kotlinx.coroutines.flow.Flow
 
 class PlaylistInteractorImpl(private val playlistRepository: PlaylistRepository) :
     PlaylistInteractor {
@@ -16,5 +17,9 @@ class PlaylistInteractorImpl(private val playlistRepository: PlaylistRepository)
 
     override suspend fun deletePlaylist(playlist: Playlist) {
         playlistRepository.deletePlaylist(playlist)
+    }
+
+    override fun getAllPlaylist(): Flow<List<Playlist>> {
+        return playlistRepository.getAllPlaylist()
     }
 }

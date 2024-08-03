@@ -42,7 +42,7 @@
     </fragment>
     <fragment
         android:id="@+id/itemPlaylistFragment"
-        android:name="com.practicum.playlistmaker.medialibrary.ui.view.ItemPlaylistFragment"
+        android:name="com.practicum.playlistmaker.medialibrary.ui.view.CreatorPlaylistFragment"
         android:label="fragment_item_playlist"
-        tools:layout="@layout/fragment_item_playlist" />
+        tools:layout="@layout/fragment_creator_playlist" />
 </navigation>
