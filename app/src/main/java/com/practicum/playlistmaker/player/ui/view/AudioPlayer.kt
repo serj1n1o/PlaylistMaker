@@ -154,10 +154,12 @@ class AudioPlayer : FragmentWithBinding<FragmentAudioPlayerBinding>() {
                 when (newState) {
                     BottomSheetBehavior.STATE_COLLAPSED -> {
                         binding.overlay.isVisible = true
+                        animateOverlay(true)
                     }
 
                     BottomSheetBehavior.STATE_HIDDEN -> {
                         binding.overlay.isVisible = false
+                        animateOverlay(false)
                     }
 
                     else -> {}
@@ -245,7 +247,16 @@ class AudioPlayer : FragmentWithBinding<FragmentAudioPlayerBinding>() {
 
     }
 
+    private fun animateOverlay(show: Boolean) {
+        val alpha = if (show) 1f else 0f
+        binding.overlay.animate()
+            .alpha(alpha)
+            .setDuration(DURATION_ANIM)
+            .withEndAction { if (!show) binding.overlay.isVisible = false }
+    }
+
     companion object {
+        private const val DURATION_ANIM = 300L
         const val DATA_FROM_AUDIO_PLAYER_KEY = "TRACK DATA"
         fun createArgs(track: Track): Bundle =
             bundleOf(
