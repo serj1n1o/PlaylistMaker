@@ -13,8 +13,8 @@ interface PlaylistDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertPlaylist(playlist: PlaylistDbo)
 
-    @Update(onConflict = OnConflictStrategy.NONE)
-    suspend fun updatePlaylist(playlist: PlaylistDbo)
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun updatePlaylist(playlist: PlaylistDbo): Int
 
     @Delete
     suspend fun deletePlaylist(playlist: PlaylistDbo)

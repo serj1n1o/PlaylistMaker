@@ -6,6 +6,7 @@ import com.bumptech.glide.Glide
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.PlaylistViewBinding
 import com.practicum.playlistmaker.medialibrary.domain.model.Playlist
+import com.practicum.playlistmaker.util.DataMapper
 
 class PlaylistViewHolder(private val binding: PlaylistViewBinding) :
     RecyclerView.ViewHolder(binding.root) {
@@ -25,7 +26,7 @@ class PlaylistViewHolder(private val binding: PlaylistViewBinding) :
             }
 
             namePlaylist.text = item.name
-            amountTracks.text = item.amountTracks.toString()
+            amountTracks.text = DataMapper.mapAmountTrackToString(item.amountTracks)
         }
     }
 }

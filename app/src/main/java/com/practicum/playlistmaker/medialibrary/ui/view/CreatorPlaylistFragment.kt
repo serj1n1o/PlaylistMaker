@@ -8,7 +8,6 @@ import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -134,7 +133,6 @@ class CreatorPlaylistFragment : FragmentWithBinding<FragmentCreatorPlaylistBindi
 
 
         binding.btnCreatePlaylist.setOnClickListener {
-            Log.d("BD", "gallery: $coverUri")
             if (namePlaylist != null) {
                 lifecycleScope.launch {
                     val savedCover = coverUri?.let { uri ->
@@ -143,7 +141,6 @@ class CreatorPlaylistFragment : FragmentWithBinding<FragmentCreatorPlaylistBindi
                             namePlaylist = namePlaylist!!
                         )
                     }
-                    Log.d("BD", "on BD: $savedCover")
                     viewModel.createPlaylist(namePlaylist, descriptionPlaylist, savedCover)
                     Toast.makeText(
                         requireContext(),

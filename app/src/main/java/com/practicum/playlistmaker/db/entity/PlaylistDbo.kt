@@ -10,7 +10,7 @@ import com.practicum.playlistmaker.db.converters.Converters
 @TypeConverters(value = [Converters::class])
 data class PlaylistDbo(
     @PrimaryKey(autoGenerate = true)
-    val playlistId: Long = 0,
+    val playlistId: Long?,
     val name: String,
     val description: String,
     val cover: Uri?,

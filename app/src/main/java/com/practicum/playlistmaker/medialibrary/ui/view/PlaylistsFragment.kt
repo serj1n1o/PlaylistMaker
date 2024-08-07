@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentPlaylistsBinding
 import com.practicum.playlistmaker.medialibrary.domain.model.Playlist
+import com.practicum.playlistmaker.medialibrary.domain.model.PlaylistState
 import com.practicum.playlistmaker.medialibrary.ui.adapters.PlaylistAdapter
-import com.practicum.playlistmaker.medialibrary.ui.viewmodel.PlaylistState
 import com.practicum.playlistmaker.medialibrary.ui.viewmodel.PlaylistViewModel
 import com.practicum.playlistmaker.util.FragmentWithBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel

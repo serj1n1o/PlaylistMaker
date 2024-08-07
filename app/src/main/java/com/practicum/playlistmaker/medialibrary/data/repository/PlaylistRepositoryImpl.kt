@@ -5,6 +5,7 @@ import com.practicum.playlistmaker.db.entity.PlaylistDbo
 import com.practicum.playlistmaker.medialibrary.converters.PlaylistDbConverter
 import com.practicum.playlistmaker.medialibrary.domain.dbapi.PlaylistRepository
 import com.practicum.playlistmaker.medialibrary.domain.model.Playlist
+import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -23,18 +24,15 @@ class PlaylistRepositoryImpl(
         }
     }
 
-    override suspend fun updatePlaylist(playlistId: Long, trackId: Long) {
-        withContext(Dispatchers.IO) {
-            val oldPlaylist = database.playlistDao().getPlaylistById(playlistId)
-            if (oldPlaylist != null) {
-                val listTracksId = oldPlaylist.listTrackIdDbo.toMutableList()
-                listTracksId.add(trackId)
-                val newPlaylist = oldPlaylist.copy(
-                    listTrackIdDbo = listTracksId,
-                    amountTracks = listTracksId.size
-                )
-                database.playlistDao().updatePlaylist(newPlaylist)
-            }
+    override suspend fun updatePlaylist(playlist: Playlist, trackId: Long): Int {
+        return withContext(Dispatchers.IO) {
+            val listTracksId = playlist.listTrackId.toMutableList()
+            listTracksId.add(trackId)
+            val newPlaylist = playlist.copy(
+                listTrackId = listTracksId,
+                amountTracks = listTracksId.size
+            )
+            database.playlistDao().updatePlaylist(playlistConverter.map(newPlaylist))
         }
     }
 
@@ -49,6 +47,13 @@ class PlaylistRepositoryImpl(
             database.playlistDao().getAllPlaylists()
         }
         emit(convertFromPlaylistDbo(playlists))
+    }
+
+    override suspend fun addTrackToTrackInPlaylist(track: Track) {
+        withContext(Dispatchers.IO) {
+            database.trackInPlaylistDao()
+                .addTrackToTrackInPlaylist(playlistConverter.mapTrackToTrackInPlaylist(track))
+        }
     }
 
 

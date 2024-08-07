@@ -5,6 +5,8 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.core.os.BundleCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -16,7 +18,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentAudioPlayerBinding
 import com.practicum.playlistmaker.medialibrary.domain.model.Playlist
-import com.practicum.playlistmaker.medialibrary.ui.viewmodel.PlaylistState
+import com.practicum.playlistmaker.medialibrary.domain.model.PlaylistState
+import com.practicum.playlistmaker.medialibrary.domain.model.StatusAdd
 import com.practicum.playlistmaker.player.domain.models.PlayerState
 import com.practicum.playlistmaker.player.ui.adapters.PlayerPlaylistAdapter
 import com.practicum.playlistmaker.player.ui.viewmodel.AudioPlayerViewModel
@@ -35,11 +38,17 @@ class AudioPlayer : FragmentWithBinding<FragmentAudioPlayerBinding>() {
         return FragmentAudioPlayerBinding.inflate(inflater, container, false)
     }
 
+    lateinit var track: Track
+
+    private var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>? = null
+
     private val playlistAdapter by lazy {
         PlayerPlaylistAdapter(
             object : PlayerPlaylistAdapter.PlaylistClickListener {
                 override val onItemClickListener: ((Playlist) -> Unit)
                     get() = { playlist ->
+                        playerViewModel.addToPlaylist(track, playlist)
+                        bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
                     }
             }
         )
@@ -47,11 +56,11 @@ class AudioPlayer : FragmentWithBinding<FragmentAudioPlayerBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheetPlayer).apply {
-            state = BottomSheetBehavior.STATE_HIDDEN
-        }
 
-        val track: Track
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheetPlayer)
+        bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
+
+
         if (playerViewModel.getPlayerScreenState().value is Track) {
             track = playerViewModel.getPlayerScreenState().value!!
         } else {
@@ -97,6 +106,28 @@ class AudioPlayer : FragmentWithBinding<FragmentAudioPlayerBinding>() {
             }
         }
 
+        playerViewModel.getTrackStatusAdd().observe(viewLifecycleOwner) { status ->
+            when (status) {
+                is StatusAdd.Success -> {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.track_add_playlist, status.playlistName),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                is StatusAdd.Failure -> {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.track_do_not_add_playlist, status.playlistName),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+
+
+
         initScreenPlayer(track)
 
         binding.buttonBackPlayer.setOnClickListener {
@@ -108,9 +139,8 @@ class AudioPlayer : FragmentWithBinding<FragmentAudioPlayerBinding>() {
         }
 
         binding.btnAddPlaylist.setOnClickListener {
-
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            playerViewModel.addToPlaylist(track)
+            bottomSheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
+            playerViewModel.getPlaylists()
 
         }
 
@@ -118,25 +148,31 @@ class AudioPlayer : FragmentWithBinding<FragmentAudioPlayerBinding>() {
             playerViewModel.addToFavorites(track)
         }
 
-        bottomSheetBehavior.addBottomSheetCallback(object :
+        bottomSheetBehavior?.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
-                    BottomSheetBehavior.STATE_COLLAPSED -> binding.overlay.isVisible = true
-                    BottomSheetBehavior.STATE_HIDDEN -> binding.overlay.isVisible = false
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        binding.overlay.isVisible = true
+                    }
+
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        binding.overlay.isVisible = false
+                    }
+
                     else -> {}
                 }
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
         })
-
         binding.newPlaylistBtnFromPlayer.setOnClickListener {
             findNavController().navigate(R.id.action_audioPlayer_to_itemPlaylistFragment)
         }
 
 
     }
+
 
     private fun hidePlaylists() {
         binding.recyclerViewPlaylistsFromPlayer.isVisible = false
@@ -200,10 +236,13 @@ class AudioPlayer : FragmentWithBinding<FragmentAudioPlayerBinding>() {
         playerViewModel.pause()
     }
 
+
     override fun onDestroyView() {
         playlistAdapter.playlists.clear()
         binding.recyclerViewPlaylistsFromPlayer.adapter = null
+        bottomSheetBehavior = null
         super.onDestroyView()
+
     }
 
     companion object {

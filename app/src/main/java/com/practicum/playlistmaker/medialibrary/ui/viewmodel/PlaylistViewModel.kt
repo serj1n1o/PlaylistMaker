@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.medialibrary.domain.dbapi.PlaylistInteractor
 import com.practicum.playlistmaker.medialibrary.domain.model.Playlist
+import com.practicum.playlistmaker.medialibrary.domain.model.PlaylistState
 import com.practicum.playlistmaker.sharing.domain.api.SharingInteractor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -45,9 +46,11 @@ class PlaylistViewModel(
         if (name != null) {
             playlistInteractor.insertPlaylist(
                 Playlist(
+                    id = null,
                     name = name,
                     description = description,
-                    cover = cover
+                    cover = cover,
+                    listTrackId = emptyList(),
                 )
             )
         }

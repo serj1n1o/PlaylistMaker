@@ -7,11 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.medialibrary.domain.dbapi.FavoritesInteractor
 import com.practicum.playlistmaker.medialibrary.domain.dbapi.PlaylistInteractor
 import com.practicum.playlistmaker.medialibrary.domain.model.Playlist
-import com.practicum.playlistmaker.medialibrary.ui.viewmodel.PlaylistState
+import com.practicum.playlistmaker.medialibrary.domain.model.PlaylistState
+import com.practicum.playlistmaker.medialibrary.domain.model.StatusAdd
 import com.practicum.playlistmaker.player.domain.api.PlayerManager
 import com.practicum.playlistmaker.player.domain.models.PlayerState
 import com.practicum.playlistmaker.search.domain.models.Track
-import com.practicum.playlistmaker.util.MapperDateTimeFormatter
+import com.practicum.playlistmaker.util.DataMapper
+import com.practicum.playlistmaker.util.SingleLiveEvent
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -37,6 +39,9 @@ class AudioPlayerViewModel(
 
     private val playlistStateLiveData = MutableLiveData<PlaylistState>()
     fun getPlaylistState(): LiveData<PlaylistState> = playlistStateLiveData
+
+    private val trackStatusAddingLiveData = SingleLiveEvent<StatusAdd>()
+    fun getTrackStatusAdd(): LiveData<StatusAdd> = trackStatusAddingLiveData
 
     fun prepared(url: String?) {
         if (url != null) {
@@ -77,13 +82,16 @@ class AudioPlayerViewModel(
             START_POSITION
         }
     }
+    fun setPlayerScreenState(track: Track) {
+        playerScreenStateLiveData.value = track
+    }
 
     private fun startTimer() {
         timerJob = viewModelScope.launch {
             while (mediaPlayer.getPlayerState() == PlayerState.PLAYING) {
                 delay(DELAY)
                 currentPositionLiveData.postValue(
-                    MapperDateTimeFormatter.mapTimeMillisToMinAndSec(
+                    DataMapper.mapTimeMillisToMinAndSec(
                         getCurrentPositionTrack()
                     )
                 )
@@ -91,23 +99,34 @@ class AudioPlayerViewModel(
         }
     }
 
-
     override fun onCleared() {
         mediaPlayer.release()
     }
 
-    fun setPlayerScreenState(track: Track) {
-        playerScreenStateLiveData.value = track
+
+    fun addToPlaylist(track: Track, playlist: Playlist) {
+
+        val listIdTracks = playlist.listTrackId
+        if (track.trackId in listIdTracks) {
+            trackStatusAddingLiveData.postValue(StatusAdd.Failure(playlist.name))
+        } else {
+            viewModelScope.launch {
+                playlistInteractor.addTrackToTrackInPlaylist(track)
+                val result =
+                    playlistInteractor.updatePlaylist(playlist = playlist, trackId = track.trackId)
+                trackStatusAddingLiveData.postValue(result)
+            }
+
+        }
     }
 
-    fun addToPlaylist(track: Track) {
+    fun getPlaylists() {
         viewModelScope.launch {
             playlistInteractor.getAllPlaylist()
                 .collect { playlists ->
                     processResultPlaylist(playlists)
                 }
         }
-
     }
 
     fun addToFavorites(track: Track) {

@@ -6,6 +6,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.PlaylistViewForBottomsheetBinding
 import com.practicum.playlistmaker.medialibrary.domain.model.Playlist
+import com.practicum.playlistmaker.util.DataMapper
 
 class PlayerPlaylistViewHolder(
     private val binding: PlaylistViewForBottomsheetBinding,
@@ -22,10 +23,12 @@ class PlayerPlaylistViewHolder(
                 .fitCenter()
                 .into(coverPlaylist)
             playlistName.text = item.name
-            amountTracks.text = item.amountTracks.toString()
+            amountTracks.text = DataMapper.mapAmountTrackToString(item.amountTracks)
         }
         itemView.setOnClickListener {
             clickListener.onItemClickListener?.invoke(item)
         }
     }
+
 }
+
