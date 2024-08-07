@@ -1,6 +1,6 @@
 package com.practicum.playlistmaker.search.data.repository
 
-import com.practicum.playlistmaker.db.FavoritesDatabase
+import com.practicum.playlistmaker.db.Database
 import com.practicum.playlistmaker.search.converters.TrackConverter
 import com.practicum.playlistmaker.search.data.localstorage.HistoryTracksStorage
 import com.practicum.playlistmaker.search.domain.api.HistoryTracksRepository
@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
 
 class HistoryTracksRepositoryImpl(
     private val historyTracksStorage: HistoryTracksStorage,
-    private val favoritesDatabase: FavoritesDatabase,
+    private val database: Database,
     private val trackConverter: TrackConverter,
 ) : HistoryTracksRepository {
     override fun addTrackToHistory(track: Track) {
@@ -19,7 +19,7 @@ class HistoryTracksRepositoryImpl(
 
     override suspend fun getTracksHistory(): List<Track> {
         val tracksIdInFavorites = withContext(Dispatchers.IO) {
-            favoritesDatabase.trackDao().getTracksIdFromFavorites()
+            database.trackDao().getTracksIdFromFavorites()
         }
         return historyTracksStorage.getTracksHistory().map {
             trackConverter.convertTrackFromTrackAndCheckFavorites(

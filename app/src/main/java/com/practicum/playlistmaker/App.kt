@@ -2,6 +2,7 @@ package com.practicum.playlistmaker
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import com.markodevcic.peko.PermissionRequester
 import com.practicum.playlistmaker.di.mediaLibraryModule
 import com.practicum.playlistmaker.di.playerModule
 import com.practicum.playlistmaker.di.searchModule
@@ -19,10 +20,9 @@ class App : Application() {
 
     private var isDarkTheme = false
 
-
     override fun onCreate() {
         super.onCreate()
-
+        PermissionRequester.initialize(this)
         startKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@App)

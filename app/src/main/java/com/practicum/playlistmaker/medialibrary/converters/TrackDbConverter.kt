@@ -3,7 +3,7 @@ package com.practicum.playlistmaker.medialibrary.converters
 import com.practicum.playlistmaker.db.entity.TrackDbo
 import com.practicum.playlistmaker.search.domain.models.Track
 
-class TrackDbConvertor {
+class TrackDbConverter {
 
     fun map(track: Track): TrackDbo {
         return TrackDbo(

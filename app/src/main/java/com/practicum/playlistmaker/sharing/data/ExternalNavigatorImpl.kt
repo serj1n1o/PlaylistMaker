@@ -3,6 +3,7 @@ package com.practicum.playlistmaker.sharing.data
 import android.app.Application
 import android.content.Intent
 import android.net.Uri
+import android.provider.Settings
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.sharing.domain.api.ExternalNavigator
 
@@ -42,4 +43,13 @@ class ExternalNavigatorImpl(private val application: Application) : ExternalNavi
         }
         application.startActivity(termsIntent)
     }
+
+    override fun openSettingsPermission() {
+        val intentPermission = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+            data = Uri.fromParts("package", application.packageName, null)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        application.startActivity(intentPermission)
+    }
+
 }

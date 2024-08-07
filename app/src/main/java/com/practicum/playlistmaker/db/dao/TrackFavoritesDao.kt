@@ -8,7 +8,7 @@ import androidx.room.Query
 import com.practicum.playlistmaker.db.entity.TrackDbo
 
 @Dao
-interface TrackDao {
+interface TrackFavoritesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTrackToFavorites(track: TrackDbo)

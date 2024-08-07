@@ -20,7 +20,11 @@ val playerModule = module {
     }
 
     viewModel<AudioPlayerViewModel> {
-        AudioPlayerViewModel(mediaPlayer = get(), favoritesInteractor = get())
+        AudioPlayerViewModel(
+            mediaPlayer = get(),
+            favoritesInteractor = get(),
+            playlistInteractor = get()
+        )
     }
 
 }

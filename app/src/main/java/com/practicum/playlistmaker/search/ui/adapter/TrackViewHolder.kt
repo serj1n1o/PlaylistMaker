@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.search.ui.adapter
 
-import android.util.TypedValue
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -14,11 +13,6 @@ class TrackViewHolder(
     private val clickListener: TrackAdapter.TrackClickListener,
 ) :
     RecyclerView.ViewHolder(binding.root) {
-    private val imgArtCornersRadius = TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP,
-        2f,
-        itemView.resources.displayMetrics
-    ).toInt()
 
     fun bind(model: Track) {
         with(binding) {
@@ -27,7 +21,11 @@ class TrackViewHolder(
             artistName.requestLayout()
             trackTime.text = model.trackTime
             Glide.with(itemView).load(model.artworkUrl100).fitCenter()
-                .placeholder(R.drawable.placeholder).transform(RoundedCorners(imgArtCornersRadius))
+                .placeholder(R.drawable.placeholder).transform(
+                    RoundedCorners(
+                        itemView.resources.getDimensionPixelSize(R.dimen.radius_2dp)
+                    )
+                )
                 .into(artwork)
         }
         itemView.setOnClickListener { clickListener.onItemClickListener?.invoke(model) }

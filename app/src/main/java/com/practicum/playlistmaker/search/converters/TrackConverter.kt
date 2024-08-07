@@ -2,7 +2,7 @@ package com.practicum.playlistmaker.search.converters
 
 import com.practicum.playlistmaker.search.data.dto.TrackDto
 import com.practicum.playlistmaker.search.domain.models.Track
-import com.practicum.playlistmaker.util.MapperDateTimeFormatter
+import com.practicum.playlistmaker.util.DataMapper
 
 class TrackConverter {
 
@@ -11,10 +11,10 @@ class TrackConverter {
             trackId = track.trackId,
             trackName = track.trackName,
             artistName = track.artistName,
-            trackTime = MapperDateTimeFormatter.mapTimeMillisToMinAndSec(track.trackTimeMillis),
+            trackTime = DataMapper.mapTimeMillisToMinAndSec(track.trackTimeMillis),
             artworkUrl100 = track.artworkUrl100,
             collectionName = track.collectionName,
-            releaseYear = MapperDateTimeFormatter.mapDateToYear(track.releaseDate),
+            releaseYear = DataMapper.mapDateToYear(track.releaseDate),
             primaryGenreName = track.primaryGenreName,
             country = track.country,
             previewUrl = track.previewUrl,
