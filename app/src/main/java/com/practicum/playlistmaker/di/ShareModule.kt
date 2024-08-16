@@ -1,7 +1,9 @@
 package com.practicum.playlistmaker.di
 
 import com.practicum.playlistmaker.sharing.data.ExternalNavigatorImpl
+import com.practicum.playlistmaker.sharing.data.InternalNavigatorImpl
 import com.practicum.playlistmaker.sharing.domain.api.ExternalNavigator
+import com.practicum.playlistmaker.sharing.domain.api.InternalNavigator
 import com.practicum.playlistmaker.sharing.domain.api.SharingInteractor
 import com.practicum.playlistmaker.sharing.domain.impl.SharingInteractorImpl
 import org.koin.dsl.module
@@ -11,6 +13,9 @@ val sharingModule = module {
         ExternalNavigatorImpl(application = get())
     }
     factory<SharingInteractor> {
-        SharingInteractorImpl(externalNavigator = get())
+        SharingInteractorImpl(externalNavigator = get(), internalNavigator = get())
+    }
+    factory<InternalNavigator> {
+        InternalNavigatorImpl(context = get())
     }
 }

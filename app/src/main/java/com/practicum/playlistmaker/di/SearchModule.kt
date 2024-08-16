@@ -47,7 +47,7 @@ val searchModule = module {
     factory<TrackRepository> {
         TrackRepositoryImpl(
             networkClient = get(),
-            favoritesDatabase = get(),
+            database = get(),
             trackConverter = get()
         )
     }
@@ -63,7 +63,7 @@ val searchModule = module {
     factory<HistoryTracksRepository> {
         HistoryTracksRepositoryImpl(
             historyTracksStorage = get(),
-            favoritesDatabase = get(),
+            database = get(),
             trackConverter = get()
         )
     }

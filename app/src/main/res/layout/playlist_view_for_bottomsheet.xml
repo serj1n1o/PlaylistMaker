@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/height_button_settings_72dp"
+    android:layout_marginHorizontal="@dimen/margin_12dp"
+    android:foreground="?attr/selectableItemBackgroundBorderless"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/coverPlaylist"
+        android:layout_width="@dimen/artwork_size_56dp"
+        android:layout_height="@dimen/artwork_size_56dp"
+        android:layout_marginVertical="@dimen/padding_min_8dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/playlistName"
+            style="@style/nameItem"
+            android:layout_marginStart="@dimen/padding_min_8dp"
+            android:layout_marginTop="@dimen/standard_indent_16dp"
+            android:maxLines="1"
+            tools:text="здесь будет какое то название" />
+
+
+        <TextView
+            android:id="@+id/amountTracks"
+            style="@style/recyclerSearchText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_min_8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            tools:text="здесь будет количество треков" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
