@@ -8,4 +8,5 @@ interface SharingInteractor {
     fun openSupport()
     fun openSettingsPermission()
     suspend fun saveImageToStorage(artworkUri: Uri, namePlaylist: String): Uri
+    fun sharePlaylist(playlistData: String)
 }

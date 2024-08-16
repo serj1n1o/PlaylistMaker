@@ -34,9 +34,9 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class CreatorPlaylistFragment : FragmentWithBinding<FragmentCreatorPlaylistBinding>() {
+open class CreatorPlaylistFragment : FragmentWithBinding<FragmentCreatorPlaylistBinding>() {
 
-    private val viewModel by viewModel<PlaylistViewModel>()
+    open val viewModel by viewModel<PlaylistViewModel>()
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -46,7 +46,7 @@ class CreatorPlaylistFragment : FragmentWithBinding<FragmentCreatorPlaylistBindi
     }
 
     private val confirmDialog by lazy {
-        MaterialAlertDialogBuilder(requireContext(), R.style.CustomAlertDialogTheme)
+        MaterialAlertDialogBuilder(requireContext(), R.style.CustomAlertDialogThemeCreatePlaylist)
             .setTitle(getString(R.string.allert_dialog_txt_finish_creating))
             .setMessage(getString(R.string.allert_dialog_txt_lost_data))
             .setNeutralButton(getString(R.string.cancel_txt)) { dialog, which ->
@@ -56,7 +56,19 @@ class CreatorPlaylistFragment : FragmentWithBinding<FragmentCreatorPlaylistBindi
             }
     }
 
-    private var coverUri: Uri? = null
+    var coverUri: Uri? = null
+
+    open val pickMedia =
+        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            if (uri != null) {
+                coverUri = uri
+                with(binding.coverPlaylist) {
+                    setImageURI(uri)
+                    scaleType = ImageView.ScaleType.CENTER_CROP
+                    tag = requireContext().getString(R.string.uploaded_tag_image)
+                }
+            }
+        }
     private var descriptionPlaylist: String? = null
     private var namePlaylist: String? = null
 
@@ -69,18 +81,6 @@ class CreatorPlaylistFragment : FragmentWithBinding<FragmentCreatorPlaylistBindi
         requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         binding.btnCreatePlaylist.isEnabled = false
-
-        val pickMedia =
-            registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-                if (uri != null) {
-                    coverUri = uri
-                    with(binding.coverPlaylist) {
-                        setImageURI(uri)
-                        scaleType = ImageView.ScaleType.CENTER_CROP
-                        tag = requireContext().getString(R.string.uploaded_tag_image)
-                    }
-                }
-            }
 
         binding.iconBack.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()

@@ -45,5 +45,21 @@ class PlaylistDbConverter {
         )
     }
 
+    fun mapTrackToTrackInPlaylist(track: TrackInPlaylistDbo): Track {
+        return Track(
+            trackId = track.trackId,
+            trackName = track.trackName,
+            artistName = track.artistName,
+            trackTime = track.trackTime,
+            artworkUrl100 = track.artworkUrl100,
+            collectionName = track.collectionName,
+            releaseYear = track.releaseYear,
+            primaryGenreName = track.primaryGenreName,
+            country = track.country,
+            previewUrl = track.previewUrl,
+            inFavorite = track.inFavorite
+        )
+    }
+
 
 }

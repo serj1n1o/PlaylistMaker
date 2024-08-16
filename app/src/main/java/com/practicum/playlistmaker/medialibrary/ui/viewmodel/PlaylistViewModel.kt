@@ -13,7 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class PlaylistViewModel(
+open class PlaylistViewModel(
     private val sharingInteractor: SharingInteractor,
     private val playlistInteractor: PlaylistInteractor,
 ) : ViewModel() {
@@ -29,7 +29,6 @@ class PlaylistViewModel(
                     processResult(playlists)
                 }
         }
-
     }
 
     suspend fun saveImageToStorage(coverUri: Uri, namePlaylist: String): Uri {

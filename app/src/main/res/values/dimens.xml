@@ -30,6 +30,7 @@
     <dimen name="margin_46dp">46dp</dimen>
     <dimen name="margin_playlist_frag_46">46dp</dimen>
     <dimen name="text_12sp">12sp</dimen>
+    <dimen name="text_18sp">18sp</dimen>
     <dimen name="margin_12dp">12dp</dimen>
     <dimen name="margin_4dp">4dp</dimen>
 </resources>

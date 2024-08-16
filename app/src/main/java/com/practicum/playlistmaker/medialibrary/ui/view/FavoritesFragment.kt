@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentFavoritesBinding
@@ -15,15 +14,11 @@ import com.practicum.playlistmaker.player.ui.view.AudioPlayer
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.ui.adapter.TrackAdapter
 import com.practicum.playlistmaker.util.FragmentWithBinding
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoritesFragment : FragmentWithBinding<FragmentFavoritesBinding>() {
 
     private val favoritesViewModel by viewModel<FavoritesViewModel>()
-
-    private var isClickAllowed = true
 
     private val trackAdapter by lazy {
         TrackAdapter<Any>(
@@ -32,7 +27,8 @@ class FavoritesFragment : FragmentWithBinding<FragmentFavoritesBinding>() {
                     get() = {
                         if (clickDebounce()) startAudioPlayer(it)
                     }
-
+                override val onLongTrackClickListener: ((Track) -> Boolean)?
+                    get() = { false }
             }
         )
     }
@@ -74,19 +70,6 @@ class FavoritesFragment : FragmentWithBinding<FragmentFavoritesBinding>() {
         }
     }
 
-    private fun clickDebounce(): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            lifecycleScope.launch {
-                delay(CLICK_DEBOUNCE_DELAY)
-                isClickAllowed = true
-            }
-        }
-        return current
-    }
-
-
     private fun startAudioPlayer(track: Track) {
         findNavController().navigate(
             R.id.action_libraryFragment_to_audioPlayer,
@@ -101,7 +84,6 @@ class FavoritesFragment : FragmentWithBinding<FragmentFavoritesBinding>() {
     }
 
     companion object {
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
         fun newInstance() = FavoritesFragment()
     }
 

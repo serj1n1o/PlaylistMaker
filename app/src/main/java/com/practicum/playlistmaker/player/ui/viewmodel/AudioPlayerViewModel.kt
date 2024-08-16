@@ -13,6 +13,7 @@ import com.practicum.playlistmaker.player.domain.api.PlayerManager
 import com.practicum.playlistmaker.player.domain.models.PlayerState
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.util.DataMapper
+import com.practicum.playlistmaker.util.PlaylistUpdateAction
 import com.practicum.playlistmaker.util.SingleLiveEvent
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -53,7 +54,9 @@ class AudioPlayerViewModel(
     fun togglePlaybackState() {
         if (playerStateLiveData.value != PlayerState.PLAYING) {
             play()
-        } else pause()
+        } else {
+            pause()
+        }
     }
 
     private fun play() {
@@ -61,7 +64,6 @@ class AudioPlayerViewModel(
         mediaPlayer.startPlayer()
         playerStateLiveData.value = mediaPlayer.getPlayerState()
         startTimer()
-
         mediaPlayer.addOnEndCallback {
             currentPositionVM = START_POSITION
             playerStateLiveData.value = PlayerState.PREPARED
@@ -69,10 +71,13 @@ class AudioPlayerViewModel(
     }
 
     fun pause() {
-        mediaPlayer.pausePlayer()
-        timerJob?.cancel()
-        playerStateLiveData.value = mediaPlayer.getPlayerState()
-        currentPositionVM = getCurrentPositionTrack()
+        if (mediaPlayer.getPlayerState() == PlayerState.PLAYING) {
+            mediaPlayer.pausePlayer()
+            timerJob?.cancel()
+            playerStateLiveData.value = mediaPlayer.getPlayerState()
+            currentPositionVM = getCurrentPositionTrack()
+        }
+
     }
 
     private fun getCurrentPositionTrack(): Int {
@@ -82,6 +87,7 @@ class AudioPlayerViewModel(
             START_POSITION
         }
     }
+
     fun setPlayerScreenState(track: Track) {
         playerScreenStateLiveData.value = track
     }
@@ -113,7 +119,11 @@ class AudioPlayerViewModel(
             viewModelScope.launch {
                 playlistInteractor.addTrackToTrackInPlaylist(track)
                 val result =
-                    playlistInteractor.updatePlaylist(playlist = playlist, trackId = track.trackId)
+                    playlistInteractor.updatePlaylist(
+                        playlist = playlist,
+                        trackId = track.trackId,
+                        PlaylistUpdateAction.ADD
+                    )
                 trackStatusAddingLiveData.postValue(result)
             }
 

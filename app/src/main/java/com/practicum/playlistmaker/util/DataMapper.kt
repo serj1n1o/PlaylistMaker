@@ -23,4 +23,24 @@ object DataMapper {
         }
         return "$amount $string"
     }
+
+    fun mapMinAndSecTimeToMillis(time: String): Int {
+        val parts = time.split(":")
+        val min = parts[0].toInt()
+        val sec = parts[1].toInt()
+        return (min * 60 + sec) * 1000
+    }
+
+    fun mapDurationToString(time: Int): String {
+        val timeMinutes = time / 60000
+        val string = when {
+            time % 10 == 1 -> "минута"
+            time % 10 in 2..4 -> "минуты"
+            time % 100 in 11..19 -> "минут"
+            else -> "минут"
+        }
+        return "$timeMinutes $string"
+    }
+
+
 }

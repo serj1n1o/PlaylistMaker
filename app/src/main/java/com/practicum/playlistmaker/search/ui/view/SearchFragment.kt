@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentSearchBinding
@@ -23,8 +22,6 @@ import com.practicum.playlistmaker.search.ui.viewmodel.HistoryState
 import com.practicum.playlistmaker.search.ui.viewmodel.SearchState
 import com.practicum.playlistmaker.search.ui.viewmodel.TrackSearchViewModel
 import com.practicum.playlistmaker.util.FragmentWithBinding
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -34,8 +31,6 @@ class SearchFragment : FragmentWithBinding<FragmentSearchBinding>() {
     private val viewModel by viewModel<TrackSearchViewModel>()
 
     private var inputText = INPUT_TEXT_DEFAULT
-
-    private var isClickAllowed = true
 
     private val trackAdapter by lazy {
         TrackAdapter<Any>(
@@ -49,6 +44,8 @@ class SearchFragment : FragmentWithBinding<FragmentSearchBinding>() {
                             startAudioPlayer(track)
                         }
                     }
+                override val onLongTrackClickListener: ((Track) -> Boolean)?
+                    get() = { false }
 
             }
         )
@@ -64,6 +61,8 @@ class SearchFragment : FragmentWithBinding<FragmentSearchBinding>() {
                             startAudioPlayer(track)
                         }
                     }
+                override val onLongTrackClickListener: ((Track) -> Boolean)?
+                    get() = { false }
             }
         )
     }
@@ -231,18 +230,6 @@ class SearchFragment : FragmentWithBinding<FragmentSearchBinding>() {
         trackAdapter.notifyDataSetChanged()
     }
 
-    private fun clickDebounce(): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            lifecycleScope.launch {
-                delay(CLICK_DEBOUNCE_DELAY)
-                isClickAllowed = true
-            }
-        }
-        return current
-    }
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(INPUT_TEXT, inputText)
@@ -278,8 +265,6 @@ class SearchFragment : FragmentWithBinding<FragmentSearchBinding>() {
         private const val INPUT_TEXT = "INPUT_TEXT"
         private const val INPUT_TEXT_DEFAULT = ""
         private const val PLACEHOLDER_CODE_NOT_VISIBLE = 0
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
-
     }
 
 }

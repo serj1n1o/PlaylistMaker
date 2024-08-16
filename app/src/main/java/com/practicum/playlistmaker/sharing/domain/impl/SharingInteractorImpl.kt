@@ -29,4 +29,8 @@ class SharingInteractorImpl(
         return internalNavigator.saveImageToStorage(artworkUri, namePlaylist)
     }
 
+    override fun sharePlaylist(playlistData: String) {
+        externalNavigator.sharePlaylist(playlistData)
+    }
+
 }

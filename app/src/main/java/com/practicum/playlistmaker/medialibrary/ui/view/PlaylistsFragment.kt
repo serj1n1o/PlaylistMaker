@@ -27,7 +27,23 @@ class PlaylistsFragment : FragmentWithBinding<FragmentPlaylistsBinding>() {
         return FragmentPlaylistsBinding.inflate(inflater, container, false)
     }
 
-    private val playlistAdapter by lazy { PlaylistAdapter() }
+    private val playlistAdapter by lazy {
+        PlaylistAdapter(object : PlaylistAdapter.PlaylistClickListener {
+            override val onClickPlaylist: ((Playlist) -> Unit)
+                get() = { playlist ->
+                    if (clickDebounce()) {
+                        playlist.id?.let { navigateItemPlaylist(it) }
+                    }
+                }
+        })
+    }
+
+    private fun navigateItemPlaylist(playlistId: Long) {
+        findNavController().navigate(
+            R.id.action_libraryFragment_to_playlistItemFragment,
+            PlaylistItemFragment.createArgs(playlistId)
+        )
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -37,7 +53,7 @@ class PlaylistsFragment : FragmentWithBinding<FragmentPlaylistsBinding>() {
         binding.recyclerViewPlaylists.layoutManager = GridLayoutManager(requireContext(), 2)
 
         binding.newPlaylistBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_libraryFragment_to_itemPlaylistFragment)
+            findNavController().navigate(R.id.action_libraryFragment_to_creatorPlaylistFragment)
         }
 
         playlistViewModel.getPlaylistState().observe(viewLifecycleOwner) { statePlaylist ->
@@ -46,7 +62,6 @@ class PlaylistsFragment : FragmentWithBinding<FragmentPlaylistsBinding>() {
                 PlaylistState.Empty -> showEmpty()
             }
         }
-
 
     }
 
@@ -67,6 +82,7 @@ class PlaylistsFragment : FragmentWithBinding<FragmentPlaylistsBinding>() {
         }
 
     }
+
 
     override fun onDestroyView() {
         binding.recyclerViewPlaylists.adapter = null

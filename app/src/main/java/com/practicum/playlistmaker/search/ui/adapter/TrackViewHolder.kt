@@ -29,6 +29,9 @@ class TrackViewHolder(
                 .into(artwork)
         }
         itemView.setOnClickListener { clickListener.onItemClickListener?.invoke(model) }
+        itemView.setOnLongClickListener {
+            clickListener.onLongTrackClickListener?.invoke(model) ?: false
+        }
     }
 
 
