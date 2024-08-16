@@ -9,6 +9,7 @@ import com.practicum.playlistmaker.medialibrary.domain.dbapi.PlaylistInteractor
 import com.practicum.playlistmaker.medialibrary.domain.model.DurationAndAmountTracks
 import com.practicum.playlistmaker.medialibrary.domain.model.ItemPlaylistState
 import com.practicum.playlistmaker.medialibrary.domain.model.TrackPlaylistState
+import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.sharing.domain.api.SharingInteractor
 import com.practicum.playlistmaker.util.DataMapper
 import com.practicum.playlistmaker.util.PlaylistUpdateAction
@@ -66,7 +67,7 @@ class ItemPlaylistViewModel(
     private suspend fun getTracksInfo(playlistId: Long) {
         val newPlaylist = playlistInteractor.getPlaylistById(playlistId)
         playlistInteractor.getTracksInPlaylist(newPlaylist.listTrackId).collect { tracks ->
-            trackState.postValue(TrackPlaylistState.Content(tracks))
+            renderTrack(tracks)
 
             val duration = totalDurationTracksToMinutes(
                 tracks.sumOf { DataMapper.mapMinAndSecTimeToMillis(it.trackTime) }
@@ -83,15 +84,14 @@ class ItemPlaylistViewModel(
             val tracks = (trackState.value as TrackPlaylistState.Content).tracks
             val message = StringBuilder()
 
-            message.append("$playlist.name\n")
+            message.append("${playlist.name}\n")
 
-            playlist.description?.let {
-                message.append("$it\n")
-            }
-            message.append("${playlist.amountTracks} ${DataMapper.mapAmountTrackToString(playlist.amountTracks)}\n")
+            if (!playlist.description.isNullOrEmpty()) message.append("${playlist.description}\n")
+
+            message.append("${DataMapper.mapAmountTrackToString(playlist.amountTracks)}\n")
 
             tracks.forEachIndexed { index, track ->
-                message.append("${index + 1}.${track.artistName} - ${track.trackName} ${track.trackTime}")
+                message.append("${index + 1}.${track.artistName} - ${track.trackName} ${track.trackTime}\n")
             }
             return message.toString()
         }
@@ -102,5 +102,12 @@ class ItemPlaylistViewModel(
         return DataMapper.mapDurationToString(value)
     }
 
+    private fun renderTrack(tracks: List<Track>) {
+        if (tracks.isEmpty()) {
+            trackState.postValue(TrackPlaylistState.Empty)
+        } else {
+            trackState.postValue(TrackPlaylistState.Content(tracks))
+        }
+    }
 
 }

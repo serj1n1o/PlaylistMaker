@@ -171,7 +171,8 @@ class PlaylistItemFragment : FragmentWithBinding<FragmentPlaylistItemBinding>() 
     }
 
     private fun sharePlaylist() {
-        if (viewModel.getTrackState.value is TrackPlaylistState.Empty) {
+        bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
+        if (viewModel.getTrackState.value == TrackPlaylistState.Empty) {
             Toast.makeText(
                 requireContext(),
                 getString(R.string.share_empty_playlist),
