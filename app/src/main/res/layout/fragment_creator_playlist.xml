@@ -68,6 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/standard_indent_16dp"
         android:layout_marginTop="@dimen/standard_indent_16dp"
+        android:layout_marginBottom="@dimen/radius_2dp"
         android:hint="@string/description_playlist"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

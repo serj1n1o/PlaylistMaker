@@ -89,6 +89,15 @@ class PlaylistItemFragment : FragmentWithBinding<FragmentPlaylistItemBinding>() 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        view.post {
+            val screenHeight = requireContext().resources.displayMetrics.heightPixels
+            val shareBtnBottom = binding.menuPlaylist.bottom
+            val bottomHeight = screenHeight - shareBtnBottom
+            val bottomSheetPlaylist = BottomSheetBehavior.from(binding.bottomSheetPlaylist)
+            bottomSheetPlaylist.peekHeight = bottomHeight
+        }
+
+
         bottomSheetBehavior = binding.bottomSheetMenuPlaylist?.let { BottomSheetBehavior.from(it) }
         bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
 
@@ -169,6 +178,7 @@ class PlaylistItemFragment : FragmentWithBinding<FragmentPlaylistItemBinding>() 
 
 
     }
+
 
     private fun sharePlaylist() {
         bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN

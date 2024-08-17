@@ -21,8 +21,16 @@ class InternalNavigatorImpl(private val context: Context) : InternalNavigator {
         if (!filePath.exists()) {
             filePath.mkdirs()
         }
-        val fileName = "$namePlaylist.jpg"
-        val file = File(filePath, fileName)
+        var fileName = "$namePlaylist.jpg"
+        var file = File(filePath, fileName)
+        var counter = 1
+
+        while (file.exists()) {
+            fileName = "$namePlaylist($counter).jpg"
+            file = File(filePath, fileName)
+            counter++
+        }
+
         val inputStream = context.contentResolver.openInputStream(artworkUri)
         val outputStream = FileOutputStream(file)
 

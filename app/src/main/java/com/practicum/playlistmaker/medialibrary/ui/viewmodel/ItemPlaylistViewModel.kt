@@ -42,7 +42,6 @@ class ItemPlaylistViewModel(
         }
     }
 
-
     fun removeTrackFromPlaylist(trackId: Long) {
         val playlist = (playlistState.value as ItemPlaylistState.Content).playlist
         viewModelScope.launch {

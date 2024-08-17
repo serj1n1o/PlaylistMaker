@@ -107,6 +107,7 @@
             android:id="@+id/sharePlaylist"
             style="@style/ButtonShareMenuPlaylist"
             android:layout_marginTop="@dimen/standard_indent_16dp"
+            android:layout_marginBottom="@dimen/standard_indent_16dp"
             android:padding="@dimen/radius_2dp"
             android:src="@drawable/share_icon"
             app:layout_constraintStart_toStartOf="@id/leftBorder"
@@ -117,6 +118,7 @@
             android:id="@+id/menuPlaylist"
             style="@style/ButtonShareMenuPlaylist"
             android:layout_marginStart="@dimen/standard_indent_16dp"
+
             android:padding="@dimen/radius_2dp"
             android:src="@drawable/ic_menu"
             app:layout_constraintBottom_toBottomOf="@id/sharePlaylist"
@@ -133,8 +135,8 @@
         android:background="@drawable/bottom_sheet_background"
         android:orientation="vertical"
         app:behavior_hideable="false"
-        app:behavior_peekHeight="224dp"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        tools:behavior_peekHeight="224dp">
 
         <View
             android:id="@+id/line"
