@@ -90,7 +90,7 @@ class PlaylistItemFragment : FragmentWithBinding<FragmentPlaylistItemBinding>() 
         super.onViewCreated(view, savedInstanceState)
 
         view.post {
-            val screenHeight = requireContext().resources.displayMetrics.heightPixels
+            val screenHeight = binding.root.height
             val shareBtnBottom = binding.menuPlaylist.bottom
             val bottomHeight = screenHeight - shareBtnBottom
             val bottomSheetPlaylist = BottomSheetBehavior.from(binding.bottomSheetPlaylist)
@@ -114,7 +114,6 @@ class PlaylistItemFragment : FragmentWithBinding<FragmentPlaylistItemBinding>() 
 
         viewModel.getPlaylistState().observe(viewLifecycleOwner) { state ->
             renderPlaylist(state)
-
         }
 
         viewModel.getTrackState.observe(viewLifecycleOwner) { state ->
