@@ -5,4 +5,5 @@ interface ExternalNavigator {
     fun openLink()
     fun openEmail()
     fun openSettingsPermission()
+    fun sharePlaylist(playlistData: String)
 }

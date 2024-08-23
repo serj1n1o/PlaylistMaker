@@ -6,12 +6,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.databinding.PlaylistViewBinding
 import com.practicum.playlistmaker.medialibrary.domain.model.Playlist
 
-class PlaylistAdapter : RecyclerView.Adapter<PlaylistViewHolder>() {
+class PlaylistAdapter(private val clickListener: PlaylistClickListener) :
+    RecyclerView.Adapter<PlaylistViewHolder>() {
+
     val playlists = mutableListOf<Playlist>()
+
+    interface PlaylistClickListener {
+        val onClickPlaylist: ((Playlist) -> Unit)?
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
         val viewPlaylistBinding =
             PlaylistViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PlaylistViewHolder(viewPlaylistBinding)
+        return PlaylistViewHolder(viewPlaylistBinding, clickListener)
     }
 
     override fun getItemCount(): Int = playlists.size

@@ -10,7 +10,7 @@ import com.practicum.playlistmaker.db.entity.PlaylistDbo
 
 @Dao
 interface PlaylistDao {
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPlaylist(playlist: PlaylistDbo)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
@@ -19,8 +19,9 @@ interface PlaylistDao {
     @Delete
     suspend fun deletePlaylist(playlist: PlaylistDbo)
 
+
     @Query("SELECT * FROM playlist_table WHERE playlistId = :playlistId")
-    suspend fun getPlaylistById(playlistId: Long): PlaylistDbo?
+    suspend fun getPlaylistById(playlistId: Long): PlaylistDbo
 
     @Query("SELECT * FROM playlist_table ORDER BY amountTracks DESC")
     suspend fun getAllPlaylists(): List<PlaylistDbo>

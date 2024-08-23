@@ -12,6 +12,7 @@ open class TrackAdapter<T>(private val clickListener: TrackClickListener) :
 
     interface TrackClickListener {
         val onItemClickListener: ((Track) -> Unit)?
+        val onLongTrackClickListener: ((Track) -> Boolean)?
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {

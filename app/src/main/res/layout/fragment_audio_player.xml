@@ -2,9 +2,9 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -258,25 +258,26 @@
         android:id="@+id/bottomSheetPlayer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:behavior_peekHeight="504dp"
         android:background="@drawable/bottom_sheet_background"
+        android:orientation="vertical"
         app:behavior_hideable="true"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+        app:behavior_peekHeight="504dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        tools:visibility="gone">
 
         <TextView
             style="@style/placeholderText"
-            android:text="@string/add_to_playlist_txt"
-            android:layout_marginTop="@dimen/margin_12dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_12dp"
+            android:text="@string/add_to_playlist_txt" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/newPlaylistBtnFromPlayer"
+            style="@style/btnUpdateAndClear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/new_playlist_txt"
-            style="@style/btnUpdateAndClear" />
+            android:text="@string/new_playlist_txt" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewPlaylistsFromPlayer"

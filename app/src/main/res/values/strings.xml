@@ -37,9 +37,20 @@
     <string name="description_playlist">Описание</string>
     <string name="txt_create">Создать</string>
     <string name="cancel_txt">Отмена</string>
+    <string name="no_txt">Нет</string>
+    <string name="yes_txt">Да</string>
     <string name="finish_txt">Завершить</string>
+    <string name="delete_txt">Удалить</string>
+    <string name="share_txt">Поделиться</string>
+    <string name="save_txt">Сохранить</string>
+    <string name="edit_info_txt">Редактировать информацию</string>
+    <string name="delete_playlist_txt">Удалить плейлист</string>
     <string name="allert_dialog_txt_lost_data">Все несохраненные данные будут потеряны</string>
     <string name="allert_dialog_txt_finish_creating">Завершить создание плейлиста?</string>
+    <string name="allert_dialog_txt_delete_track">Удалить трек</string>
+    <string name="allert_dialog_title_delete_playlist">Удалить плейлист</string>
+    <string name="allert_dialog_message_delete_track">Вы уверены, что хотите удалить трек из плейлиста?</string>
+    <string name="allert_dialog_message_delete_playlist">Вы уверены, что хотите удалить этот плейлист?</string>
     <string name="uploaded_tag_image">image</string>
     <string name="rationale_the_request">Доступ к хранилищу необходим для установки обложки плейлиста</string>
     <string name="playlist_created">Плейлист %1$s создан</string>
@@ -47,4 +58,5 @@
     <string name="track_add_playlist">Добавлено в плейлист %1$s</string>
     <string name="playlist_covers">myPlaylistsArtworks</string>
     <string name="add_to_playlist_txt">Добавить в плейлист</string>
+    <string name="share_empty_playlist">В этом плейлисте нет списка треков, которым можно поделиться</string>
 </resources>

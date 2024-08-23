@@ -14,8 +14,11 @@
             android:id="@+id/action_libraryFragment_to_audioPlayer"
             app:destination="@id/audioPlayer" />
         <action
-            android:id="@+id/action_libraryFragment_to_itemPlaylistFragment"
-            app:destination="@id/itemPlaylistFragment" />
+            android:id="@+id/action_libraryFragment_to_creatorPlaylistFragment"
+            app:destination="@id/creatorPlaylistFragment" />
+        <action
+            android:id="@+id/action_libraryFragment_to_playlistItemFragment"
+            app:destination="@id/playlistItemFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -37,12 +40,27 @@
         android:label="fragment_audio_player"
         tools:layout="@layout/fragment_audio_player">
         <action
-            android:id="@+id/action_audioPlayer_to_itemPlaylistFragment"
-            app:destination="@id/itemPlaylistFragment" />
+            android:id="@+id/action_audioPlayer_to_creatorPlaylistFragment"
+            app:destination="@id/creatorPlaylistFragment" />
     </fragment>
     <fragment
-        android:id="@+id/itemPlaylistFragment"
+        android:id="@+id/creatorPlaylistFragment"
         android:name="com.practicum.playlistmaker.medialibrary.ui.view.CreatorPlaylistFragment"
         android:label="fragment_item_playlist"
         tools:layout="@layout/fragment_creator_playlist" />
+    <fragment
+        android:id="@+id/playlistItemFragment"
+        android:name="com.practicum.playlistmaker.medialibrary.ui.view.PlaylistItemFragment"
+        android:label="PlaylistItemFragment">
+        <action
+            android:id="@+id/action_playlistItemFragment_to_audioPlayer"
+            app:destination="@id/audioPlayer" />
+        <action
+            android:id="@+id/action_playlistItemFragment_to_editPlaylistFragment"
+            app:destination="@id/editPlaylistFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editPlaylistFragment"
+        android:name="com.practicum.playlistmaker.medialibrary.ui.view.EditPlaylistFragment"
+        android:label="EditPlaylistFragment" />
 </navigation>

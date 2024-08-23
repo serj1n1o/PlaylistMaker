@@ -4,6 +4,7 @@ import android.icu.text.SimpleDateFormat
 import android.text.format.DateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 object DataMapper {
     fun mapTimeMillisToMinAndSec(time: Any): String {
@@ -23,4 +24,23 @@ object DataMapper {
         }
         return "$amount $string"
     }
+
+    fun mapMinAndSecTimeToMillis(time: String): Int {
+        val min = time.substringBefore(":").toLong()
+        val sec = time.substringAfter(":").toLong()
+        return (TimeUnit.MINUTES.toMillis(min) + TimeUnit.SECONDS.toMillis(sec)).toInt()
+    }
+
+    fun mapDurationToString(time: Int): String {
+        val timeMinutes = time / 60000
+        val string = when {
+            time % 10 == 1 -> "минута"
+            time % 10 in 2..4 -> "минуты"
+            time % 100 in 11..19 -> "минут"
+            else -> "минут"
+        }
+        return "$timeMinutes $string"
+    }
+
+
 }

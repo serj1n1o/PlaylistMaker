@@ -24,6 +24,7 @@ import com.practicum.playlistmaker.player.domain.models.PlayerState
 import com.practicum.playlistmaker.player.ui.adapters.PlayerPlaylistAdapter
 import com.practicum.playlistmaker.player.ui.viewmodel.AudioPlayerViewModel
 import com.practicum.playlistmaker.search.domain.models.Track
+import com.practicum.playlistmaker.util.Animates
 import com.practicum.playlistmaker.util.FragmentWithBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -54,9 +55,9 @@ class AudioPlayer : FragmentWithBinding<FragmentAudioPlayerBinding>() {
         )
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheetPlayer)
         bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
 
@@ -154,12 +155,12 @@ class AudioPlayer : FragmentWithBinding<FragmentAudioPlayerBinding>() {
                 when (newState) {
                     BottomSheetBehavior.STATE_COLLAPSED -> {
                         binding.overlay.isVisible = true
-                        animateOverlay(true)
+                        Animates.animateOverlay(true, binding.overlay)
                     }
 
                     BottomSheetBehavior.STATE_HIDDEN -> {
                         binding.overlay.isVisible = false
-                        animateOverlay(false)
+                        Animates.animateOverlay(false, binding.overlay)
                     }
 
                     else -> {}
@@ -169,9 +170,8 @@ class AudioPlayer : FragmentWithBinding<FragmentAudioPlayerBinding>() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
         })
         binding.newPlaylistBtnFromPlayer.setOnClickListener {
-            findNavController().navigate(R.id.action_audioPlayer_to_itemPlaylistFragment)
+            findNavController().navigate(R.id.action_audioPlayer_to_creatorPlaylistFragment)
         }
-
 
     }
 
@@ -247,16 +247,8 @@ class AudioPlayer : FragmentWithBinding<FragmentAudioPlayerBinding>() {
 
     }
 
-    private fun animateOverlay(show: Boolean) {
-        val alpha = if (show) 1f else 0f
-        binding.overlay.animate()
-            .alpha(alpha)
-            .setDuration(DURATION_ANIM)
-            .withEndAction { if (!show) binding.overlay.isVisible = false }
-    }
 
     companion object {
-        private const val DURATION_ANIM = 300L
         const val DATA_FROM_AUDIO_PLAYER_KEY = "TRACK DATA"
         fun createArgs(track: Track): Bundle =
             bundleOf(

@@ -12,7 +12,9 @@ import com.practicum.playlistmaker.medialibrary.domain.dbapi.PlaylistInteractor
 import com.practicum.playlistmaker.medialibrary.domain.dbapi.PlaylistRepository
 import com.practicum.playlistmaker.medialibrary.domain.impl.FavoritesInteractorImpl
 import com.practicum.playlistmaker.medialibrary.domain.impl.PlaylistInteractorImpl
+import com.practicum.playlistmaker.medialibrary.ui.viewmodel.EditPlaylistViewModel
 import com.practicum.playlistmaker.medialibrary.ui.viewmodel.FavoritesViewModel
+import com.practicum.playlistmaker.medialibrary.ui.viewmodel.ItemPlaylistViewModel
 import com.practicum.playlistmaker.medialibrary.ui.viewmodel.PlaylistViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -25,6 +27,14 @@ val mediaLibraryModule = module {
 
     viewModel<PlaylistViewModel> {
         PlaylistViewModel(sharingInteractor = get(), playlistInteractor = get())
+    }
+
+    viewModel<ItemPlaylistViewModel> {
+        ItemPlaylistViewModel(sharingInteractor = get(), playlistInteractor = get())
+    }
+
+    viewModel<EditPlaylistViewModel> {
+        EditPlaylistViewModel(sharingInteractor = get(), playlistInteractor = get())
     }
 
     factory { TrackDbConverter() }
